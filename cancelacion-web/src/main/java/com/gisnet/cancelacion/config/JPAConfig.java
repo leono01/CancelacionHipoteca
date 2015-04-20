@@ -28,6 +28,7 @@ import org.springframework.jndi.JndiObjectFactoryBean;
 import org.springframework.orm.hibernate3.HibernateExceptionTranslator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -44,7 +45,7 @@ public class JPAConfig {
     @Bean
     public DataSource jndiDataSource() throws NamingException {
         JndiObjectFactoryBean factory = new JndiObjectFactoryBean();
-        factory.setJndiName("java:comp/env/jdbc/oaxaca");
+        factory.setJndiName("java:jboss/datasources/CHipoteca"); // java:comp/env/CHipoteca
         factory.setLookupOnStartup(true);
         factory.setProxyInterface(DataSource.class);
         factory.afterPropertiesSet();
@@ -57,6 +58,7 @@ public class JPAConfig {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setGenerateDdl(true);
         vendorAdapter.setShowSql(true);
+        vendorAdapter.setDatabase(Database.SQL_SERVER);
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
