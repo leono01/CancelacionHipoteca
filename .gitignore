@@ -15,6 +15,7 @@ BackupFiles
 *_w?.T300[01]
 *_m?.T300[01]
 *_m??.T300[01]
+*~
 
 # Autosave files
 *.T300[01]?
@@ -60,11 +61,11 @@ excellon.txt
 *.cbt
 *.vhf
 *.iso
+*.war
 
 # exchange formats
 *.DXF
 *.PS
-*.TIF
 *.NET
 *.PLT
 *.HPGL
@@ -80,3 +81,6 @@ excellon.txt
 *.wrl
 *.ADPT
 *.AZO
+
+# Maven compiled
+target/*
