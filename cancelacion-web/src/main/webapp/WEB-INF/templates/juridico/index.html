@@ -78,26 +78,30 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>numero</th>
-                                <th>nombre</th>
-                                <th>municipio</th>
-                                <th>estado</th>
-                                <th>domicilio</th>
+                                <th>numero de notaria</th>
+                                <th>nombre notario</th>
+                                <th>codigo notario</th>
+                                <th>convenio infonavit</th>
                                 <th>correo electronico</th>
                                 <th>telefono</th>
-                                <th>convenio</th>
+                                <th>calle</th>
+                                <th>numero</th>
+                                <th>colonia</th>
+                                <th>codigo postal</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr th:each="row : ${list}" th:object="${row}">
-                                <td th:text="*{numeroNotaria}"></td>
+                                <td th:text="*{notariaNumero}"></td>
                                 <td th:text="*{nombre}"></td>
-                                <td th:text="*{municipio}"></td>
-                                <td th:text="*{estado}"></td>
-                                <td th:text="*{domicilio}"></td>
-                                <td th:text="*{correoElectronico}"></td>
+                                <td th:text="*{codigo}"></td>
+                                <td th:text="*{convenioInfonavit}"></td>
+                                <td th:text="*{email}"></td>
                                 <td th:text="*{telefono}"></td>
-                                <td th:text="*{convenio}"></td>
+                                <td th:text="*{calleNotaria}"></td>
+                                <td th:text="*{numeroCalle}"></td>
+                                <td th:text="*{coloniaNotaria}"></td>
+                                <td th:text="*{codigoPostalNotaria}"></td>
                             </tr>
                         </tbody>
                     </table>

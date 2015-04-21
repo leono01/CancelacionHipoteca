@@ -83,4 +83,4 @@ excellon.txt
 *.AZO
 
 # Maven compiled
-target/*
+*/target

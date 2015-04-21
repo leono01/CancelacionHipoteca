@@ -16,7 +16,17 @@
  */
 package com.gisnet.cancelacion.persistance.services;
 
-import java.util.Map;
+import com.gisnet.cancelacion.events.DeleteRequest;
+import com.gisnet.cancelacion.events.DeleteResponse;
+import com.gisnet.cancelacion.events.FindRequest;
+import com.gisnet.cancelacion.events.FindResponse;
+import com.gisnet.cancelacion.events.ListRequest;
+import com.gisnet.cancelacion.events.ListResponse;
+import com.gisnet.cancelacion.events.SaveRequest;
+import com.gisnet.cancelacion.events.SaveResponse;
+import com.gisnet.cancelacion.events.UpdateRequest;
+import com.gisnet.cancelacion.events.UpdateResponse;
+import com.gisnet.cancelacion.events.info.NotarioInfo;
 
 /**
  *
@@ -24,13 +34,15 @@ import java.util.Map;
  */
 public interface NotarioPersistanceService {
     
-    public Map<String, Object> list(Map<String, Object> event);
+    public FindResponse<NotarioInfo> find(FindRequest event);
     
-    public Map<String, Object> save(Map<String, Object> event);
+    public ListResponse<NotarioInfo> list(ListRequest event);
     
-    public Map<String, Object> update(Map<String, Object> event);
+    public SaveResponse<NotarioInfo> save(SaveRequest<NotarioInfo> event);
     
-    public Map<String, Object> delete(Map<String, Object> event);
+    public UpdateResponse<NotarioInfo> update(UpdateRequest<NotarioInfo> event);
+    
+    public DeleteResponse<NotarioInfo> delete(DeleteRequest event);
     
 }
 

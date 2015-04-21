@@ -14,47 +14,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.gisnet.cancelacion.persistance.domain;
-
-import com.gisnet.cancelacion.events.info.NotarioInfo;
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+package com.gisnet.cancelacion.web.domain;
 
 /**
  *
  * @author marco-g8
  */
-@Entity
-@Table(name = "C_NOTARIO")
-public class Notario implements Serializable {
-
+public class NotarioForm {
+    
     private long id;
     private String nombre;
     private int codigo;
     private String notariaNumero;
     private boolean convenioInfonavit;
-    private String correo;
+    private String email;
     private String telefono;
     private String calleNotaria;
     private String numeroCalle;
     private String coloniaNotaria;
     private String codigoPostalNotaria;
-    
-    private String usuario;
-    private String municipio;
-    private String entidad;
-    
-    public Notario() {
+
+    private long usuarioId;
+    private long municipioId;
+    private long entidadId;
+
+    public NotarioForm() {
     }
 
-    @Id
-    @Column(name = "NOTARIO_ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getId() {
         return id;
     }
@@ -63,7 +49,6 @@ public class Notario implements Serializable {
         this.id = id;
     }
 
-    @Column(name = "NOMBRE_NOTARIO")
     public String getNombre() {
         return nombre;
     }
@@ -72,7 +57,6 @@ public class Notario implements Serializable {
         this.nombre = nombre;
     }
 
-    @Column(name = "CODIGO_NOTARIO")
     public int getCodigo() {
         return codigo;
     }
@@ -81,7 +65,6 @@ public class Notario implements Serializable {
         this.codigo = codigo;
     }
 
-    @Column(name = "NOTARIA_NUMERO")
     public String getNotariaNumero() {
         return notariaNumero;
     }
@@ -90,7 +73,6 @@ public class Notario implements Serializable {
         this.notariaNumero = notariaNumero;
     }
 
-    @Column(name = "CONVENIO_INFONAVIT")
     public boolean isConvenioInfonavit() {
         return convenioInfonavit;
     }
@@ -99,16 +81,14 @@ public class Notario implements Serializable {
         this.convenioInfonavit = convenioInfonavit;
     }
 
-    @Column(name = "EMAIL")
-    public String getCorreo() {
-        return correo;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    @Column(name = "TELEFONO")
     public String getTelefono() {
         return telefono;
     }
@@ -117,7 +97,6 @@ public class Notario implements Serializable {
         this.telefono = telefono;
     }
 
-    @Column(name = "CALLE_NOTARIA")
     public String getCalleNotaria() {
         return calleNotaria;
     }
@@ -126,7 +105,6 @@ public class Notario implements Serializable {
         this.calleNotaria = calleNotaria;
     }
 
-    @Column(name = "NUMERO_CALLE")
     public String getNumeroCalle() {
         return numeroCalle;
     }
@@ -135,7 +113,6 @@ public class Notario implements Serializable {
         this.numeroCalle = numeroCalle;
     }
 
-    @Column(name = "COLONIA_NOTARIA")
     public String getColoniaNotaria() {
         return coloniaNotaria;
     }
@@ -144,7 +121,6 @@ public class Notario implements Serializable {
         this.coloniaNotaria = coloniaNotaria;
     }
 
-    @Column(name = "CODIGO_POSTAL_NOTARIA")
     public String getCodigoPostalNotaria() {
         return codigoPostalNotaria;
     }
@@ -153,52 +129,30 @@ public class Notario implements Serializable {
         this.codigoPostalNotaria = codigoPostalNotaria;
     }
 
-    @Column(name = "USUARIO")
-    public String getUsuario() {
-        return usuario;
+    public long getUsuarioId() {
+        return usuarioId;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public void setUsuarioId(long usuarioId) {
+        this.usuarioId = usuarioId;
     }
 
-    @Column(name = "MUNICIPIO")
-    public String getMunicipio() {
-        return municipio;
+    public long getMunicipioId() {
+        return municipioId;
     }
 
-    public void setMunicipio(String municipio) {
-        this.municipio = municipio;
-    }
-    
-    @Column(name = "ESTADO")
-    public String getEntidad() {
-        return entidad;
+    public void setMunicipioId(long municipioId) {
+        this.municipioId = municipioId;
     }
 
-    public void setEntidad(String entidad) {
-        this.entidad = entidad;
+    public long getEntidadId() {
+        return entidadId;
     }
-    
-    public NotarioInfo asInfo() {
-        NotarioInfo info = new NotarioInfo();
-        info.setId(this.id);
-        info.setNombre(this.nombre);
-        info.setCodigo(this.codigo);
-        info.setNotariaNumero(this.notariaNumero);
-        info.setEmail(this.correo);
-        info.setTelefono(this.telefono);
-        info.setCalleNotaria(this.calleNotaria);
-        info.setNumeroCalle(this.numeroCalle);
-        info.setColoniaNotaria(this.coloniaNotaria);
-        info.setCodigoPostalNotaria(this.codigoPostalNotaria);
-        
-        info.setUsuarioId(0l);
-        info.setMunicipioId(0l);
-        info.setEntidadId(0l);
-        
-        return info;
+
+    public void setEntidadId(long entidadId) {
+        this.entidadId = entidadId;
     }
+
     
 }
 

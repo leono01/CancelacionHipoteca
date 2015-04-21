@@ -16,8 +16,18 @@
  */
 package com.gisnet.cancelacion.core.services;
 
+import com.gisnet.cancelacion.events.DeleteRequest;
+import com.gisnet.cancelacion.events.DeleteResponse;
+import com.gisnet.cancelacion.events.FindRequest;
+import com.gisnet.cancelacion.events.FindResponse;
+import com.gisnet.cancelacion.events.ListRequest;
+import com.gisnet.cancelacion.events.ListResponse;
+import com.gisnet.cancelacion.events.SaveRequest;
+import com.gisnet.cancelacion.events.SaveResponse;
+import com.gisnet.cancelacion.events.UpdateRequest;
+import com.gisnet.cancelacion.events.UpdateResponse;
+import com.gisnet.cancelacion.events.info.NotarioInfo;
 import com.gisnet.cancelacion.persistance.services.NotarioPersistanceService;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -27,29 +37,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class NotarioServiceHandler implements NotarioService {
     
     @Autowired
-    private NotarioPersistanceService notarioPersistanceService;
+    private NotarioPersistanceService service;
     
     public NotarioServiceHandler() {
     }
 
     @Override
-    public Map<String, Object> list(Map<String, Object> event) {
-        return notarioPersistanceService.list(event);
+    public FindResponse<NotarioInfo> find(FindRequest event) {
+        return service.find(event);
     }
 
     @Override
-    public Map<String, Object> save(Map<String, Object> event) {
-        return notarioPersistanceService.save(event);
+    public ListResponse<NotarioInfo> list(ListRequest event) {
+        return service.list(event);
     }
 
     @Override
-    public Map<String, Object> update(Map<String, Object> event) {
-        return notarioPersistanceService.update(event);
+    public SaveResponse<NotarioInfo> save(SaveRequest<NotarioInfo> event) {
+        return service.save(event);
     }
 
     @Override
-    public Map<String, Object> delete(Map<String, Object> event) {
-        return notarioPersistanceService.delete(event);
+    public UpdateResponse<NotarioInfo> update(UpdateRequest<NotarioInfo> event) {
+        return service.update(event);
+    }
+
+    @Override
+    public DeleteResponse<NotarioInfo> delete(DeleteRequest event) {
+        return service.delete(event);
     }
     
 }

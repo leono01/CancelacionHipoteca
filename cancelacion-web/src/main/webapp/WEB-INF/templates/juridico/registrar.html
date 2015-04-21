@@ -76,7 +76,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="col-md-9">
                     <h3>registrar notario</h3>
 
-                    <form class="form-horizontal" th:action="@{/juridico/registrar}" method="POST" th:object="${notarioInfo}">
+                    <form class="form-horizontal" th:action="@{/juridico/registrar}" method="POST" th:object="${notarioForm}">
                         <div class="form-group">
                             <label for="nombre" class="col-sm-2 control-label">Nombre</label>
                             <div class="col-sm-10">
@@ -84,33 +84,30 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="nonotaria" class="col-sm-2 control-label">No. Notaria</label>
+                            <label for="codigo" class="col-sm-2 control-label">Codigo</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" th:field="*{nonotaria}" placeholder="Numero de Notaria"/>
+                                <input type="text" class="form-control" th:field="*{codigo}" placeholder="Codigo"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="municipio" class="col-sm-2 control-label">Municipio</label>
+                            <label for="notariaNumero" class="col-sm-2 control-label">No. Notaria</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" th:field="*{municipio}" placeholder="Municipio"/>
+                                <input type="text" class="form-control" th:field="*{notariaNumero}" placeholder="Numero de Notaria"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="estado" class="col-sm-2 control-label">Estado</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" th:field="*{estado}" placeholder="Estado"/>
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" th:field="*{convenioInfonavit}"/> Convenio Infonavit
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="domicilio" class="col-sm-2 control-label">Domicilio</label>
+                            <label for="email" class="col-sm-2 control-label">Correo electronico</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" th:field="*{domicilio}" placeholder="Domicilio de la notaria"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="correo" class="col-sm-2 control-label">Correo Electronico</label>
-                            <div class="col-sm-10">
-                                <input type="email" class="form-control" th:field="*{correo}" placeholder="Correo Electronico"/>
+                                <input type="email" class="form-control" th:field="*{email}" placeholder="Correo electronico"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -120,14 +117,30 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" th:field="*{convenio}"/> Convenio
-                                    </label>
-                                </div>
+                            <label for="calleNotaria" class="col-sm-2 control-label">Calle notaria</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{calleNotaria}" placeholder="Calle notaria"/>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="numeroCalle" class="col-sm-2 control-label">Numero</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{numeroCalle}" placeholder="Numero"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="coloniaNotaria" class="col-sm-2 control-label">Colonia</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{coloniaNotaria}" placeholder="Colonia"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="codigoPostalNotaria" class="col-sm-2 control-label">Codigo postal</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:field="*{codigoPostalNotaria}" placeholder="Codigo postal"/>
+                            </div>
+                        </div>
+                        
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
                                 <button type="submit" class="btn btn-default">Registrar</button>

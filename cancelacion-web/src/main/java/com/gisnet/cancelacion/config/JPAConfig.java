@@ -45,7 +45,7 @@ public class JPAConfig {
     @Bean
     public DataSource jndiDataSource() throws NamingException {
         JndiObjectFactoryBean factory = new JndiObjectFactoryBean();
-        factory.setJndiName("java:jboss/datasources/CHipoteca"); // java:comp/env/CHipoteca
+        factory.setJndiName("java:comp/env/CHipoteca_pg");
         factory.setLookupOnStartup(true);
         factory.setProxyInterface(DataSource.class);
         factory.afterPropertiesSet();
@@ -57,8 +57,8 @@ public class JPAConfig {
     public EntityManagerFactory entityManagerFactory() throws SQLException, NamingException {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setGenerateDdl(true);
-        vendorAdapter.setShowSql(true);
-        vendorAdapter.setDatabase(Database.SQL_SERVER);
+        //vendorAdapter.setShowSql(true);
+        //vendorAdapter.setDatabase(Database.SQL_SERVER);
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);

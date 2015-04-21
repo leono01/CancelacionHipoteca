@@ -17,10 +17,14 @@
 package com.gisnet.cancelacion.web.controller;
 
 import com.gisnet.cancelacion.core.services.NotarioService;
-import com.gisnet.cancelacion.web.domain.NotarioInfo;
+import com.gisnet.cancelacion.events.ListRequest;
+import com.gisnet.cancelacion.events.ListResponse;
+import com.gisnet.cancelacion.events.SaveRequest;
+import com.gisnet.cancelacion.events.SaveResponse;
+import com.gisnet.cancelacion.events.info.NotarioInfo;
+import com.gisnet.cancelacion.web.domain.NotarioForm;
 import java.security.Principal;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,11 +44,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class JuridicoController {
     
     @Autowired
-    private NotarioService ns;
+    private NotarioService service;
     
     public String index(Model model, Principal principal) {
-        Map<String, Object> list = ns.list(new HashMap<String, Object>());
-        model.addAttribute("list", (List<Map<String, Object>>) list.get("list"));
+        ListRequest lr = new ListRequest();
+        ListResponse<NotarioInfo> list = service.list(lr);
+        model.addAttribute("list", list.getList());
         return "/juridico/index";
     }
     
@@ -56,7 +61,7 @@ public class JuridicoController {
     
     @RequestMapping(value = "/juridico/registrar", method = RequestMethod.POST)
     public String registrar(
-            @Valid @ModelAttribute("notarioInfo") NotarioInfo info,
+            @Valid @ModelAttribute("notarioForm") NotarioForm form,
             BindingResult result,
             RedirectAttributes redirectAttributes,
             Model model,
@@ -64,26 +69,36 @@ public class JuridicoController {
         
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.register", result);
-            redirectAttributes.addFlashAttribute("notarioInfo", info);
+            redirectAttributes.addFlashAttribute("notarioInfo", form);
             return "redirect:/juridico/registrar";
         }
         
-        Map<String, Object> notario = new HashMap<>();        
-        notario.put("numeroNotaria", info.getNonotaria());
-        notario.put("nombre", info.getNombre());
-        notario.put("municipio", info.getMunicipio());
-        notario.put("estado", info.getEstado());
-        notario.put("domicilio", info.getDomicilio());
-        notario.put("correoElectronico", info.getCorreo());
-        notario.put("telefono", info.getTelefono());
-        notario.put("convenio", info.isConvenio());
+        NotarioInfo info = new NotarioInfo();
+        info.setNombre(form.getNombre());
+        info.setCodigo(form.getCodigo());
+        info.setNotariaNumero(form.getNotariaNumero());
+        info.setConvenioInfonavit(form.isConvenioInfonavit());
+        info.setEmail(form.getEmail());
+        info.setTelefono(form.getTelefono());
+        info.setCalleNotaria(form.getCalleNotaria());
+        info.setNumeroCalle(form.getNumeroCalle());
+        info.setColoniaNotaria(form.getColoniaNotaria());
+        info.setCodigoPostalNotaria(form.getCodigoPostalNotaria());
+        
+        info.setUsuarioId(0l);
+        info.setMunicipioId(0l);
+        info.setEntidadId(0l);
+        
+        SaveRequest<NotarioInfo> saveRequest = new SaveRequest<>();
+        saveRequest.setInfo(info);
+        SaveResponse<NotarioInfo> save = service.save(saveRequest);
         
         return "redirect:/";
     }
     
-    @ModelAttribute("notarioInfo")
-    public NotarioInfo notarioInfo() {
-        return new NotarioInfo();
+    @ModelAttribute("notarioForm")
+    public NotarioForm notarioForm() {
+        return new NotarioForm();
     }
     
 }
