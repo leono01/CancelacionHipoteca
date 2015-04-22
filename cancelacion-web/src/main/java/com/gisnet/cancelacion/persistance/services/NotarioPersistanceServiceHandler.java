@@ -67,16 +67,12 @@ public class NotarioPersistanceServiceHandler implements NotarioPersistanceServi
         notario.setCodigo(info.getCodigo());
         notario.setNotariaNumero(info.getNotariaNumero());
         notario.setConvenioInfonavit(info.isConvenioInfonavit());
-        notario.setCorreo(info.getEmail());
+        notario.setEmail(info.getEmail());
         notario.setTelefono(info.getTelefono());
         notario.setCalleNotaria(info.getCalleNotaria());
         notario.setNumeroCalle(info.getNumeroCalle());
         notario.setColoniaNotaria(info.getColoniaNotaria());
         notario.setCodigoPostalNotaria(info.getCodigoPostalNotaria());
-        
-        notario.setUsuario("na");
-        notario.setMunicipio("na");
-        notario.setEntidad("na");
         
         notario = repository.save(notario);
         

@@ -35,7 +35,7 @@ public class NotarioInfo implements Info {
     private String numeroCalle;
     private String coloniaNotaria;
     private String codigoPostalNotaria;
-
+    
     private long usuarioId;
     private long municipioId;
     private long entidadId;
@@ -154,7 +154,7 @@ public class NotarioInfo implements Info {
     public void setEntidadId(long entidadId) {
         this.entidadId = entidadId;
     }
-
     
-
+    
+    
 }

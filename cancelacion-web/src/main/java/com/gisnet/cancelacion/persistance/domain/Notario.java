@@ -23,6 +23,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -38,16 +40,16 @@ public class Notario implements Serializable {
     private int codigo;
     private String notariaNumero;
     private boolean convenioInfonavit;
-    private String correo;
+    private String email;
     private String telefono;
     private String calleNotaria;
     private String numeroCalle;
     private String coloniaNotaria;
     private String codigoPostalNotaria;
     
-    private String usuario;
-    private String municipio;
-    private String entidad;
+    private Usuario usuario;
+    private Municipio municipio;
+    private Entidad entidad;
     
     public Notario() {
     }
@@ -100,12 +102,12 @@ public class Notario implements Serializable {
     }
 
     @Column(name = "EMAIL")
-    public String getCorreo() {
-        return correo;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Column(name = "TELEFONO")
@@ -153,30 +155,33 @@ public class Notario implements Serializable {
         this.codigoPostalNotaria = codigoPostalNotaria;
     }
 
-    @Column(name = "USUARIO")
-    public String getUsuario() {
+    @ManyToOne
+    @JoinColumn(name = "USUARIO")
+    public Usuario getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(String usuario) {
+    public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
 
-    @Column(name = "MUNICIPIO")
-    public String getMunicipio() {
+    @ManyToOne
+    @JoinColumn(name = "MUNICIPIO")
+    public Municipio getMunicipio() {
         return municipio;
     }
 
-    public void setMunicipio(String municipio) {
+    public void setMunicipio(Municipio municipio) {
         this.municipio = municipio;
     }
     
-    @Column(name = "ESTADO")
-    public String getEntidad() {
+    @ManyToOne
+    @JoinColumn(name = "ENTIDAD")
+    public Entidad getEntidad() {
         return entidad;
     }
 
-    public void setEntidad(String entidad) {
+    public void setEntidad(Entidad entidad) {
         this.entidad = entidad;
     }
     
@@ -186,7 +191,7 @@ public class Notario implements Serializable {
         info.setNombre(this.nombre);
         info.setCodigo(this.codigo);
         info.setNotariaNumero(this.notariaNumero);
-        info.setEmail(this.correo);
+        info.setEmail(this.email);
         info.setTelefono(this.telefono);
         info.setCalleNotaria(this.calleNotaria);
         info.setNumeroCalle(this.numeroCalle);
