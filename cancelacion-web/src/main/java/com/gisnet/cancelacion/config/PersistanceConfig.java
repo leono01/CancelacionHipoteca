@@ -26,10 +26,96 @@ import org.springframework.context.annotation.Configuration;
  */
  @Configuration
 public class PersistanceConfig {
+     
+     @Bean
+     BitacoraCasoPersistanceService bitacoraCasoPersistanceService() {
+         return new BitacoraCasoPersistanceServiceHandler();
+     }
+     
+     @Bean
+     BitacoraProyectoPersistanceService bitacoraProyectoPersistanceService() {
+         return new BitacoraProyectoPersistanceServiceHandler();
+     }
+     
+     @Bean
+     BitacoraRPPPersistanceService bitacoraRPPPersistanceService() {
+         return new BitacoraRPPPersistanceServiceHandler();
+     }
+     
+     @Bean
+     CancelacionArchivoPersistanceService cancelacionArchivoPersistanceService() {
+         return new CancelacionArchivoPersistanceServiceHandler();
+     }
+     
+     @Bean
+     CartaCancelacionPersistanceService cancelacionPersistanceService() {
+         return new CartaCancelacionPersistanceServiceHandler();
+     }
+     
+     @Bean
+     CasoPersistanceService casoPersistanceService() {
+         return new CasoPersistanceServiceHandler();
+     }
+     
+     @Bean
+     EmpleadoPersistanceService empleadoPersistanceService() {
+         return new EmpleadoPersistanceServiceHandler();
+     }
+     
+     @Bean
+     EntidadPersistanceService entidadPersistanceService() {
+         return new EntidadPersistanceServiceHandler();
+     }
+     
+     @Bean
+     MunicipioPersistanceService municipioPersistanceService() {
+         return new MunicipioPersistanceServiceHandler();
+     }
     
      @Bean
      NotarioPersistanceService notarioPersistanceService() {
          return new NotarioPersistanceServiceHandler();
      }
+     
+     @Bean
+     PersistanceDomainFactory domainFactory() {
+         return new PersistanceDomainFactory();
+     }
+     
+     @Bean
+     ProyectoCancelacionPersistanceService proyectoCancelacionPersistanceService() {
+         return new ProyectoCancelacionPersistanceServiceHandler();
+     }
+     
+     @Bean
+     ProyectoRPPPersistanceService proyectoRPPPersistanceService() {
+         return new ProyectoRPPPersistanceServiceHandler();
+     }
+     
+     @Bean
+     RolPersistanceService rolPersistanceService() {
+         return new RolPersistanceServiceHandler();
+     }
+     
+     @Bean
+     StatusCasoPersistanceService statusCasoPersistanceService() {
+         return new StatusCasoPersistanceServiceHandler();
+     }
+     
+     @Bean
+     StatusProyectoPersistanceService statusProyectoPersistanceService() {
+         return new StatusProyectoPersistanceServiceHandler();
+     }
+     
+     @Bean
+     StatusRPPPersistanceService statusRPPPersistanceService() {
+         return new StatusRPPPersistanceServiceHandler();
+     }
+     
+     @Bean
+     UsuarioPersistanceService usuarioPersistanceService() {
+         return new UsuarioPersistanceServiceHandler();
+     }
+     
 }
 

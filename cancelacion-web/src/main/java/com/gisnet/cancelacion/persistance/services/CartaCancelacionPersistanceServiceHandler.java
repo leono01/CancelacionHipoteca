@@ -16,39 +16,52 @@
  */
 package com.gisnet.cancelacion.persistance.services;
 
-import com.gisnet.cancelacion.events.DeleteRequest;
-import com.gisnet.cancelacion.events.DeleteResponse;
-import com.gisnet.cancelacion.events.FindRequest;
-import com.gisnet.cancelacion.events.FindResponse;
-import com.gisnet.cancelacion.events.ListRequest;
-import com.gisnet.cancelacion.events.ListResponse;
-import com.gisnet.cancelacion.events.SaveRequest;
-import com.gisnet.cancelacion.events.SaveResponse;
-import com.gisnet.cancelacion.events.UpdateRequest;
-import com.gisnet.cancelacion.events.UpdateResponse;
+import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.CartaCancelacionInfo;
+import com.gisnet.cancelacion.persistance.domain.CartaCancelacion;
+import com.gisnet.cancelacion.persistance.repository.CartaCancelacionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class CartaCancelacionPersistanceServiceHandler implements CartaCancelacionPersistanceService {
+    
+    @Autowired
+    private PersistanceDomainFactory factory;
+    
+    @Autowired
+    private CartaCancelacionRepository repository;
 
     @Override
-    public FindResponse<CartaCancelacionInfo> find(FindRequest event) {
+    public FindResponse<CartaCancelacionInfo> find(FindByIdRequest event) {
+        return new FindResponse<>(repository.findOne(event.getId()).asInfo());
+    }
+
+    @Override
+    public FindResponse<CartaCancelacionInfo> find(FindByRequest<CartaCancelacionInfo, Object> event) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public ListResponse<CartaCancelacionInfo> list(ListRequest event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return Query.list(repository.findAll());
     }
 
     @Override
     public SaveResponse<CartaCancelacionInfo> save(SaveRequest<CartaCancelacionInfo> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (event.getInfo().getId() > 0) {
+            throw new IllegalArgumentException("ID invalido");
+        }
+        return new SaveResponse<>(saveOrUpdate(event.getInfo()));
     }
 
     @Override
     public UpdateResponse<CartaCancelacionInfo> update(UpdateRequest<CartaCancelacionInfo> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new UpdateResponse<>(saveOrUpdate(event.getInfo()));
+    }
+    
+    private CartaCancelacionInfo saveOrUpdate(CartaCancelacionInfo info) {
+        CartaCancelacion u = factory.buildCartaCancelacion(info);
+        return repository.save(u).asInfo();
     }
 
     @Override

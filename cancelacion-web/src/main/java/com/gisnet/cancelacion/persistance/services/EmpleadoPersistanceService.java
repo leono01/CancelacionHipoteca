@@ -16,32 +16,12 @@
  */
 package com.gisnet.cancelacion.persistance.services;
 
-import com.gisnet.cancelacion.events.DeleteRequest;
-import com.gisnet.cancelacion.events.DeleteResponse;
-import com.gisnet.cancelacion.events.FindRequest;
-import com.gisnet.cancelacion.events.FindResponse;
-import com.gisnet.cancelacion.events.ListRequest;
-import com.gisnet.cancelacion.events.ListResponse;
-import com.gisnet.cancelacion.events.SaveRequest;
-import com.gisnet.cancelacion.events.SaveResponse;
-import com.gisnet.cancelacion.events.UpdateRequest;
-import com.gisnet.cancelacion.events.UpdateResponse;
 import com.gisnet.cancelacion.events.info.EmpleadoInfo;
 
 /**
  *
  * @author marco-g8
  */
-public interface EmpleadoPersistanceService {
-    
-    public FindResponse<EmpleadoInfo> find(FindRequest event);
-    
-    public ListResponse<EmpleadoInfo> list(ListRequest event);
-    
-    public SaveResponse<EmpleadoInfo> save(SaveRequest<EmpleadoInfo> event);
-    
-    public UpdateResponse<EmpleadoInfo> update(UpdateRequest<EmpleadoInfo> event);
-    
-    public DeleteResponse<EmpleadoInfo> delete(DeleteRequest event);
-    
+public interface EmpleadoPersistanceService extends BasicCrud<EmpleadoInfo> {
+
 }

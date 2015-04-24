@@ -16,6 +16,7 @@
  */
 package com.gisnet.cancelacion.persistance.domain;
 
+import com.gisnet.cancelacion.events.info.BitacoraProyectoInfo;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -34,7 +35,7 @@ import javax.persistence.Temporal;
  */
 @Entity
 @Table(name = "C_BITACORA_PROYECTO")
-public class BitacoraProyecto implements Serializable {
+public class BitacoraProyecto implements Infoable<BitacoraProyectoInfo>, Serializable {
     
     private long id;
     private Date fechaActualizacion;
@@ -85,5 +86,16 @@ public class BitacoraProyecto implements Serializable {
         this.proyectoCancelacion = proyectoCancelacion;
     }
     
+    @Override
+    public BitacoraProyectoInfo asInfo() {
+        BitacoraProyectoInfo info = new BitacoraProyectoInfo();
+        info.setId(this.id);
+        info.setFechaActualizacion(fechaActualizacion);
+        if (statusProyecto != null)
+            info.setStatusProyectoId(statusProyecto.getId());
+        if (proyectoCancelacion != null)
+            info.setProyectoCancelacionId(proyectoCancelacion.getId());
+        return info;
+    }
     
 }

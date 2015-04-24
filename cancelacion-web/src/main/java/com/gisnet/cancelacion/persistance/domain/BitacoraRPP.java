@@ -16,6 +16,7 @@
  */
 package com.gisnet.cancelacion.persistance.domain;
 
+import com.gisnet.cancelacion.events.info.BitacoraRPPInfo;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -34,7 +35,7 @@ import javax.persistence.Temporal;
  */
 @Entity
 @Table(name = "C_BITACORA_RPP")
-public class BitacoraRPP implements Serializable {
+public class BitacoraRPP implements Infoable<BitacoraRPPInfo>, Serializable {
     
     private long id;
     private Date fechaActualizacion;
@@ -85,6 +86,16 @@ public class BitacoraRPP implements Serializable {
         this.proyectoRPP = proyectoRPP;
     }
     
-    
+    @Override
+    public BitacoraRPPInfo asInfo() {
+        BitacoraRPPInfo info = new BitacoraRPPInfo();
+        info.setId(this.id);
+        info.setFechaActualizacion(fechaActualizacion);
+        if (statusRPP != null)
+            info.setStatusRPPId(statusRPP.getId());
+        if (proyectoRPP != null)
+            info.setProyectoRPPId(proyectoRPP.getId());
+        return info;
+    }
     
 }

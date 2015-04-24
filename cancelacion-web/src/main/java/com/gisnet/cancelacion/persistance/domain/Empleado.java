@@ -16,6 +16,7 @@
  */
 package com.gisnet.cancelacion.persistance.domain;
 
+import com.gisnet.cancelacion.events.info.EmpleadoInfo;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,7 +33,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "C_EMPLEADO")
-public class Empleado implements Serializable {
+public class Empleado implements Infoable<EmpleadoInfo>, Serializable {
     
     private long id;
     private String clave;
@@ -121,6 +122,18 @@ public class Empleado implements Serializable {
         this.usuario = usuario;
     }
     
-    
+    @Override
+    public EmpleadoInfo asInfo() {
+        EmpleadoInfo info = new EmpleadoInfo();
+        info.setId(id);
+        info.setNombre(nombre);
+        info.setApellidoPaterno(apellidoPaterno);
+        info.setApellidoMaterno(apellidoMaterno);
+        info.setSubdireccion(subdireccion);
+        info.setDelegacion(delegacion);
+        if (usuario != null)
+            info.setUsuarioId(usuario.getId());
+        return info;
+    }
     
 }

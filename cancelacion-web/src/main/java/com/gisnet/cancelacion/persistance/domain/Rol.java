@@ -16,6 +16,7 @@
  */
 package com.gisnet.cancelacion.persistance.domain;
 
+import com.gisnet.cancelacion.events.info.RolInfo;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,7 +31,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "C_ROL")
-public class Rol implements Serializable {
+public class Rol implements Infoable<RolInfo>, Serializable {
     
     private long id;
     private String nombre;
@@ -68,5 +69,13 @@ public class Rol implements Serializable {
         this.descripcion = descripcion;
     }
     
+    @Override
+    public RolInfo asInfo() {
+        RolInfo info = new RolInfo();
+        info.setId(id);
+        info.setNombre(nombre);
+        info.setDescripcion(descripcion);
+        return info;
+    }
     
 }

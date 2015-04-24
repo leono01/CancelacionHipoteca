@@ -16,39 +16,64 @@
  */
 package com.gisnet.cancelacion.persistance.services;
 
-import com.gisnet.cancelacion.events.DeleteRequest;
-import com.gisnet.cancelacion.events.DeleteResponse;
-import com.gisnet.cancelacion.events.FindRequest;
-import com.gisnet.cancelacion.events.FindResponse;
-import com.gisnet.cancelacion.events.ListRequest;
-import com.gisnet.cancelacion.events.ListResponse;
-import com.gisnet.cancelacion.events.SaveRequest;
-import com.gisnet.cancelacion.events.SaveResponse;
-import com.gisnet.cancelacion.events.UpdateRequest;
-import com.gisnet.cancelacion.events.UpdateResponse;
+import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.RolInfo;
+import com.gisnet.cancelacion.persistance.domain.Rol;
+import com.gisnet.cancelacion.persistance.repository.RolRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class RolPersistanceServiceHandler implements RolPersistanceService {
+    
+    @Autowired
+    private PersistanceDomainFactory factory;
+    
+    @Autowired
+    RolRepository repository;
 
     @Override
-    public FindResponse<RolInfo> find(FindRequest event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public FindResponse<RolInfo> find(FindByIdRequest event) {
+        return new FindResponse<>(repository.findOne(event.getId()).asInfo());
+    }
+
+    @Override
+    public FindResponse<RolInfo> find(FindByRequest<RolInfo, Object> event) {
+        Rol rol = null;
+        switch (event.getKey()) {
+        case "nombre":
+        case "rol":
+            if (!(event.getValue() instanceof String)) {
+                throw new IllegalArgumentException("Valor de llave incorrecto"); }
+            rol = repository.findByNombre((String) event.getValue());
+            break;
+        default:
+            throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
+        }
+        
+        return new FindResponse<>(rol != null ? rol.asInfo() : null);
     }
 
     @Override
     public ListResponse<RolInfo> list(ListRequest event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return Query.list(repository.findAll());
     }
 
     @Override
     public SaveResponse<RolInfo> save(SaveRequest<RolInfo> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (event.getInfo().getId() > 0) {
+            throw new IllegalArgumentException("ID invalido");
+        }
+        return new SaveResponse<>(saveOrUpdate(event.getInfo()));
     }
 
     @Override
     public UpdateResponse<RolInfo> update(UpdateRequest<RolInfo> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new UpdateResponse<>(saveOrUpdate(event.getInfo()));
+    }
+    
+    private RolInfo saveOrUpdate(RolInfo info) {
+        Rol u = factory.builRol(info);
+        return repository.save(u).asInfo();
     }
 
     @Override

@@ -16,39 +16,52 @@
  */
 package com.gisnet.cancelacion.persistance.services;
 
-import com.gisnet.cancelacion.events.DeleteRequest;
-import com.gisnet.cancelacion.events.DeleteResponse;
-import com.gisnet.cancelacion.events.FindRequest;
-import com.gisnet.cancelacion.events.FindResponse;
-import com.gisnet.cancelacion.events.ListRequest;
-import com.gisnet.cancelacion.events.ListResponse;
-import com.gisnet.cancelacion.events.SaveRequest;
-import com.gisnet.cancelacion.events.SaveResponse;
-import com.gisnet.cancelacion.events.UpdateRequest;
-import com.gisnet.cancelacion.events.UpdateResponse;
+import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.StatusRPPInfo;
+import com.gisnet.cancelacion.persistance.domain.StatusRPP;
+import com.gisnet.cancelacion.persistance.repository.StatusRPPRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class StatusRPPPersistanceServiceHandler implements StatusRPPPersistanceService {
+    
+    @Autowired
+    private PersistanceDomainFactory factory;
+    
+    @Autowired
+    private StatusRPPRepository repository;
 
     @Override
-    public FindResponse<StatusRPPInfo> find(FindRequest event) {
+    public FindResponse<StatusRPPInfo> find(FindByIdRequest event) {
+        return new FindResponse<>(repository.findOne(event.getId()).asInfo());
+    }
+
+    @Override
+    public FindResponse<StatusRPPInfo> find(FindByRequest<StatusRPPInfo, Object> event) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public ListResponse<StatusRPPInfo> list(ListRequest event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return Query.list(repository.findAll());
     }
 
     @Override
     public SaveResponse<StatusRPPInfo> save(SaveRequest<StatusRPPInfo> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (event.getInfo().getId() > 0) {
+            throw new IllegalArgumentException("ID invalido");
+        }
+        return new SaveResponse<>(saveOrUpdate(event.getInfo()));
     }
 
     @Override
     public UpdateResponse<StatusRPPInfo> update(UpdateRequest<StatusRPPInfo> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new UpdateResponse<>(saveOrUpdate(event.getInfo()));
+    }
+    
+    private StatusRPPInfo saveOrUpdate(StatusRPPInfo info) {
+        StatusRPP u = factory.buildStatusRPP(info);
+        return repository.save(u).asInfo();
     }
 
     @Override

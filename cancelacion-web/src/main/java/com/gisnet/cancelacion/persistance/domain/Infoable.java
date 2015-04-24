@@ -14,14 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.gisnet.cancelacion.persistance.services;
+package com.gisnet.cancelacion.persistance.domain;
 
-import com.gisnet.cancelacion.events.info.EntidadInfo;
+import com.gisnet.cancelacion.events.Info;
 
 /**
  *
  * @author marco-g8
+ * @param <T>
  */
-public interface EntidadPersistanceService extends BasicCrud<EntidadInfo> {
-
+public interface Infoable<T extends Info> {
+    
+    public T asInfo();
+    
 }

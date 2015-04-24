@@ -16,21 +16,10 @@
  */
 package com.gisnet.cancelacion.persistance.services;
 
-import com.gisnet.cancelacion.events.DeleteRequest;
-import com.gisnet.cancelacion.events.DeleteResponse;
-import com.gisnet.cancelacion.events.FindRequest;
-import com.gisnet.cancelacion.events.FindResponse;
-import com.gisnet.cancelacion.events.ListRequest;
-import com.gisnet.cancelacion.events.ListResponse;
-import com.gisnet.cancelacion.events.SaveRequest;
-import com.gisnet.cancelacion.events.SaveResponse;
-import com.gisnet.cancelacion.events.UpdateRequest;
-import com.gisnet.cancelacion.events.UpdateResponse;
+import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.NotarioInfo;
 import com.gisnet.cancelacion.persistance.domain.Notario;
 import com.gisnet.cancelacion.persistance.repository.NotarioRepository;
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -38,51 +27,44 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author marco-g8
  */
 public class NotarioPersistanceServiceHandler implements NotarioPersistanceService {
+    
+    @Autowired
+    private PersistanceDomainFactory factory;
 
     @Autowired
     private NotarioRepository repository;
 
     @Override
-    public FindResponse<NotarioInfo> find(FindRequest event) {
+    public FindResponse<NotarioInfo> find(FindByIdRequest event) {
+        return new FindResponse<>(repository.findOne(event.getId()).asInfo());
+    }
+    
+    @Override
+    public FindResponse<NotarioInfo> find(FindByRequest<NotarioInfo, Object> event) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public ListResponse<NotarioInfo> list(ListRequest event) {
-        Iterable<Notario> query = repository.findAll();
-        List<NotarioInfo> list = new ArrayList<>();
-        for (Notario notario : query) {
-            list.add(notario.asInfo());
-        }
-        ListResponse<NotarioInfo> response = new ListResponse<>(list);
-        return response;
+        return Query.list(repository.findAll());
     }
 
     @Override
     public SaveResponse<NotarioInfo> save(SaveRequest<NotarioInfo> event) {
-        Notario notario = new Notario();
-        NotarioInfo info = event.getInfo();
-        
-        notario.setNombre(info.getNombre());
-        notario.setCodigo(info.getCodigo());
-        notario.setNotariaNumero(info.getNotariaNumero());
-        notario.setConvenioInfonavit(info.isConvenioInfonavit());
-        notario.setEmail(info.getEmail());
-        notario.setTelefono(info.getTelefono());
-        notario.setCalleNotaria(info.getCalleNotaria());
-        notario.setNumeroCalle(info.getNumeroCalle());
-        notario.setColoniaNotaria(info.getColoniaNotaria());
-        notario.setCodigoPostalNotaria(info.getCodigoPostalNotaria());
-        
-        notario = repository.save(notario);
-        
-        SaveResponse<NotarioInfo> response = new SaveResponse<>(notario.asInfo());
-        return response;
+        if (event.getInfo().getId() > 0) {
+            throw new IllegalArgumentException("ID invalido");
+        }
+        return new SaveResponse<>(saveOrUpdate(event.getInfo()));
     }
 
     @Override
-    public UpdateResponse<NotarioInfo> update(UpdateRequest event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public UpdateResponse<NotarioInfo> update(UpdateRequest<NotarioInfo> event) {
+        return new UpdateResponse<>(saveOrUpdate(event.getInfo()));
+    }
+    
+    private NotarioInfo saveOrUpdate(NotarioInfo info) {
+        Notario u = factory.buildNotario(info);
+        return repository.save(u).asInfo();
     }
 
     @Override

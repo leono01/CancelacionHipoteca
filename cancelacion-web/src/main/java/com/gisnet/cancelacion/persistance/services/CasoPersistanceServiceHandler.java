@@ -16,39 +16,52 @@
  */
 package com.gisnet.cancelacion.persistance.services;
 
-import com.gisnet.cancelacion.events.DeleteRequest;
-import com.gisnet.cancelacion.events.DeleteResponse;
-import com.gisnet.cancelacion.events.FindRequest;
-import com.gisnet.cancelacion.events.FindResponse;
-import com.gisnet.cancelacion.events.ListRequest;
-import com.gisnet.cancelacion.events.ListResponse;
-import com.gisnet.cancelacion.events.SaveRequest;
-import com.gisnet.cancelacion.events.SaveResponse;
-import com.gisnet.cancelacion.events.UpdateRequest;
-import com.gisnet.cancelacion.events.UpdateResponse;
+import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.CasoInfo;
+import com.gisnet.cancelacion.persistance.domain.Caso;
+import com.gisnet.cancelacion.persistance.repository.CasoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class CasoPersistanceServiceHandler implements CasoPersistanceService {
+    
+    @Autowired
+    private PersistanceDomainFactory factory;
+    
+    @Autowired
+    private CasoRepository repository;
 
     @Override
-    public FindResponse<CasoInfo> find(FindRequest event) {
+    public FindResponse<CasoInfo> find(FindByIdRequest event) {
+        return new FindResponse<>(repository.findOne(event.getId()).asInfo());
+    }
+
+    @Override
+    public FindResponse<CasoInfo> find(FindByRequest<CasoInfo, Object> event) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public ListResponse<CasoInfo> list(ListRequest event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return Query.list(repository.findAll());
     }
 
     @Override
     public SaveResponse<CasoInfo> save(SaveRequest<CasoInfo> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (event.getInfo().getId() > 0) {
+            throw new IllegalArgumentException("ID invalido");
+        }
+        return new SaveResponse<>(saveOrUpdate(event.getInfo()));
     }
 
     @Override
     public UpdateResponse<CasoInfo> update(UpdateRequest<CasoInfo> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new UpdateResponse<>(saveOrUpdate(event.getInfo()));
+    }
+    
+    private CasoInfo saveOrUpdate(CasoInfo info) {
+        Caso u = factory.buildCaso(info);
+        return repository.save(u).asInfo();
     }
 
     @Override

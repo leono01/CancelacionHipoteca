@@ -16,39 +16,52 @@
  */
 package com.gisnet.cancelacion.persistance.services;
 
-import com.gisnet.cancelacion.events.DeleteRequest;
-import com.gisnet.cancelacion.events.DeleteResponse;
-import com.gisnet.cancelacion.events.FindRequest;
-import com.gisnet.cancelacion.events.FindResponse;
-import com.gisnet.cancelacion.events.ListRequest;
-import com.gisnet.cancelacion.events.ListResponse;
-import com.gisnet.cancelacion.events.SaveRequest;
-import com.gisnet.cancelacion.events.SaveResponse;
-import com.gisnet.cancelacion.events.UpdateRequest;
-import com.gisnet.cancelacion.events.UpdateResponse;
+import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.ProyectoRPPInfo;
+import com.gisnet.cancelacion.persistance.domain.ProyectoRPP;
+import com.gisnet.cancelacion.persistance.repository.ProyectoRPPRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class ProyectoRPPPersistanceServiceHandler implements ProyectoRPPPersistanceService {
+    
+    @Autowired
+    private PersistanceDomainFactory factory;
+    
+    @Autowired
+    private ProyectoRPPRepository repository;
 
     @Override
-    public FindResponse<ProyectoRPPInfo> find(FindRequest event) {
+    public FindResponse<ProyectoRPPInfo> find(FindByIdRequest event) {
+        return new FindResponse<>(repository.findOne(event.getId()).asInfo());
+    }
+
+    @Override
+    public FindResponse<ProyectoRPPInfo> find(FindByRequest<ProyectoRPPInfo, Object> event) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public ListResponse<ProyectoRPPInfo> list(ListRequest event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return Query.list(repository.findAll());
     }
 
     @Override
     public SaveResponse<ProyectoRPPInfo> save(SaveRequest<ProyectoRPPInfo> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (event.getInfo().getId() > 0) {
+            throw new IllegalArgumentException("ID invalido");
+        }
+        return new SaveResponse<>(saveOrUpdate(event.getInfo()));
     }
 
     @Override
     public UpdateResponse<ProyectoRPPInfo> update(UpdateRequest<ProyectoRPPInfo> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new UpdateResponse<>(saveOrUpdate(event.getInfo()));
+    }
+    
+    private ProyectoRPPInfo saveOrUpdate(ProyectoRPPInfo info) {
+        ProyectoRPP u = factory.buildProyectoRPP(info);
+        return repository.save(u).asInfo();
     }
 
     @Override

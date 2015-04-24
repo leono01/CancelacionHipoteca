@@ -16,6 +16,7 @@
  */
 package com.gisnet.cancelacion.persistance.domain;
 
+import com.gisnet.cancelacion.events.info.CasoInfo;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -35,7 +36,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "C_CASO")
-public class Caso implements Serializable {
+public class Caso implements Infoable<CasoInfo>, Serializable {
     
     private long id;
     private String numeroCredito;
@@ -161,6 +162,26 @@ public class Caso implements Serializable {
         this.statusCaso = statusCaso;
     }
     
-    
+    @Override
+    public CasoInfo asInfo() {
+        CasoInfo info = new CasoInfo();
+        info.setId(id);
+        info.setNumeroCredito(numeroCredito);
+        info.setNumeroCaso(numeroCaso);
+        info.setFechaCreacion(fechaCreacion);
+        info.setFechaCierre(fechaCierre);
+        info.setNombreAcreditado(nombreAcreditado);
+        if (notario != null)
+            info.setNotarioId(notario.getId());
+        if (proyectoCancelacion != null)
+            info.setProyectoCancelacionId(proyectoCancelacion.getId());
+        if (cartaCancelacion != null)
+            info.setCartaCancelacionId(cartaCancelacion.getId());
+        if (proyectoRPP != null)
+            info.setProyectoRPPId(proyectoRPP.getId());
+        if (statusCaso != null)
+            info.setStatusCasoId(statusCaso.getId());
+        return info;
+    }
     
 }

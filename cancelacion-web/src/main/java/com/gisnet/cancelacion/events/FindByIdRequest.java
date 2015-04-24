@@ -14,14 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.gisnet.cancelacion.persistance.services;
-
-import com.gisnet.cancelacion.events.info.EntidadInfo;
+package com.gisnet.cancelacion.events;
 
 /**
  *
  * @author marco-g8
  */
-public interface EntidadPersistanceService extends BasicCrud<EntidadInfo> {
+public class FindByIdRequest {
+    
+    private final long id;
 
+    public FindByIdRequest(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
+    
+    
+    
 }

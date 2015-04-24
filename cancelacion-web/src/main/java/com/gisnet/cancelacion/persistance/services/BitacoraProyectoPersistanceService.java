@@ -16,32 +16,12 @@
  */
 package com.gisnet.cancelacion.persistance.services;
 
-import com.gisnet.cancelacion.events.DeleteRequest;
-import com.gisnet.cancelacion.events.DeleteResponse;
-import com.gisnet.cancelacion.events.FindRequest;
-import com.gisnet.cancelacion.events.FindResponse;
-import com.gisnet.cancelacion.events.ListRequest;
-import com.gisnet.cancelacion.events.ListResponse;
-import com.gisnet.cancelacion.events.SaveRequest;
-import com.gisnet.cancelacion.events.SaveResponse;
-import com.gisnet.cancelacion.events.UpdateRequest;
-import com.gisnet.cancelacion.events.UpdateResponse;
 import com.gisnet.cancelacion.events.info.BitacoraProyectoInfo;
 
 /**
  *
  * @author marco-g8
  */
-public interface BitacoraProyectoPersistanceService {
-    
-    public FindResponse<BitacoraProyectoInfo> find(FindRequest event);
-    
-    public ListResponse<BitacoraProyectoInfo> list(ListRequest event);
-    
-    public SaveResponse<BitacoraProyectoInfo> save(SaveRequest<BitacoraProyectoInfo> event);
-    
-    public UpdateResponse<BitacoraProyectoInfo> update(UpdateRequest<BitacoraProyectoInfo> event);
-    
-    public DeleteResponse<BitacoraProyectoInfo> delete(DeleteRequest event);
-    
+public interface BitacoraProyectoPersistanceService extends BasicCrud<BitacoraProyectoInfo> {
+
 }

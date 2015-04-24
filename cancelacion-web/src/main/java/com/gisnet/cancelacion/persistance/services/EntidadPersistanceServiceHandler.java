@@ -16,39 +16,52 @@
  */
 package com.gisnet.cancelacion.persistance.services;
 
-import com.gisnet.cancelacion.events.DeleteRequest;
-import com.gisnet.cancelacion.events.DeleteResponse;
-import com.gisnet.cancelacion.events.FindRequest;
-import com.gisnet.cancelacion.events.FindResponse;
-import com.gisnet.cancelacion.events.ListRequest;
-import com.gisnet.cancelacion.events.ListResponse;
-import com.gisnet.cancelacion.events.SaveRequest;
-import com.gisnet.cancelacion.events.SaveResponse;
-import com.gisnet.cancelacion.events.UpdateRequest;
-import com.gisnet.cancelacion.events.UpdateResponse;
+import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.EntidadInfo;
+import com.gisnet.cancelacion.persistance.domain.Entidad;
+import com.gisnet.cancelacion.persistance.repository.EntidadRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class EntidadPersistanceServiceHandler implements EntidadPersistanceService {
+    
+    @Autowired
+    private PersistanceDomainFactory factory;
+    
+    @Autowired
+    private EntidadRepository repository;
 
     @Override
-    public FindResponse<EntidadInfo> find(FindRequest event) {
+    public FindResponse<EntidadInfo> find(FindByIdRequest event) {
+        return new FindResponse<>(repository.findOne(event.getId()).asInfo());
+    }
+
+    @Override
+    public FindResponse<EntidadInfo> find(FindByRequest<EntidadInfo, Object> event) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public ListResponse<EntidadInfo> list(ListRequest event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return Query.list(repository.findAll());
     }
 
     @Override
     public SaveResponse<EntidadInfo> save(SaveRequest<EntidadInfo> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (event.getInfo().getId() > 0) {
+            throw new IllegalArgumentException("ID invalido");
+        }
+        return new SaveResponse<>(saveOrUpdate(event.getInfo()));
     }
 
     @Override
     public UpdateResponse<EntidadInfo> update(UpdateRequest<EntidadInfo> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new UpdateResponse<>(saveOrUpdate(event.getInfo()));
+    }
+    
+    private EntidadInfo saveOrUpdate(EntidadInfo info) {
+        Entidad u = factory.buildEntidad(info);
+        return repository.save(u).asInfo();
     }
 
     @Override

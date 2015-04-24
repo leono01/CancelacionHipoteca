@@ -16,6 +16,7 @@
  */
 package com.gisnet.cancelacion.persistance.domain;
 
+import com.gisnet.cancelacion.events.info.BitacoraCasoInfo;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -35,7 +36,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "C_BITACORA_CASO")
-public class BitacoraCaso implements Serializable {
+public class BitacoraCaso implements Infoable<BitacoraCasoInfo>, Serializable {
     
     private long id;
     private Date fechaActualizacion;
@@ -86,5 +87,16 @@ public class BitacoraCaso implements Serializable {
         this.bitacoraCaso = bitacoraCaso;
     }
     
+    @Override
+    public BitacoraCasoInfo asInfo() {
+        BitacoraCasoInfo info = new BitacoraCasoInfo();
+        info.setId(id);
+        info.setFechaActualizacion(fechaActualizacion);
+        if (statusCaso != null)
+            info.setStatusCasoId(statusCaso.getId());
+        if (bitacoraCaso != null)
+            info.setBitacoraCasoId(bitacoraCaso.getId());
+        return info;
+    }
     
 }

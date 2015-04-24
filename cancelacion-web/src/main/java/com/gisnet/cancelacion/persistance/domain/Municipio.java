@@ -16,6 +16,7 @@
  */
 package com.gisnet.cancelacion.persistance.domain;
 
+import com.gisnet.cancelacion.events.info.MunicipioInfo;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,7 +33,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "C_MUNICIPIO")
-public class Municipio implements Serializable {
+public class Municipio implements Infoable<MunicipioInfo>, Serializable {
     
     private long id;
     private String nombre;
@@ -71,6 +72,16 @@ public class Municipio implements Serializable {
         this.entidad = entidad;
     }
     
-    
+    @Override
+    public MunicipioInfo asInfo() {
+        MunicipioInfo info = new MunicipioInfo();
+        info.setId(id);
+        info.setNombre(nombre);
+        if (entidad != null) {
+            info.setEntidadId(entidad.getId());
+            info.setEntidadNombre(entidad.getNombre());
+        }
+        return info;
+    }
     
 }

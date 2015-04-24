@@ -23,4 +23,23 @@ package com.gisnet.cancelacion.events;
  */
 public class UpdateRequest<T extends Info> {
     
+    private T info;
+
+    public UpdateRequest() {
+    }
+
+    public UpdateRequest(T info) {
+        this.info = info;
+    }
+
+    public T getInfo() {
+        return info;
+    }
+
+    public void setInfo(T info) {
+        this.info = info;
+    }
+    
+    
+    
 }

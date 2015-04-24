@@ -16,6 +16,7 @@
  */
 package com.gisnet.cancelacion.persistance.domain;
 
+import com.gisnet.cancelacion.events.info.StatusProyectoInfo;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,7 +31,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "C_STATUS_PROYECTO")
-public class StatusProyecto implements Serializable {
+public class StatusProyecto implements Infoable<StatusProyectoInfo>, Serializable {
     
     private long id;
     private String nombre;
@@ -68,6 +69,13 @@ public class StatusProyecto implements Serializable {
         this.descripcion = descripcion;
     }
     
-    
+    @Override
+    public StatusProyectoInfo asInfo() {
+        StatusProyectoInfo info = new StatusProyectoInfo();
+        info.setId(id);
+        info.setNombre(nombre);
+        info.setDescripcion(descripcion);
+        return info;
+    }
     
 }

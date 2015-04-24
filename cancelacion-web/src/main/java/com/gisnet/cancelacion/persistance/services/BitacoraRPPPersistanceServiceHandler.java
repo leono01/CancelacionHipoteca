@@ -16,39 +16,52 @@
  */
 package com.gisnet.cancelacion.persistance.services;
 
-import com.gisnet.cancelacion.events.DeleteRequest;
-import com.gisnet.cancelacion.events.DeleteResponse;
-import com.gisnet.cancelacion.events.FindRequest;
-import com.gisnet.cancelacion.events.FindResponse;
-import com.gisnet.cancelacion.events.ListRequest;
-import com.gisnet.cancelacion.events.ListResponse;
-import com.gisnet.cancelacion.events.SaveRequest;
-import com.gisnet.cancelacion.events.SaveResponse;
-import com.gisnet.cancelacion.events.UpdateRequest;
-import com.gisnet.cancelacion.events.UpdateResponse;
+import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.BitacoraRPPInfo;
+import com.gisnet.cancelacion.persistance.domain.BitacoraRPP;
+import com.gisnet.cancelacion.persistance.repository.BitacoraRPPRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class BitacoraRPPPersistanceServiceHandler implements BitacoraRPPPersistanceService {
+    
+    @Autowired
+    private PersistanceDomainFactory factory;
+    
+    @Autowired
+    private BitacoraRPPRepository repository;
 
     @Override
-    public FindResponse<BitacoraRPPInfo> find(FindRequest event) {
+    public FindResponse<BitacoraRPPInfo> find(FindByIdRequest event) {
+        return new FindResponse<>(repository.findOne(event.getId()).asInfo());
+    }
+
+    @Override
+    public FindResponse<BitacoraRPPInfo> find(FindByRequest<BitacoraRPPInfo, Object> event) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public ListResponse<BitacoraRPPInfo> list(ListRequest event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return Query.list(repository.findAll());
     }
 
     @Override
     public SaveResponse<BitacoraRPPInfo> save(SaveRequest<BitacoraRPPInfo> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (event.getInfo().getId() > 0) {
+            throw new IllegalArgumentException("ID invalido");
+        }
+        return new SaveResponse<>(saveOrUpdate(event.getInfo()));
     }
 
     @Override
     public UpdateResponse<BitacoraRPPInfo> update(UpdateRequest<BitacoraRPPInfo> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new UpdateResponse<>(saveOrUpdate(event.getInfo()));
+    }
+    
+    private BitacoraRPPInfo saveOrUpdate(BitacoraRPPInfo info) {
+        BitacoraRPP u = factory.buildBitacoraRPP(info);
+        return repository.save(u).asInfo();
     }
 
     @Override

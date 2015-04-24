@@ -18,7 +18,7 @@ package com.gisnet.cancelacion.core.services;
 
 import com.gisnet.cancelacion.events.DeleteRequest;
 import com.gisnet.cancelacion.events.DeleteResponse;
-import com.gisnet.cancelacion.events.FindRequest;
+import com.gisnet.cancelacion.events.FindByIdRequest;
 import com.gisnet.cancelacion.events.FindResponse;
 import com.gisnet.cancelacion.events.ListRequest;
 import com.gisnet.cancelacion.events.ListResponse;
@@ -43,7 +43,7 @@ public class NotarioServiceHandler implements NotarioService {
     }
 
     @Override
-    public FindResponse<NotarioInfo> find(FindRequest event) {
+    public FindResponse<NotarioInfo> find(FindByIdRequest event) {
         return service.find(event);
     }
 

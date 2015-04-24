@@ -16,32 +16,12 @@
  */
 package com.gisnet.cancelacion.persistance.services;
 
-import com.gisnet.cancelacion.events.DeleteRequest;
-import com.gisnet.cancelacion.events.DeleteResponse;
-import com.gisnet.cancelacion.events.FindRequest;
-import com.gisnet.cancelacion.events.FindResponse;
-import com.gisnet.cancelacion.events.ListRequest;
-import com.gisnet.cancelacion.events.ListResponse;
-import com.gisnet.cancelacion.events.SaveRequest;
-import com.gisnet.cancelacion.events.SaveResponse;
-import com.gisnet.cancelacion.events.UpdateRequest;
-import com.gisnet.cancelacion.events.UpdateResponse;
 import com.gisnet.cancelacion.events.info.ProyectoRPPInfo;
 
 /**
  *
  * @author marco-g8
  */
-public interface ProyectoRPPPersistanceService {
-    
-    public FindResponse<ProyectoRPPInfo> find(FindRequest event);
-    
-    public ListResponse<ProyectoRPPInfo> list(ListRequest event);
-    
-    public SaveResponse<ProyectoRPPInfo> save(SaveRequest<ProyectoRPPInfo> event);
-    
-    public UpdateResponse<ProyectoRPPInfo> update(UpdateRequest<ProyectoRPPInfo> event);
-    
-    public DeleteResponse<ProyectoRPPInfo> delete(DeleteRequest event);
-    
+public interface ProyectoRPPPersistanceService extends BasicCrud<ProyectoRPPInfo> {
+
 }

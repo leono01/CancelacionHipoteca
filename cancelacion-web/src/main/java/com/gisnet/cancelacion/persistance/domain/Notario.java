@@ -33,7 +33,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "C_NOTARIO")
-public class Notario implements Serializable {
+public class Notario implements Infoable<NotarioInfo>, Serializable {
 
     private long id;
     private String nombre;
@@ -185,23 +185,25 @@ public class Notario implements Serializable {
         this.entidad = entidad;
     }
     
+    @Override
     public NotarioInfo asInfo() {
         NotarioInfo info = new NotarioInfo();
-        info.setId(this.id);
-        info.setNombre(this.nombre);
-        info.setCodigo(this.codigo);
-        info.setNotariaNumero(this.notariaNumero);
-        info.setEmail(this.email);
-        info.setTelefono(this.telefono);
-        info.setCalleNotaria(this.calleNotaria);
-        info.setNumeroCalle(this.numeroCalle);
-        info.setColoniaNotaria(this.coloniaNotaria);
-        info.setCodigoPostalNotaria(this.codigoPostalNotaria);
-        
-        info.setUsuarioId(0l);
-        info.setMunicipioId(0l);
-        info.setEntidadId(0l);
-        
+        info.setId(id);
+        info.setNombre(nombre);
+        info.setCodigo(codigo);
+        info.setNotariaNumero(notariaNumero);
+        info.setEmail(email);
+        info.setTelefono(telefono);
+        info.setCalleNotaria(calleNotaria);
+        info.setNumeroCalle(numeroCalle);
+        info.setColoniaNotaria(coloniaNotaria);
+        info.setCodigoPostalNotaria(codigoPostalNotaria);
+        if (usuario != null)
+            info.setUsuarioId(usuario.getId());
+        if (municipio != null)
+            info.setMunicipioId(municipio.getId());
+        if (entidad != null)
+            info.setEntidadId(entidad.getId());
         return info;
     }
     

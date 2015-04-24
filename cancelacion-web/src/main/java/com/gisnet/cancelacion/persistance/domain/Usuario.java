@@ -16,8 +16,10 @@
  */
 package com.gisnet.cancelacion.persistance.domain;
 
+import com.gisnet.cancelacion.events.info.UsuarioInfo;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,7 +39,7 @@ import javax.persistence.Temporal;
  */
 @Entity
 @Table(name = "C_USUARIO")
-public class Usuario implements Serializable {
+public class Usuario implements Infoable<UsuarioInfo>, Serializable {
     
     private long id;
     private boolean activo;
@@ -129,6 +131,24 @@ public class Usuario implements Serializable {
 
     public void setRoles(Set<Rol> roles) {
         this.roles = roles;
+    }
+    
+    @Override
+    public UsuarioInfo asInfo() {
+        UsuarioInfo info = new UsuarioInfo();
+        info.setId(id);
+        info.setActivo(activo);
+        info.setBloqueado(bloqueado);
+        info.setNombreUsuario(nombreUsuario);
+        info.setContrasena(contrasena);
+        info.setFechaAlta(fechaAlta);
+        info.setFechaBaja(fechaBaja);
+        Set<String> rolez = new HashSet<>();
+        for (Rol rol : roles) {
+            rolez.add(rol.getNombre());
+        }
+        info.setRoles(rolez);
+        return info;
     }
     
 }

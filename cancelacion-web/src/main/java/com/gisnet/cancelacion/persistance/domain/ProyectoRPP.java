@@ -16,6 +16,7 @@
  */
 package com.gisnet.cancelacion.persistance.domain;
 
+import com.gisnet.cancelacion.events.info.ProyectoRPPInfo;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -34,7 +35,7 @@ import javax.persistence.Temporal;
  */
 @Entity
 @Table(name = "C_PROYECTO_RPP")
-public class ProyectoRPP implements Serializable {
+public class ProyectoRPP implements Infoable<ProyectoRPPInfo>, Serializable {
     
     private long id;
     private byte[] folioRealElectronico;
@@ -177,6 +178,26 @@ public class ProyectoRPP implements Serializable {
         this.usuario = usuario;
     }
     
-    
+    @Override
+    public ProyectoRPPInfo asInfo() {
+        ProyectoRPPInfo info = new ProyectoRPPInfo();
+        info.setId(id);
+        info.setFolioRealElectronico(folioRealElectronico);
+        info.setFechaIngreso(fechaIngreso);
+        info.setFolioTramiteRPP(folioTramiteRPP);
+        info.setLibro(libro);
+        info.setTomo(tomo);
+        info.setVolumen(volumen);
+        info.setPartida(partida);
+        info.setFoja(foja);
+        info.setObservaciones(observaciones);
+        if (statusRPP != null)
+            info.setStatusRPPId(statusRPP.getId());
+        if (entidad != null)
+            info.setEntidadId(entidad.getId());
+        if (usuario != null)
+            info.setUsuarioId(usuario.getId());
+        return info;
+    }
     
 }

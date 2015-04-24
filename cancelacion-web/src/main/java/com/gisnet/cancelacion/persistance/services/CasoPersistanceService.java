@@ -16,32 +16,12 @@
  */
 package com.gisnet.cancelacion.persistance.services;
 
-import com.gisnet.cancelacion.events.DeleteRequest;
-import com.gisnet.cancelacion.events.DeleteResponse;
-import com.gisnet.cancelacion.events.FindRequest;
-import com.gisnet.cancelacion.events.FindResponse;
-import com.gisnet.cancelacion.events.ListRequest;
-import com.gisnet.cancelacion.events.ListResponse;
-import com.gisnet.cancelacion.events.SaveRequest;
-import com.gisnet.cancelacion.events.SaveResponse;
-import com.gisnet.cancelacion.events.UpdateRequest;
-import com.gisnet.cancelacion.events.UpdateResponse;
 import com.gisnet.cancelacion.events.info.CasoInfo;
 
 /**
  *
  * @author marco-g8
  */
-public interface CasoPersistanceService {
-    
-    public FindResponse<CasoInfo> find(FindRequest event);
-    
-    public ListResponse<CasoInfo> list(ListRequest event);
-    
-    public SaveResponse<CasoInfo> save(SaveRequest<CasoInfo> event);
-    
-    public UpdateResponse<CasoInfo> update(UpdateRequest<CasoInfo> event);
-    
-    public DeleteResponse<CasoInfo> delete(DeleteRequest event);
-    
+public interface CasoPersistanceService extends BasicCrud<CasoInfo> {
+
 }

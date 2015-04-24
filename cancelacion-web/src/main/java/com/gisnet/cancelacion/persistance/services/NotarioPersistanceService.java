@@ -16,33 +16,13 @@
  */
 package com.gisnet.cancelacion.persistance.services;
 
-import com.gisnet.cancelacion.events.DeleteRequest;
-import com.gisnet.cancelacion.events.DeleteResponse;
-import com.gisnet.cancelacion.events.FindRequest;
-import com.gisnet.cancelacion.events.FindResponse;
-import com.gisnet.cancelacion.events.ListRequest;
-import com.gisnet.cancelacion.events.ListResponse;
-import com.gisnet.cancelacion.events.SaveRequest;
-import com.gisnet.cancelacion.events.SaveResponse;
-import com.gisnet.cancelacion.events.UpdateRequest;
-import com.gisnet.cancelacion.events.UpdateResponse;
 import com.gisnet.cancelacion.events.info.NotarioInfo;
 
 /**
  *
  * @author marco-g8
  */
-public interface NotarioPersistanceService {
-    
-    public FindResponse<NotarioInfo> find(FindRequest event);
-    
-    public ListResponse<NotarioInfo> list(ListRequest event);
-    
-    public SaveResponse<NotarioInfo> save(SaveRequest<NotarioInfo> event);
-    
-    public UpdateResponse<NotarioInfo> update(UpdateRequest<NotarioInfo> event);
-    
-    public DeleteResponse<NotarioInfo> delete(DeleteRequest event);
-    
+public interface NotarioPersistanceService extends BasicCrud<NotarioInfo> {
+
 }
 

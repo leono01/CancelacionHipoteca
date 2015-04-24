@@ -16,6 +16,7 @@
  */
 package com.gisnet.cancelacion.persistance.domain;
 
+import com.gisnet.cancelacion.events.info.CancelacionArchivoInfo;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,7 +33,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "C_CANCELACION_ARCHIVO")
-public class CancelacionArchivo implements Serializable {
+public class CancelacionArchivo implements Infoable<CancelacionArchivoInfo>, Serializable {
     
     private long id;
     private byte[] archivo;
@@ -81,6 +82,15 @@ public class CancelacionArchivo implements Serializable {
         this.proyectoCancelacion = proyectoCancelacion;
     }
     
-    
+    @Override
+    public CancelacionArchivoInfo asInfo() {
+        CancelacionArchivoInfo info = new CancelacionArchivoInfo();
+        info.setId(id);
+        info.setArchivo(archivo);
+        info.setNombre(nombre);
+        if (proyectoCancelacion != null)
+            info.setProyectoCancelacionId(proyectoCancelacion.getId());
+        return info;
+    }
     
 }

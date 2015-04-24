@@ -16,6 +16,7 @@
  */
 package com.gisnet.cancelacion.persistance.domain;
 
+import com.gisnet.cancelacion.events.info.StatusRPPInfo;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,7 +31,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "C_STATUS_RPP")
-public class StatusRPP implements Serializable {
+public class StatusRPP implements Infoable<StatusRPPInfo>, Serializable {
     
     private long id;
     private String nombre;
@@ -68,6 +69,13 @@ public class StatusRPP implements Serializable {
         this.descripcion = descripcion;
     }
     
-    
+    @Override
+    public StatusRPPInfo asInfo() {
+        StatusRPPInfo info = new StatusRPPInfo();
+        info.setId(id);
+        info.setNombre(nombre);
+        info.setDescripcion(descripcion);
+        return info;
+    }
     
 }

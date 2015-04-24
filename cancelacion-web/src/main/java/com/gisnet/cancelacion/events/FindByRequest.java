@@ -19,7 +19,27 @@ package com.gisnet.cancelacion.events;
 /**
  *
  * @author marco-g8
+ * @param <T>
+ * @param <K>
  */
-public class FindRequest {
+public class FindByRequest<T extends Info, K> {
+    
+    private final String key;
+    private final K value;
+
+    public FindByRequest(String key, K value) {
+        this.key = key;
+        this.value = value;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public K getValue() {
+        return value;
+    }
+    
+    
     
 }
