@@ -68,7 +68,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/css/**").permitAll()
                 .antMatchers("/fonts/**").permitAll()
                 .antMatchers("/js/**").permitAll()
-                .antMatchers("/**").hasAnyRole("NOTARIO", "JURIDICO")
+                .antMatchers("/ConsultarListaDeNotarios**").permitAll()
+                .antMatchers("/RegistraActualizaYConsultaCaso**").permitAll()
+                //.antMatchers("/**").hasAnyRole("NOTARIO", "JURIDICO")
+                
                 .anyRequest().anonymous()
                 .and()
             //This will generate a login form if none is supplied.

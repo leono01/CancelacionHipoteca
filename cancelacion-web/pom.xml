@@ -32,6 +32,12 @@
             <scope>provided</scope>
         </dependency>
         
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-rt</artifactId>
+            <version>2.2.10</version>            
+        </dependency>
+        
         <!-- spring 4.1.0-release -->
         <dependency>
             <groupId>org.springframework</groupId>
