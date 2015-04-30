@@ -61,6 +61,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable()
+            .authorizeRequests()
+                .antMatchers("/CartaCancelacion**").anonymous()
+                .antMatchers("/ConsultarListaDeNotarios**").anonymous()
+                .antMatchers("/RegistraActualizaYConsultaCaso**").anonymous();
+        
         http.headers()
                 .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsMode.SAMEORIGIN))
                 .and()
@@ -68,10 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/css/**").permitAll()
                 .antMatchers("/fonts/**").permitAll()
                 .antMatchers("/js/**").permitAll()
-                .antMatchers("/ConsultarListaDeNotarios**").permitAll()
-                .antMatchers("/RegistraActualizaYConsultaCaso**").permitAll()
-                //.antMatchers("/**").hasAnyRole("NOTARIO", "JURIDICO")
-                
+                .antMatchers("/**").hasAnyRole("NOTARIO", "JURIDICO")
                 .anyRequest().anonymous()
                 .and()
             //This will generate a login form if none is supplied.
