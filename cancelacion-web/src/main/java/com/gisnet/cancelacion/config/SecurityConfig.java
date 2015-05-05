@@ -27,6 +27,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter.XFrameOptionsMode;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 /**
  *
@@ -61,21 +62,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-            .authorizeRequests()
-                .antMatchers("/CartaCancelacion**").anonymous()
-                .antMatchers("/ConsultarListaDeNotarios**").anonymous()
-                .antMatchers("/RegistraActualizaYConsultaCaso**").anonymous();
+        RequestMatcher csrfMatcher = new CsrfUrlMatcher();
         
-        http.headers()
+        http.csrf()
+                .requireCsrfProtectionMatcher(csrfMatcher)
+                .and()
+            .headers()
                 .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsMode.SAMEORIGIN))
                 .and()
             .authorizeRequests()
+                // WebServices
+                .antMatchers("/CartaCancelacion**",
+                        "/ConsultarListaDeNotarios**",
+                        "/RegistraActualizaYConsultaCaso**").permitAll()
+                // WebApp
                 .antMatchers("/css/**").permitAll()
                 .antMatchers("/fonts/**").permitAll()
                 .antMatchers("/js/**").permitAll()
-                .antMatchers("/**").hasAnyRole("NOTARIO", "JURIDICO")
-                .anyRequest().anonymous()
+                .anyRequest().hasAnyRole("NOTARIO", "JURIDICO")
                 .and()
             //This will generate a login form if none is supplied.
             .formLogin();
