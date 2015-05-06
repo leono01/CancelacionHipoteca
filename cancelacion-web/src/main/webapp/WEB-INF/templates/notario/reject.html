@@ -20,81 +20,59 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <head>
         <meta charset="UTF-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-        <meta name="description" content="oaxaca"/>
-        <meta name="author" content=""/>
-        <link rel="icon" href="favicon.ico"/>
-
-        <title>Oaxaca</title>
-
-        <!-- Bootstrap core CSS -->
-        <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
-
-        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
-          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
         
-        <style>
-            body {
-                padding-top: 10px;
-                padding-bottom: 10px;
-            }
-        </style>
+        <meta name="description" content="Cancelacion de Hipoteca"/>
+        <meta name="author" content=""/>
 
+        <title>Cancelaci&oacute;n Hipoteca</title>
+        <th:block th:replace="layout/smartadmin::fr-head"></th:block>
     </head>
     <body>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <nav class="navbar navbar-default">
-                        <div class="container-fluid">
-                            <div class="navbar-header">
-                                <a class="navbar-brand" href="#">notario</a>
-                            </div>
-                            <div class="collapse navbar-collapse">
-                                <form id="formlogout" th:action="@{/logout}" method="post" class="transparent pull-right">
-                                    <ul class="nav navbar-nav navbar-right">
-                                        <li><a onclick="formlogout.submit();" href="#">Salir</a></li>
-                                    </ul>
-                                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                                </form>
-                            </div>
-                        </div>
-                    </nav>
-                </div>
+        <header th:replace="layout/smartadmin::fr-header"></header>
+        <aside th:replace="layout/smartadmin::fr-leftpanel"></aside>
+        
+        <div id="main" role="main">
+            <div id="ribbon">
+                <ol class="breadcrumb">
+                    <li>Inicio</li>
+                    <li>caso 000000000</li>
+                </ol>
             </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="list-group">
-                        <a href="#" class="list-group-item">item 1</a>
-                        <a href="#" class="list-group-item">item 2</a>
-                        <a href="#" class="list-group-item">item 3</a>
+            
+            <div id="content">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+                        <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> caso 000000000</h1>
                     </div>
                 </div>
-                <div class="col-md-9">
-                    <h3>caso 000000000</h3>
-                    <form>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">motivo de rechazo</label>
-                            <textarea id="exampleInputEmail1" class="form-control" rows="3"></textarea>
-                        </div>
-                        
-                        <a class="btn btn-primary" th:href="@{/}" role="button">enviar</a>
-                    </form>
-                </div>
-            </div>
-        </div>
+                
+                <section id="widget-grid" class="">
+                    <div th:replace="layout/smartadmin::fr-notificaciones"></div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="jarviswidget" id="wid-id-0" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+                                <header>
+                                    <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
+                                    <h2>caso 000000000</h2>
+                                </header>
+                                <div role="content" class="widget-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">motivo de rechazo</label>
+                                            <textarea id="exampleInputEmail1" class="form-control" rows="3"></textarea>
+                                        </div>
 
-        <!-- Bootstrap core JavaScript
-        ================================================== -->
-        <!-- Placed at the end of the document so the pages load faster -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script th:src="@{/js/bootstrap.min.js}"></script>
-        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-        <script th:src="@{/js/ie10-viewport-bug-workaround.js}"></script>
+                                        <a class="btn btn-primary" th:href="@{/}" role="button">enviar</a>
+                                    </form>
+                                </div><!-- fin jarviswidget content -->
+                            </div><!-- fin jarviswidget -->
+                        </div><!-- fin col -->
+                    </div><!-- fin row -->
+                </section><!-- fin de widget-grid -->
+            </div><!-- fin de content -->
+        </div><!-- fin de main -->
+        
+        <th:block th:replace="layout/smartadmin::fr-scripts"></th:block>
     </body>
 </html>

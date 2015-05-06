@@ -17,6 +17,8 @@
 package com.gisnet.cancelacion.web.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,6 +40,13 @@ public class HomeController {
     public String index(Model model,
             HttpServletRequest request,
             Principal principal) {
+        
+        List<String> mensajes = new ArrayList<>();
+        //mensajes.add("danger::prueba mensaje");
+        //mensajes.add("success::prueba mensaje");
+        mensajes.add("info::prueba mensaje");
+        //mensajes.add("warning::prueba mensaje");
+        model.addAttribute("mensajes", mensajes);
         
         if (request.isUserInRole("ROLE_JURIDICO")) {
             return juridico.index(model, principal);

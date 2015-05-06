@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<!--
+    SmartAdmin 1.4 Layout
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    
+    <th:block th:fragment="fr-head">
+        <!-- #CSS Links -->
+        <!-- Basic Styles -->
+        <link rel="stylesheet" type="text/css" media="screen" th:href="@{/css/bootstrap.min.css}"/>
+        <link rel="stylesheet" type="text/css" media="screen" th:href="@{/css/font-awesome.min.css}"/>
+
+        <!-- SmartAdmin Styles : Please note (smartadmin-production.css) was created using LESS variables -->
+        <link rel="stylesheet" type="text/css" media="screen" th:href="@{/css/smartadmin-production.min.css}"/>
+        <link rel="stylesheet" type="text/css" media="screen" th:href="@{/css/smartadmin-skins.min.css}"/>
+
+        <!-- We recommend you use "your_style.css" to override SmartAdmin
+             specific styles this will also ensure you retrain your customization with each SmartAdmin update.
+        <link rel="stylesheet" type="text/css" media="screen" href="css/your_style.css"/> -->
+
+        <!-- #FAVICONS -->
+        <link rel="shortcut icon" th:href="@{/img/favicon/favicon.ico}" type="image/x-icon"/>
+        <link rel="icon" th:href="@{/img/favicon/favicon.ico}" type="image/x-icon"/>
+
+        <!-- #GOOGLE FONT -->
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700"/>
+
+        <!-- #APP SCREEN / ICONS -->
+        <!-- Specifying a Webpage Icon for Web Clip 
+             Ref: https://developer.apple.com/library/ios/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html -->
+        <link rel="apple-touch-icon" th:href="@{/img/splash/sptouch-icon-iphone.png}"/>
+        <link rel="apple-touch-icon" sizes="76x76" href="@{/img/splash/touch-icon-ipad.png}"/>
+        <link rel="apple-touch-icon" sizes="120x120" href="@{/img/splash/touch-icon-iphone-retina.png}"/>
+        <link rel="apple-touch-icon" sizes="152x152" href="@{/img/splash/touch-icon-ipad-retina.png}"/>
+
+        <!-- iOS web-app metas : hides Safari UI Components and Changes Status Bar Appearance -->
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+
+        <!-- Startup image for web apps -->
+        <link rel="apple-touch-startup-image" th:href="@{/img/splash/ipad-landscape.png}" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)"/>
+        <link rel="apple-touch-startup-image" th:href="@{/img/splash/ipad-portrait.png}" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)"/>
+        <link rel="apple-touch-startup-image" th:href="@{/img/splash/iphone.png}" media="screen and (max-device-width: 320px)"/>
+    </th:block>
+    
+    <body>
+        <header id="header" th:fragment="fr-header">
+            <div id="logo-group">
+                <span id="logo"><img th:src="@{/img/logo-blue.png}" /></span>
+            </div>
+
+            <div class="project-context hidden-xs">
+                <span class="label">Proyecto:</span>
+                <span class="project-selector">Cancelaci&oacute;n Hipoteca</span>
+            </div>
+
+            <div class="pull-right">
+                <div id="hide-menu" class="btn-header pull-right">
+                    <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Ocultar Men&uacute;"><i class="fa fa-reorder"></i></a> </span>
+                </div>
+
+                <div id="fullscreen" class="btn-header transparent pull-right">
+                    <span> <a href="javascript:void(0);" data-action="launchFullscreen" title="Pantalla completa"><i class="fa fa-arrows-alt"></i></a> </span>
+                </div>
+
+                <!-- logout button
+                <div id="logout" class="btn-header transparent pull-right">
+                        <span> <a onclick='$.post("logout")' title="Sign Out" data-action="userLogout" data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i class="fa fa-sign-out"></i></a> </span>
+                </div>
+                end logout button -->
+
+                <form id="formlogout" th:action="@{/logout}" method="post" class="transparent pull-right">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <div class="btn-header">
+                        <span><a onclick="formlogout.submit();" title="Cerrar sesi&oacute;n" ><i class="fa fa-sign-out"></i></a></span>
+                    </div>
+                </form>
+            </div>
+        </header>
+        
+        <aside id="left-panel" th:fragment="fr-leftpanel">
+            <div class="login-info">
+                <span>
+                    <a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
+                        <img th:src="@{/resources/img/avatars/male.png}" alt="me" class="online" /> 
+                        <span th:text="${#httpServletRequest.remoteUser}"></span>
+                    </a> 
+                </span>
+            </div>
+            <nav>
+                <ul>
+                    <li class="active">
+                        <a th:href="@{/}">
+                            <i class="fa fa-lg fa-fw fa-home"></i>
+                            <span class="menu-item-parent">Inicio</span>
+                        </a>
+                    </li>
+                    <li th:if="${#httpServletRequest.isUserInRole('ROLE_JURIDICO')}">
+                        <a th:href="@{/juridico/registrar}">
+                            <i class="fa fa-lg fa-fw fa-home"></i>
+                            <span class="menu-item-parent">Registrar Notario</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <span class="minifyme" data-action="minifyMenu"> 
+                <i class="fa fa-arrow-circle-left hit"></i> 
+            </span>
+        </aside>
+        
+        <!-- elementos del body -->
+        
+        <span class="ribbon-button-alignment" th:fragment="fr-resetwidgets"> 
+            <span id="refresh" class="btn btn-ribbon" data-action="resetWidgets" data-title="refresh"  rel="tooltip" data-placement="bottom" data-original-title="Warning! This will reset all your widget settings." data-html="true">
+                <i class="fa fa-refresh"></i>
+            </span> 
+        </span>
+        
+        <div class="row" th:fragment="fr-notificaciones">
+            <!-- message: success, warning, danger, info -->
+            <article class="col-sm-12" th:if="${mensajes}" th:each="mensaje : ${mensajes}">
+                <div th:class="'alert alert-' + ${mensaje.split('::')[0]} + ' fade in'" >
+                    <button class="close" data-dismiss="alert">
+                        ×
+                    </button>
+                    <i th:class="'fa-fw fa fa-' + (${mensaje.split('::')[0].equals('success')} ? 'check' : (${mensaje.split('::')[0].equals('danger')} ? 'times' : ${mensaje.split('::')[0]})) "></i>
+                    <span th:text="${mensaje.split('::')[1]}"></span>
+                </div>
+            </article>
+        </div>
+
+        <th:block th:fragment="fr-scripts">
+            <!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)-->
+            <!-- data-pace-options='{ "restartOnRequestAfter": true }' -->
+            <script th:src="@{/js/plugin/pace/pace.min.js}"></script>
+
+            <!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+            <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+            <!-- IMPORTANT: APP CONFIG -->
+            <script th:src="@{/js/app.config.js}"></script>
+
+            <!-- JS TOUCH : include this plugin for mobile drag / drop touch events-->
+            <script th:src="@{/js/plugin/jquery-touch/jquery.ui.touch-punch.min.js}"></script> 
+
+            <!-- BOOTSTRAP JS -->
+            <script th:src="@{/js/bootstrap/bootstrap.min.js}"></script>
+
+            <!-- CUSTOM NOTIFICATION -->
+            <script th:src="@{/js/notification/SmartNotification.min.js}"></script>
+
+            <!-- JARVIS WIDGETS -->
+            <script th:src="@{/js/smartwidgets/jarvis.widget.min.js}"></script>
+
+            <!-- EASY PIE CHARTS -->
+            <script th:src="@{/js/plugin/easy-pie-chart/jquery.easy-pie-chart.min.js}"></script>
+
+            <!-- SPARKLINES -->
+            <script th:src="@{/js/plugin/sparkline/jquery.sparkline.min.js}"></script>
+
+            <!-- JQUERY VALIDATE -->
+            <script th:src="@{/js/plugin/jquery-validate/jquery.validate.min.js}"></script>
+
+            <!-- JQUERY MASKED INPUT -->
+            <script th:src="@{/js/plugin/masked-input/jquery.maskedinput.min.js}"></script>
+
+            <!-- JQUERY SELECT2 INPUT -->
+            <script th:src="@{/js/plugin/select2/select2.min.js}"></script>
+
+            <!-- JQUERY UI + Bootstrap Slider -->
+            <script th:src="@{/js/plugin/bootstrap-slider/bootstrap-slider.min.js}"></script>
+
+            <!-- browser msie issue fix -->
+            <script th:src="@{/js/plugin/msie-fix/jquery.mb.browser.min.js}"></script>
+
+            <!-- FastClick: For mobile devices -->
+            <script th:src="@{/js/plugin/fastclick/fastclick.min.js}"></script>
+
+            <!--[if lt IE 8]>
+
+            <h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
+
+            <![endif]-->
+
+            <!-- MAIN APP JS FILE -->
+            <script th:src="@{/js/app.min.js}"></script>
+
+            <script type="text/javascript">
+                $(document).ready(function () {
+
+                    /* DO NOT REMOVE : GLOBAL FUNCTIONS!
+                     *
+                     * pageSetUp(); WILL CALL THE FOLLOWING FUNCTIONS
+                     *
+                     * // activate tooltips
+                     * $("[rel=tooltip]").tooltip();
+                     *
+                     * // activate popovers
+                     * $("[rel=popover]").popover();
+                     *
+                     * // activate popovers with hover states
+                     * $("[rel=popover-hover]").popover({ trigger: "hover" });
+                     *
+                     * // activate inline charts
+                     * runAllCharts();
+                     *
+                     * // setup widgets
+                     * setup_widgets_desktop();
+                     *
+                     * // run form elements
+                     * runAllForms();
+                     *
+                     ********************************
+                     *
+                     * pageSetUp() is needed whenever you load a page.
+                     * It initializes and checks for all basic elements of the page
+                     * and makes rendering easier.
+                     *
+                     */
+
+                    pageSetUp();
+
+                    /*
+                     * ALL PAGE RELATED SCRIPTS CAN GO BELOW HERE
+                     * eg alert("my home function");
+                     * 
+                     * var pagefunction = function() {
+                     *   ...
+                     * }
+                     * loadScript("js/plugin/_PLUGIN_NAME_.js", pagefunction);
+                     * 
+                     * TO LOAD A SCRIPT:
+                     * var pagefunction = function (){ 
+                     *  loadScript(".../plugin.js", run_after_loaded);	
+                     * }
+                     * 
+                     * OR
+                     * 
+                     * loadScript(".../plugin.js", run_after_loaded);
+                     */
+
+                });
+            </script>
+        </th:block>
+        
+    </body>
+</html>

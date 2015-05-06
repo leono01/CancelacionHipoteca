@@ -27,7 +27,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter.XFrameOptionsMode;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 
 /**
  *
@@ -62,10 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        RequestMatcher csrfMatcher = new CsrfUrlMatcher();
-        
         http.csrf()
-                .requireCsrfProtectionMatcher(csrfMatcher)
+                .requireCsrfProtectionMatcher(new CsrfUrlMatcher())
                 .and()
             .headers()
                 .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsMode.SAMEORIGIN))
@@ -76,9 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/ConsultarListaDeNotarios**",
                         "/RegistraActualizaYConsultaCaso**").permitAll()
                 // WebApp
-                .antMatchers("/css/**").permitAll()
-                .antMatchers("/fonts/**").permitAll()
-                .antMatchers("/js/**").permitAll()
+                .antMatchers("/css/**", "/fonts/**", "/img/**", "/js/**").permitAll()
                 .anyRequest().hasAnyRole("NOTARIO", "JURIDICO")
                 .and()
             //This will generate a login form if none is supplied.
