@@ -17,6 +17,13 @@
 package com.gisnet.cancelacion.webservices;
 
 import com.gisnet.cancelacion.webservices.dto.CNotario;
+
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +45,46 @@ public class ConsultarListaDeNotarios {
                                                    String  entidad
     ) {
         List<CNotario> notarios = new ArrayList<CNotario>();
+        
+        
+        Connection conn = null;
+
+        try {
+
+            String dbURL = "jdbc:sqlserver://192.168.15.18:1433;databaseName=CANCELACION";
+            String usuario = "cancelacion_user";
+            String pwd = "cancelacion";
+            conn = DriverManager.getConnection(dbURL, usuario, pwd);
+            if (conn != null) {
+                DatabaseMetaData dm = (DatabaseMetaData) conn.getMetaData();
+                System.out.println("Driver name: " + dm.getDriverName());                
+
+                Statement statement = conn.createStatement();
+                String queryString = "select * from dbo.c_notario where numeroDeCredito=1";
+                ResultSet rs = statement.executeQuery(queryString);
+                
+                    while (rs.next()) {
+                    System.out.println(rs.getRow());
+                    System.out.println(rs.getString("NOMBRE_NOTARIO"));
+
+                }
+
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (conn != null && !conn.isClosed()) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        
+    
+        
         
       
         /*try {
@@ -94,15 +141,11 @@ public class ConsultarListaDeNotarios {
             
             
         } else {
-            if (esNumero == false || entidad.equals("[^(A-ZA-ZA-Z)]")) {
                 CNotario n1 = new CNotario();
                 n1.setCodigoRespuesta("LN03");
                 notarios.add(n1);
                 System.out.println("***** No fue numero o no fue clave");
-            } else {
-
-                
-            }
+           
         }
 
  

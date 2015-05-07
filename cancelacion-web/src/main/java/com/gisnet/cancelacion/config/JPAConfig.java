@@ -45,6 +45,7 @@ public class JPAConfig {
     @Bean
     public DataSource jndiDataSource() throws NamingException {
         JndiObjectFactoryBean factory = new JndiObjectFactoryBean();
+        //factory.setJndiName("jdbc/CHipoteca");
         factory.setJndiName("java:jboss/datasources/CHipoteca");
         factory.setLookupOnStartup(true);
         factory.setProxyInterface(DataSource.class);
