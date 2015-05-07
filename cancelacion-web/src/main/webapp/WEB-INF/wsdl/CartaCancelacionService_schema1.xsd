@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://webservices.cancelacion.gisnet.com/" version="1.0" xmlns:tns="http://webservices.cancelacion.gisnet.com/">
+
+  <xs:element name="actualizaCartaCancelacion" type="tns:actualizaCartaCancelacion"/>
+
+  <xs:element name="actualizaCartaCancelacionResponse" type="tns:actualizaCartaCancelacionResponse"/>
+
+  <xs:element name="consultaCartaCancelacion" type="tns:consultaCartaCancelacion"/>
+
+  <xs:element name="consultaCartaCancelacionResponse" type="tns:consultaCartaCancelacionResponse"/>
+
+  <xs:element name="registraCartaCancelacion" type="tns:registraCartaCancelacion"/>
+
+  <xs:element name="registraCartaCancelacionResponse" type="tns:registraCartaCancelacionResponse"/>
+
+  <xs:complexType name="actualizaCartaCancelacion">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codigoCarta" type="xs:string"/>
+      <xs:element minOccurs="0" name="pdfCarta" type="xs:string"/>
+      <xs:element minOccurs="0" name="xmlCarta" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="actualizaCartaCancelacionResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:statusOperacion"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="statusOperacion">
+    <xs:sequence>
+      <xs:element name="codigo" type="xs:int"/>
+      <xs:element minOccurs="0" name="descripcion" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="registraCartaCancelacion">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codigoCarta" type="xs:string"/>
+      <xs:element minOccurs="0" name="pdfCarta" type="xs:string"/>
+      <xs:element minOccurs="0" name="xmlCarta" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="registraCartaCancelacionResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:statusOperacion"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="consultaCartaCancelacion">
+    <xs:sequence>
+      <xs:element name="codigoCarta" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="consultaCartaCancelacionResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:cCarta"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="cCarta">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codigoCarta" type="xs:string"/>
+      <xs:element minOccurs="0" name="pdfCarta" type="xs:string"/>
+      <xs:element minOccurs="0" name="xmlCarta" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

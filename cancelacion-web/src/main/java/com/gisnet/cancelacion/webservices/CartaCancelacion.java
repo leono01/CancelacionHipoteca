@@ -31,16 +31,12 @@ import javax.jws.WebParam;
  *
  * @author leonel
  */
-@WebService(serviceName = "CartaCancelacion")
 public class CartaCancelacion {
 
-    /**
-     * This is a sample web service operation
-     */
-    @WebMethod(operationName = "registraCartaCancelacion")
-    public StatusOperacion registraCartaCancelacion(   @WebParam(name = "codigoCarta") String codigoCarta,
-                                                            @WebParam(name = "pdfCarta")    File pdfCarta,
-                                                            @WebParam(name = "xmlCarta")    File xmlCarta
+
+    public StatusOperacion registraCartaCancelacion(	String codigoCarta,
+                                                    	File pdfCarta,
+                                                        File xmlCarta
                                                         ) {
         
         //List <InfoDeRegistro> infoDeRegistro = new ArrayList<InfoDeRegistro>();
@@ -55,10 +51,9 @@ public class CartaCancelacion {
         return status;
     }
     
-    @WebMethod(operationName = "actualizaCaso")
-    public StatusOperacion actualizaCartaCancelacion( @WebParam(name = "codigoCarta") String codigoCarta,
-                                             @WebParam(name = "pdfCarta")    File pdfCarta,
-                                             @WebParam(name = "xmlCarta")    File xmlCarta
+    public StatusOperacion actualizaCartaCancelacion( 	String codigoCarta,
+                                             			File pdfCarta,
+                                             			File xmlCarta
                                            ) {
         
         /*List <InfoDeActualizacion> infoDeActualizacion = new ArrayList<InfoDeActualizacion>();
@@ -78,8 +73,7 @@ public class CartaCancelacion {
         return status;
     }
     
-    @WebMethod(operationName = "consultaCartaCancelacion")
-    public List<CCarta> consultaCartaCancelacion( @WebParam(name = "codigoCarta") int codigoCarta){
+    public List<CCarta> consultaCartaCancelacion(int codigoCarta){
     
     List <CCarta> listaCartas = new ArrayList<CCarta>();
     CCarta carta = new CCarta();
