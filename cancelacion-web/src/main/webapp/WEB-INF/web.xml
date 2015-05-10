@@ -3,14 +3,15 @@
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-<<<<<<< HEAD
-         version="3.0" id="WebApp_1430870362820">
-=======
          version="3.0">
->>>>>>> origin/master
+
+		<!--  id="WebApp_1430870362820-->
+
     
     <description>cancelacion app</description>
     <display-name>cancelacion app</display-name>
+    
+
     
     <context-param>
         <param-name>contextConfigLocation</param-name>

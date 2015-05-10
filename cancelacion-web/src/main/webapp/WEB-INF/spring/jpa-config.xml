@@ -10,13 +10,16 @@
 
     <jpa:repositories base-package="com.gisnet.cancelacion.persistance.repository" />
     
-    <bean id="datasource"
-          class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName" value="java:/jdbc/chipoteca" />
-        <property name="lookupOnStartup" value="true"/>
-        <property name="proxyInterface" value="javax.sql.DataSource"/>
+    <!-- <bean id="dswas" class="org.springframework.jdbc.datasource.WebSphereDataSourceAdapter">
+   		<property name="targetDataSource">-->
+    		<bean id="datasource"
+          		class="org.springframework.jndi.JndiObjectFactoryBean">
+        			<property name="jndiName" value="CHipoteca" />
+        			<property name="lookupOnStartup" value="true"/>
+        			<property name="proxyInterface" value="javax.sql.DataSource"/>
+    		<!-- </bean>
+    	</property>-->
     </bean>
-    
     <bean id="entityManagerFactory"
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="jpaVendorAdapter">
