@@ -34,6 +34,7 @@ import javax.persistence.Table;
 public class StatusCaso implements Infoable<StatusCasoInfo>, Serializable {
     
     private long id;
+    private int clave;
     private String nombre;
     private String descripcion;
 
@@ -49,6 +50,15 @@ public class StatusCaso implements Infoable<StatusCasoInfo>, Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    @Column(name = "CLAVE")
+    public int getClave() {
+        return clave;
+    }
+
+    public void setClave(int clave) {
+        this.clave = clave;
     }
 
     @Column(name = "NOMBRE")
@@ -73,6 +83,7 @@ public class StatusCaso implements Infoable<StatusCasoInfo>, Serializable {
     public StatusCasoInfo asInfo() {
         StatusCasoInfo info = new StatusCasoInfo();
         info.setId(id);
+        info.setClave(clave);
         info.setNombre(nombre);
         info.setDescripcion(descripcion);
         return info;

@@ -50,6 +50,10 @@ public class Caso implements Infoable<CasoInfo>, Serializable {
     private CartaCancelacion cartaCancelacion;
     private ProyectoRPP proyectoRPP;
     private StatusCaso statusCaso;
+    
+    private Date fechaActualizacion;
+    private String procedeCredito;
+    private String entidad;
 
     public Caso() {
     }
@@ -161,6 +165,34 @@ public class Caso implements Infoable<CasoInfo>, Serializable {
     public void setStatusCaso(StatusCaso statusCaso) {
         this.statusCaso = statusCaso;
     }
+
+    @Column(name = "FECHA_DE_ACTUALIZACION")
+    @Temporal(TemporalType.DATE)
+    public Date getFechaActualizacion() {
+        return fechaActualizacion;
+    }
+
+    public void setFechaActualizacion(Date fechaActualizacion) {
+        this.fechaActualizacion = fechaActualizacion;
+    }
+
+    @Column(name = "PROCEDE_CREDITO")
+    public String getProcedeCredito() {
+        return procedeCredito;
+    }
+
+    public void setProcedeCredito(String procedeCredito) {
+        this.procedeCredito = procedeCredito;
+    }
+
+    @Column(name = "ENTIDAD")
+    public String getEntidad() {
+        return entidad;
+    }
+
+    public void setEntidad(String entidad) {
+        this.entidad = entidad;
+    }
     
     @Override
     public CasoInfo asInfo() {
@@ -180,7 +212,10 @@ public class Caso implements Infoable<CasoInfo>, Serializable {
         if (proyectoRPP != null)
             info.setProyectoRPPId(proyectoRPP.getId());
         if (statusCaso != null)
-            info.setStatusCasoId(statusCaso.getId());
+            info.setStatusCaso(statusCaso.asInfo());
+        info.setFechaActualizacion(fechaActualizacion);
+        info.setProcedeCredito(procedeCredito);
+        info.setEntidad(entidad);
         return info;
     }
     

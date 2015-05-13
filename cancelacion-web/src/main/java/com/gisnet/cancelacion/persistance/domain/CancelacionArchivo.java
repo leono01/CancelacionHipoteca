@@ -39,6 +39,8 @@ public class CancelacionArchivo implements Infoable<CancelacionArchivoInfo>, Ser
     private byte[] archivo;
     private String nombre;
     private ProyectoCancelacion proyectoCancelacion;
+    
+    private String mimetype;
 
     public CancelacionArchivo() {
     }
@@ -81,6 +83,15 @@ public class CancelacionArchivo implements Infoable<CancelacionArchivoInfo>, Ser
     public void setProyectoCancelacion(ProyectoCancelacion proyectoCancelacion) {
         this.proyectoCancelacion = proyectoCancelacion;
     }
+
+    @Column(name = "MIMETYPE")
+    public String getMimetype() {
+        return mimetype;
+    }
+
+    public void setMimetype(String mimetype) {
+        this.mimetype = mimetype;
+    }
     
     @Override
     public CancelacionArchivoInfo asInfo() {
@@ -90,6 +101,7 @@ public class CancelacionArchivo implements Infoable<CancelacionArchivoInfo>, Ser
         info.setNombre(nombre);
         if (proyectoCancelacion != null)
             info.setProyectoCancelacionId(proyectoCancelacion.getId());
+        info.setMimetype(mimetype);
         return info;
     }
     

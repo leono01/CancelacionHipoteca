@@ -36,6 +36,8 @@ public class PersistanceDomainFactory {
     @Autowired
     private BitacoraRPPRepository bitacoraRPPRepository;
     @Autowired
+    private BitacoraRegistroNotarioRepository bitacoraRegistroNotarioRepository;
+    @Autowired
     private CancelacionArchivoRepository cancelacionArchivoRepository;
     @Autowired
     private CartaCancelacionRepository cartaCancelacionRepository;
@@ -62,6 +64,8 @@ public class PersistanceDomainFactory {
     @Autowired
     private StatusRPPRepository statusRPPRepository;
     @Autowired
+    private StatusNotarioRepository statusNotarioRepository;
+    @Autowired
     private UsuarioRepository usuarioRepository;
     
     public BitacoraCaso buildBitacoraCaso(BitacoraCasoInfo info) {
@@ -76,9 +80,15 @@ public class PersistanceDomainFactory {
             bc.setBitacoraCaso(casoRepository.findOne(info.getBitacoraCasoId()));
         }
         bc.setFechaActualizacion(info.getFechaActualizacion());
-        if (info.getStatusCasoId() > 0) {
-            bc.setStatusCaso(statusCasoRepository.findOne(info.getStatusCasoId()));
+        if (info.getStatusCaso() != null) {
+            if (info.getStatusCaso().getId() > 0) {
+                bc.setStatusCaso(statusCasoRepository.findOne(info.getStatusCaso().getId()));
+            }
+            else if (info.getStatusCaso().getNombre() != null) {
+                throw new UnsupportedOperationException("no soportado aun");
+            }
         }
+        bc.setUsuario(info.getUsuario());
         return bc;
     }
     
@@ -94,9 +104,15 @@ public class PersistanceDomainFactory {
         if (info.getProyectoCancelacionId() > 0) {
             b.setProyectoCancelacion(proyectoCancelacionRepository.findOne(info.getProyectoCancelacionId()));
         }
-        if (info.getStatusProyectoId() > 0) {
-            b.setStatusProyecto(statusProyectoRepository.findOne(info.getStatusProyectoId()));
+        if (info.getStatusProyecto() != null) {
+            if (info.getStatusProyecto().getId() > 0) {
+                b.setStatusProyecto(statusProyectoRepository.findOne(info.getStatusProyecto().getId()));
+            }
+            else if (info.getStatusProyecto().getNombre() != null) {
+                throw new UnsupportedOperationException("no soportado aun");
+            }
         }
+        b.setUsuario(info.getUsuario());
         return b;
     }
     
@@ -112,9 +128,39 @@ public class PersistanceDomainFactory {
         if (info.getProyectoRPPId() > 0) {
             b.setProyectoRPP(proyectoRPPRepository.findOne(info.getId()));
         }
-        if (info.getStatusRPPId() > 0) {
-            b.setStatusRPP(statusRPPRepository.findOne(info.getStatusRPPId()));
+        if (info.getStatusRPP()!= null) {
+            if (info.getStatusRPP().getId() > 0) {
+                b.setStatusRPP(statusRPPRepository.findOne(info.getStatusRPP().getId()));
+            }
+            else if (info.getStatusRPP().getNombre() != null) {
+                throw new UnsupportedOperationException("no soportado aun");
+            }
         }
+        b.setUsuario(info.getUsuario());
+        return b;
+    }
+    
+    public BitacoraRegistroNotario buildBitacoraRegistroNotario(BitacoraRegistroNotarioInfo info) {
+        BitacoraRegistroNotario b = new BitacoraRegistroNotario();
+        if (info.getId() > 0) {
+            b = bitacoraRegistroNotarioRepository.findOne(info.getId());
+            if (b == null) {
+                b = new BitacoraRegistroNotario();
+            }
+        }
+        b.setFechaActualizacion(info.getFechaActualizacion());
+        if (info.getNotarioId() > 0) {
+            b.setNotario(notarioRepository.findOne(info.getNotarioId()));
+        }
+        if (info.getStatusNotario() != null) {
+            if (info.getStatusNotario().getId() > 0) {
+                b.setStatusNotario(statusNotarioRepository.findOne(info.getStatusNotario().getId()));
+            }
+            else if (info.getStatusNotario().getClave() > 0) {
+                throw new UnsupportedOperationException("no soportado aun");
+            }
+        }
+        b.setUsuario(info.getUsuario());
         return b;
     }
     
@@ -131,6 +177,7 @@ public class PersistanceDomainFactory {
         if (info.getProyectoCancelacionId() > 0) {
             b.setProyectoCancelacion(proyectoCancelacionRepository.findOne(info.getProyectoCancelacionId()));
         }
+        b.setMimetype(info.getMimetype());
         return b;
     }
     
@@ -173,9 +220,17 @@ public class PersistanceDomainFactory {
         if (info.getProyectoRPPId() > 0) {
             b.setProyectoRPP(proyectoRPPRepository.findOne(info.getProyectoRPPId()));
         }
-        if (info.getStatusCasoId() > 0) {
-            b.setStatusCaso(statusCasoRepository.findOne(info.getStatusCasoId()));
+        if (info.getStatusCaso() != null) {
+            if (info.getStatusCaso().getId() > 0) {
+                b.setStatusCaso(statusCasoRepository.findOne(info.getStatusCaso().getId()));
+            }
+            else if (info.getStatusCaso().getNombre() != null) {
+                throw new UnsupportedOperationException("no soportado aun");
+            }
         }
+        b.setFechaActualizacion(info.getFechaActualizacion());
+        b.setProcedeCredito(info.getProcedeCredito());
+        b.setEntidad(info.getEntidad());
         return b;
     }
     
@@ -240,7 +295,6 @@ public class PersistanceDomainFactory {
         b.setCodigo(info.getCodigo());
         b.setCodigoPostalNotaria(info.getCodigoPostalNotaria());
         b.setColoniaNotaria(info.getColoniaNotaria());
-        b.setConvenioInfonavit(info.isConvenioInfonavit());
         b.setEmail(info.getEmail());
         if (info.getEntidadId() > 0) {
             b.setEntidad(entidadRepository.findOne(info.getEntidadId()));
@@ -255,6 +309,11 @@ public class PersistanceDomainFactory {
         if (info.getUsuarioId() > 0) {
             b.setUsuario(usuarioRepository.findOne(info.getUsuarioId()));
         }
+        b.setRfc(info.getRfc());
+        b.setCurp(info.getCurp());
+        b.setHabilitado(info.isHabilitado());
+        b.setConvenio(info.getConvenio());
+        b.setEntidad2(info.getEntidad2());
         return b;
     }
     
@@ -331,6 +390,7 @@ public class PersistanceDomainFactory {
                 b = new StatusCaso();
             }
         }
+        b.setClave(info.getClave());
         b.setDescripcion(info.getDescripcion());
         b.setNombre(info.getNombre());
         return b;
@@ -344,6 +404,7 @@ public class PersistanceDomainFactory {
                 b = new StatusProyecto();
             }
         }
+        b.setClave(info.getClave());
         b.setDescripcion(info.getDescripcion());
         b.setNombre(info.getNombre());
         return b;
@@ -357,8 +418,23 @@ public class PersistanceDomainFactory {
                 b = new StatusRPP();
             }
         }
+        b.setClave(info.getClave());
         b.setDescripcion(info.getDescripcion());
         b.setNombre(info.getNombre());
+        return b;
+    }
+    
+    public StatusNotario buildStatusNotario(StatusNotarioInfo info) {
+        StatusNotario b = new StatusNotario();
+        if (info.getId() > 0) {
+            b = statusNotarioRepository.findOne(info.getId());
+            if (b == null) {
+                b = new StatusNotario();
+            }
+        }
+        b.setClave(info.getClave());
+        b.setNombre(info.getNombre());
+        b.setDescripcion(info.getDescripcion());
         return b;
     }
     

@@ -17,23 +17,22 @@
 package com.gisnet.cancelacion.events.info;
 
 import com.gisnet.cancelacion.events.Info;
+import java.util.Date;
 
 /**
  *
  * @author marco-g8
  */
-public class CancelacionArchivoInfo implements Info {
+public class BitacoraRegistroNotarioInfo implements Info {
     
     private long id;
-    private byte[] archivo;
-    private String nombre;
-    private long proyectoCancelacionId;
-    private String mimetype;
+    private Date fechaActualizacion;
+    private long notarioId;
+    private StatusNotarioInfo statusNotario;
+    private String usuario;
 
-    public CancelacionArchivoInfo() {
+    public BitacoraRegistroNotarioInfo() {
     }
-    
-    
 
     public long getId() {
         return id;
@@ -43,36 +42,36 @@ public class CancelacionArchivoInfo implements Info {
         this.id = id;
     }
 
-    public byte[] getArchivo() {
-        return archivo;
+    public Date getFechaActualizacion() {
+        return fechaActualizacion;
     }
 
-    public void setArchivo(byte[] archivo) {
-        this.archivo = archivo;
+    public long getNotarioId() {
+        return notarioId;
     }
 
-    public String getNombre() {
-        return nombre;
+    public void setNotarioId(long notarioId) {
+        this.notarioId = notarioId;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setFechaActualizacion(Date fechaActualizacion) {
+        this.fechaActualizacion = fechaActualizacion;
     }
 
-    public long getProyectoCancelacionId() {
-        return proyectoCancelacionId;
+    public StatusNotarioInfo getStatusNotario() {
+        return statusNotario;
     }
 
-    public void setProyectoCancelacionId(long proyectoCancelacionId) {
-        this.proyectoCancelacionId = proyectoCancelacionId;
+    public void setStatusNotario(StatusNotarioInfo statusNotario) {
+        this.statusNotario = statusNotario;
     }
 
-    public String getMimetype() {
-        return mimetype;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void setMimetype(String mimetype) {
-        this.mimetype = mimetype;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
     
     

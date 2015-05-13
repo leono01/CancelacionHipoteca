@@ -27,8 +27,9 @@ public class BitacoraProyectoInfo implements Info {
     
     private long id;
     private Date fechaActualizacion;
-    private long statusProyectoId;
+    private StatusProyectoInfo statusProyecto;
     private long proyectoCancelacionId;
+    private String usuario;
 
     public BitacoraProyectoInfo() {
     }
@@ -49,12 +50,12 @@ public class BitacoraProyectoInfo implements Info {
         this.fechaActualizacion = fechaActualizacion;
     }
 
-    public long getStatusProyectoId() {
-        return statusProyectoId;
+    public StatusProyectoInfo getStatusProyecto() {
+        return statusProyecto;
     }
 
-    public void setStatusProyectoId(long statusProyectoId) {
-        this.statusProyectoId = statusProyectoId;
+    public void setStatusProyecto(StatusProyectoInfo statusProyecto) {
+        this.statusProyecto = statusProyecto;
     }
 
     public long getProyectoCancelacionId() {
@@ -63,6 +64,14 @@ public class BitacoraProyectoInfo implements Info {
 
     public void setProyectoCancelacionId(long proyectoCancelacionId) {
         this.proyectoCancelacionId = proyectoCancelacionId;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
     
     

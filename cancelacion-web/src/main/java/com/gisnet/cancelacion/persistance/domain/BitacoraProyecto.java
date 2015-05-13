@@ -41,6 +41,8 @@ public class BitacoraProyecto implements Infoable<BitacoraProyectoInfo>, Seriali
     private Date fechaActualizacion;
     private StatusProyecto statusProyecto;
     private ProyectoCancelacion proyectoCancelacion;
+    
+    private String usuario;
 
     public BitacoraProyecto() {
     }
@@ -85,6 +87,15 @@ public class BitacoraProyecto implements Infoable<BitacoraProyectoInfo>, Seriali
     public void setProyectoCancelacion(ProyectoCancelacion proyectoCancelacion) {
         this.proyectoCancelacion = proyectoCancelacion;
     }
+
+    @Column(name = "USUARIO")
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
     
     @Override
     public BitacoraProyectoInfo asInfo() {
@@ -92,9 +103,10 @@ public class BitacoraProyecto implements Infoable<BitacoraProyectoInfo>, Seriali
         info.setId(this.id);
         info.setFechaActualizacion(fechaActualizacion);
         if (statusProyecto != null)
-            info.setStatusProyectoId(statusProyecto.getId());
+            info.setStatusProyecto(statusProyecto.asInfo());
         if (proyectoCancelacion != null)
             info.setProyectoCancelacionId(proyectoCancelacion.getId());
+        info.setUsuario(this.usuario);
         return info;
     }
     

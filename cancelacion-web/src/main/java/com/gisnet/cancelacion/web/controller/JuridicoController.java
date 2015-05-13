@@ -77,7 +77,7 @@ public class JuridicoController {
         info.setNombre(form.getNombre());
         info.setCodigo(form.getCodigo());
         info.setNotariaNumero(form.getNotariaNumero());
-        info.setConvenioInfonavit(form.isConvenioInfonavit());
+        info.setConvenio(form.isConvenioInfonavit() ? "SI" : "NO");
         info.setEmail(form.getEmail());
         info.setTelefono(form.getTelefono());
         info.setCalleNotaria(form.getCalleNotaria());

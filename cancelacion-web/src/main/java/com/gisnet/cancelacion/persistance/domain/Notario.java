@@ -39,7 +39,6 @@ public class Notario implements Infoable<NotarioInfo>, Serializable {
     private String nombre;
     private int codigo;
     private String notariaNumero;
-    private boolean convenioInfonavit;
     private String email;
     private String telefono;
     private String calleNotaria;
@@ -49,7 +48,13 @@ public class Notario implements Infoable<NotarioInfo>, Serializable {
     
     private Usuario usuario;
     private Municipio municipio;
-    private Entidad entidad;
+    private Entidad entidad; //renombrar
+    
+    private String rfc;
+    private String curp;
+    private boolean habilitado;
+    private String convenio;
+    private String entidad2;
     
     public Notario() {
     }
@@ -90,15 +95,6 @@ public class Notario implements Infoable<NotarioInfo>, Serializable {
 
     public void setNotariaNumero(String notariaNumero) {
         this.notariaNumero = notariaNumero;
-    }
-
-    @Column(name = "CONVENIO_INFONAVIT")
-    public boolean isConvenioInfonavit() {
-        return convenioInfonavit;
-    }
-
-    public void setConvenioInfonavit(boolean convenioInfonavit) {
-        this.convenioInfonavit = convenioInfonavit;
     }
 
     @Column(name = "EMAIL")
@@ -184,6 +180,51 @@ public class Notario implements Infoable<NotarioInfo>, Serializable {
     public void setEntidad(Entidad entidad) {
         this.entidad = entidad;
     }
+
+    @Column(name = "RFC")
+    public String getRfc() {
+        return rfc;
+    }
+
+    public void setRfc(String rfc) {
+        this.rfc = rfc;
+    }
+
+    @Column(name = "CURP")
+    public String getCurp() {
+        return curp;
+    }
+
+    public void setCurp(String curp) {
+        this.curp = curp;
+    }
+
+    @Column(name = "HABILITADO")
+    public boolean isHabilitado() {
+        return habilitado;
+    }
+
+    public void setHabilitado(boolean habilitado) {
+        this.habilitado = habilitado;
+    }
+
+    @Column(name = "CONVENIO_INFONAVIT")
+    public String getConvenio() {
+        return convenio;
+    }
+
+    public void setConvenio(String convenio) {
+        this.convenio = convenio;
+    }
+
+    @Column(name = "ENTIDAD2")
+    public String getEntidad2() {
+        return entidad2;
+    }
+
+    public void setEntidad2(String entidad2) {
+        this.entidad2 = entidad2;
+    }
     
     @Override
     public NotarioInfo asInfo() {
@@ -204,6 +245,11 @@ public class Notario implements Infoable<NotarioInfo>, Serializable {
             info.setMunicipioId(municipio.getId());
         if (entidad != null)
             info.setEntidadId(entidad.getId());
+        info.setRfc(rfc);
+        info.setCurp(curp);
+        info.setHabilitado(habilitado);
+        info.setConvenio(convenio);
+        info.setEntidad2(entidad2);
         return info;
     }
     

@@ -83,7 +83,7 @@
             <div class="login-info">
                 <span>
                     <a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
-                        <img th:src="@{/resources/img/avatars/male.png}" alt="me" class="online" /> 
+                        <!--<img th:src="@{/resources/img/avatars/male.png}" alt="me" class="online" /> -->
                         <span th:text="${#httpServletRequest.remoteUser}"></span>
                     </a> 
                 </span>
@@ -136,8 +136,8 @@
             <script th:src="@{/js/plugin/pace/pace.min.js}"></script>
 
             <!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
-            <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-            <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+            <script th:src="@{/js/libs/jquery-2.0.2.min.js}"></script>
+            <script th:src="@{/js/libs/jquery-ui-1.10.3.min.js}"></script>
 
             <!-- IMPORTANT: APP CONFIG -->
             <script th:src="@{/js/app.config.js}"></script>

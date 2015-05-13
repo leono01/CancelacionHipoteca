@@ -28,7 +28,6 @@ public class NotarioInfo implements Info {
     private String nombre;
     private int codigo;
     private String notariaNumero;
-    private boolean convenioInfonavit;
     private String email;
     private String telefono;
     private String calleNotaria;
@@ -39,6 +38,12 @@ public class NotarioInfo implements Info {
     private long usuarioId;
     private long municipioId;
     private long entidadId;
+    
+    private String rfc;
+    private String curp;
+    private boolean habilitado;
+    private String convenio;
+    private String entidad2;
 
     public NotarioInfo() {
     }
@@ -73,14 +78,6 @@ public class NotarioInfo implements Info {
 
     public void setNotariaNumero(String notariaNumero) {
         this.notariaNumero = notariaNumero;
-    }
-
-    public boolean isConvenioInfonavit() {
-        return convenioInfonavit;
-    }
-
-    public void setConvenioInfonavit(boolean convenioInfonavit) {
-        this.convenioInfonavit = convenioInfonavit;
     }
 
     public String getEmail() {
@@ -154,7 +151,47 @@ public class NotarioInfo implements Info {
     public void setEntidadId(long entidadId) {
         this.entidadId = entidadId;
     }
-    
-    
-    
+
+    public String getRfc() {
+        return rfc;
+    }
+
+    public void setRfc(String rfc) {
+        this.rfc = rfc;
+    }
+
+    public String getCurp() {
+        return curp;
+    }
+
+    public void setCurp(String curp) {
+        this.curp = curp;
+    }
+
+    public boolean isHabilitado() {
+        return habilitado;
+    }
+
+    public void setHabilitado(boolean habilitado) {
+        this.habilitado = habilitado;
+    }
+
+    public String getConvenio() {
+        return convenio;
+    }
+
+    public void setConvenio(String convenio) {
+        this.convenio = convenio;
+    }
+
+    public String getEntidad2() {
+        return entidad2;
+    }
+
+    public void setEntidad2(String entidad2) {
+        this.entidad2 = entidad2;
+    }
+
+
 }
+

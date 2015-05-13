@@ -16,7 +16,7 @@
  */
 package com.gisnet.cancelacion.persistance.domain;
 
-import com.gisnet.cancelacion.events.info.BitacoraRPPInfo;
+import com.gisnet.cancelacion.events.info.BitacoraRegistroNotarioInfo;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -34,21 +34,20 @@ import javax.persistence.Temporal;
  * @author marco-g8
  */
 @Entity
-@Table(name = "C_BITACORA_RPP")
-public class BitacoraRPP implements Infoable<BitacoraRPPInfo>, Serializable {
+@Table(name = "C_BITACORA_REGISTRO_NOTARIO")
+public class BitacoraRegistroNotario implements Infoable<BitacoraRegistroNotarioInfo>, Serializable {
     
     private long id;
     private Date fechaActualizacion;
-    private StatusRPP statusRPP;
-    private ProyectoRPP proyectoRPP;
-    
+    private Notario notario;
+    private StatusNotario statusNotario;
     private String usuario;
 
-    public BitacoraRPP() {
+    public BitacoraRegistroNotario() {
     }
 
     @Id
-    @Column(name = "BITACORA_RPP_ID")
+    @Column(name = "BITACORA_REGISTRO_NOTARIO_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getId() {
         return id;
@@ -69,23 +68,23 @@ public class BitacoraRPP implements Infoable<BitacoraRPPInfo>, Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "STATUS_RPP")
-    public StatusRPP getStatusRPP() {
-        return statusRPP;
+    @JoinColumn(name = "NOTARIO")
+    public Notario getNotario() {
+        return notario;
     }
 
-    public void setStatusRPP(StatusRPP statusRPP) {
-        this.statusRPP = statusRPP;
+    public void setNotario(Notario notario) {
+        this.notario = notario;
     }
 
     @ManyToOne
-    @JoinColumn(name = "PROYECTO_RPP")
-    public ProyectoRPP getProyectoRPP() {
-        return proyectoRPP;
+    @JoinColumn(name = "STATUS_NOTARIO")
+    public StatusNotario getStatusNotario() {
+        return statusNotario;
     }
 
-    public void setProyectoRPP(ProyectoRPP proyectoRPP) {
-        this.proyectoRPP = proyectoRPP;
+    public void setStatusNotario(StatusNotario statusNotario) {
+        this.statusNotario = statusNotario;
     }
 
     @Column(name = "USUARIO")
@@ -96,18 +95,20 @@ public class BitacoraRPP implements Infoable<BitacoraRPPInfo>, Serializable {
     public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
-    
+
     @Override
-    public BitacoraRPPInfo asInfo() {
-        BitacoraRPPInfo info = new BitacoraRPPInfo();
-        info.setId(this.id);
+    public BitacoraRegistroNotarioInfo asInfo() {
+        BitacoraRegistroNotarioInfo info = new BitacoraRegistroNotarioInfo();
+        info.setId(id);
         info.setFechaActualizacion(fechaActualizacion);
-        if (statusRPP != null)
-            info.setStatusRPP(statusRPP.asInfo());
-        if (proyectoRPP != null)
-            info.setProyectoRPPId(proyectoRPP.getId());
+        if (notario != null) {
+            info.setNotarioId(notario.getId());
+        }
+        info.setStatusNotario(statusNotario.asInfo());
         info.setUsuario(usuario);
         return info;
     }
+    
+    
     
 }

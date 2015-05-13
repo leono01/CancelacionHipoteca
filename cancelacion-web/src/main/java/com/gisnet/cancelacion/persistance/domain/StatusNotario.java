@@ -16,7 +16,7 @@
  */
 package com.gisnet.cancelacion.persistance.domain;
 
-import com.gisnet.cancelacion.events.info.StatusProyectoInfo;
+import com.gisnet.cancelacion.events.info.StatusNotarioInfo;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,19 +30,19 @@ import javax.persistence.Table;
  * @author marco-g8
  */
 @Entity
-@Table(name = "C_STATUS_PROYECTO")
-public class StatusProyecto implements Infoable<StatusProyectoInfo>, Serializable {
+@Table(name = "C_STATUS_NOTARIO")
+public class StatusNotario implements Infoable<StatusNotarioInfo>, Serializable {
     
     private long id;
     private int clave;
     private String nombre;
     private String descripcion;
 
-    public StatusProyecto() {
+    public StatusNotario() {
     }
 
     @Id
-    @Column(name = "STATUS_PROYECTO_ID")
+    @Column(name = "STATUS_NOTARIO_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getId() {
         return id;
@@ -61,7 +61,7 @@ public class StatusProyecto implements Infoable<StatusProyectoInfo>, Serializabl
         this.clave = clave;
     }
 
-    @Column(name = "NOMBRE_STATUS")
+    @Column(name = "NOMBRE")
     public String getNombre() {
         return nombre;
     }
@@ -70,7 +70,7 @@ public class StatusProyecto implements Infoable<StatusProyectoInfo>, Serializabl
         this.nombre = nombre;
     }
 
-    @Column(name = "DESCRIPCION_STATUS")
+    @Column(name = "DESCRIPCION")
     public String getDescripcion() {
         return descripcion;
     }
@@ -78,15 +78,16 @@ public class StatusProyecto implements Infoable<StatusProyectoInfo>, Serializabl
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    
+
     @Override
-    public StatusProyectoInfo asInfo() {
-        StatusProyectoInfo info = new StatusProyectoInfo();
+    public StatusNotarioInfo asInfo() {
+        StatusNotarioInfo info = new StatusNotarioInfo();
         info.setId(id);
         info.setClave(clave);
         info.setNombre(nombre);
         info.setDescripcion(descripcion);
         return info;
     }
-    
+
 }
+

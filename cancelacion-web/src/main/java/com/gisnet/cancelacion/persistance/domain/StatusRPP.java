@@ -34,6 +34,7 @@ import javax.persistence.Table;
 public class StatusRPP implements Infoable<StatusRPPInfo>, Serializable {
     
     private long id;
+    private int clave;
     private String nombre;
     private String descripcion;
 
@@ -49,6 +50,15 @@ public class StatusRPP implements Infoable<StatusRPPInfo>, Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    @Column(name = "CLAVE")
+    public int getClave() {
+        return clave;
+    }
+
+    public void setClave(int clave) {
+        this.clave = clave;
     }
 
     @Column(name = "NOMBRE_STATUS_CASO")
@@ -73,6 +83,7 @@ public class StatusRPP implements Infoable<StatusRPPInfo>, Serializable {
     public StatusRPPInfo asInfo() {
         StatusRPPInfo info = new StatusRPPInfo();
         info.setId(id);
+        info.setClave(clave);
         info.setNombre(nombre);
         info.setDescripcion(descripcion);
         return info;
