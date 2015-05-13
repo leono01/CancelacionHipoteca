@@ -23,7 +23,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 
 /**
  *
- * @author dev02
+ * @author marco-g8
  */
 public class CsrfUrlMatcher implements RequestMatcher {
     // ignorar GET, HEAD, TRACE, OPTIONS

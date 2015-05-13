@@ -27,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
- * @author dev02
+ * @author marco-g8
  */
 @Controller
 public class UploadController {

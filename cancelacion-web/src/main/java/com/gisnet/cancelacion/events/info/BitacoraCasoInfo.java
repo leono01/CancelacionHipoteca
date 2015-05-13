@@ -27,8 +27,9 @@ public class BitacoraCasoInfo implements Info {
     
     private long id;
     private Date fechaActualizacion;
-    private long statusCasoId;
+    private StatusCasoInfo statusCaso;
     private long bitacoraCasoId;
+    private String usuario;
 
     public BitacoraCasoInfo() {
     }
@@ -49,12 +50,12 @@ public class BitacoraCasoInfo implements Info {
         this.fechaActualizacion = fechaActualizacion;
     }
 
-    public long getStatusCasoId() {
-        return statusCasoId;
+    public StatusCasoInfo getStatusCaso() {
+        return statusCaso;
     }
 
-    public void setStatusCasoId(long statusCasoId) {
-        this.statusCasoId = statusCasoId;
+    public void setStatusCaso(StatusCasoInfo statusCaso) {
+        this.statusCaso = statusCaso;
     }
 
     public long getBitacoraCasoId() {
@@ -63,6 +64,14 @@ public class BitacoraCasoInfo implements Info {
 
     public void setBitacoraCasoId(long bitacoraCasoId) {
         this.bitacoraCasoId = bitacoraCasoId;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
     
     

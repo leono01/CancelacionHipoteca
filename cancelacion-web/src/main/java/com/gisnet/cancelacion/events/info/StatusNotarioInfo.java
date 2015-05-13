@@ -22,18 +22,14 @@ import com.gisnet.cancelacion.events.Info;
  *
  * @author marco-g8
  */
-public class CancelacionArchivoInfo implements Info {
-    
-    private long id;
-    private byte[] archivo;
-    private String nombre;
-    private long proyectoCancelacionId;
-    private String mimetype;
+public class StatusNotarioInfo implements Info {
 
-    public CancelacionArchivoInfo() {
+    private long id;
+    private int clave;
+    private String descripcion;
+
+    public StatusNotarioInfo() {
     }
-    
-    
 
     public long getId() {
         return id;
@@ -43,38 +39,21 @@ public class CancelacionArchivoInfo implements Info {
         this.id = id;
     }
 
-    public byte[] getArchivo() {
-        return archivo;
+    public int getClave() {
+        return clave;
     }
 
-    public void setArchivo(byte[] archivo) {
-        this.archivo = archivo;
+    public void setClave(int clave) {
+        this.clave = clave;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
-    public long getProyectoCancelacionId() {
-        return proyectoCancelacionId;
-    }
-
-    public void setProyectoCancelacionId(long proyectoCancelacionId) {
-        this.proyectoCancelacionId = proyectoCancelacionId;
-    }
-
-    public String getMimetype() {
-        return mimetype;
-    }
-
-    public void setMimetype(String mimetype) {
-        this.mimetype = mimetype;
-    }
-    
-    
-    
 }
+

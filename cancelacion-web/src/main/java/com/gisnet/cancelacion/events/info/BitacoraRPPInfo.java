@@ -27,8 +27,9 @@ public class BitacoraRPPInfo implements Info {
     
     private long id;
     private Date fechaActualizacion;
-    private long statusRPPId;
+    private StatusRPPInfo statusRPP;
     private long proyectoRPPId;
+    private String usuario;
 
     public BitacoraRPPInfo() {
     }
@@ -49,12 +50,12 @@ public class BitacoraRPPInfo implements Info {
         this.fechaActualizacion = fechaActualizacion;
     }
 
-    public long getStatusRPPId() {
-        return statusRPPId;
+    public StatusRPPInfo getStatusRPP() {
+        return statusRPP;
     }
 
-    public void setStatusRPPId(long statusRPPId) {
-        this.statusRPPId = statusRPPId;
+    public void setStatusRPP(StatusRPPInfo statusRPP) {
+        this.statusRPP = statusRPP;
     }
 
     public long getProyectoRPPId() {
@@ -63,6 +64,14 @@ public class BitacoraRPPInfo implements Info {
 
     public void setProyectoRPPId(long proyectoRPPId) {
         this.proyectoRPPId = proyectoRPPId;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
     
     

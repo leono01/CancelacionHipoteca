@@ -36,7 +36,11 @@ public class CasoInfo implements Info {
     private long proyectoCancelacionId;
     private long cartaCancelacionId;
     private long proyectoRPPId;
-    private long statusCasoId;
+    private StatusCasoInfo statusCaso;
+    
+    private Date fechaActualizacion;
+    private String procedeCredito;
+    private String entidad;
 
     public CasoInfo() {
     }
@@ -121,12 +125,36 @@ public class CasoInfo implements Info {
         this.proyectoRPPId = proyectoRPPId;
     }
 
-    public long getStatusCasoId() {
-        return statusCasoId;
+    public StatusCasoInfo getStatusCaso() {
+        return statusCaso;
     }
 
-    public void setStatusCasoId(long statusCasoId) {
-        this.statusCasoId = statusCasoId;
+    public void setStatusCaso(StatusCasoInfo statusCaso) {
+        this.statusCaso = statusCaso;
+    }
+
+    public Date getFechaActualizacion() {
+        return fechaActualizacion;
+    }
+
+    public void setFechaActualizacion(Date fechaActualizacion) {
+        this.fechaActualizacion = fechaActualizacion;
+    }
+
+    public String getProcedeCredito() {
+        return procedeCredito;
+    }
+
+    public void setProcedeCredito(String procedeCredito) {
+        this.procedeCredito = procedeCredito;
+    }
+
+    public String getEntidad() {
+        return entidad;
+    }
+
+    public void setEntidad(String entidad) {
+        this.entidad = entidad;
     }
     
     

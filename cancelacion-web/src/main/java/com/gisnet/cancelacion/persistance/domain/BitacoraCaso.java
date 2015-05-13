@@ -42,6 +42,8 @@ public class BitacoraCaso implements Infoable<BitacoraCasoInfo>, Serializable {
     private Date fechaActualizacion;
     private StatusCaso statusCaso;
     private Caso bitacoraCaso;
+    
+    private String usuario;
 
     public BitacoraCaso() {
     }
@@ -86,6 +88,15 @@ public class BitacoraCaso implements Infoable<BitacoraCasoInfo>, Serializable {
     public void setBitacoraCaso(Caso bitacoraCaso) {
         this.bitacoraCaso = bitacoraCaso;
     }
+
+    @Column(name = "USUARIO")
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
     
     @Override
     public BitacoraCasoInfo asInfo() {
@@ -93,9 +104,10 @@ public class BitacoraCaso implements Infoable<BitacoraCasoInfo>, Serializable {
         info.setId(id);
         info.setFechaActualizacion(fechaActualizacion);
         if (statusCaso != null)
-            info.setStatusCasoId(statusCaso.getId());
+            info.setStatusCaso(statusCaso.asInfo());
         if (bitacoraCaso != null)
             info.setBitacoraCasoId(bitacoraCaso.getId());
+        info.setUsuario(usuario);
         return info;
     }
     
