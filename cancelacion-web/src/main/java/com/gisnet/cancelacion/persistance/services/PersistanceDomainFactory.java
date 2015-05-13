@@ -390,6 +390,7 @@ public class PersistanceDomainFactory {
                 b = new StatusCaso();
             }
         }
+        b.setClave(info.getClave());
         b.setDescripcion(info.getDescripcion());
         b.setNombre(info.getNombre());
         return b;
@@ -403,6 +404,7 @@ public class PersistanceDomainFactory {
                 b = new StatusProyecto();
             }
         }
+        b.setClave(info.getClave());
         b.setDescripcion(info.getDescripcion());
         b.setNombre(info.getNombre());
         return b;
@@ -416,6 +418,7 @@ public class PersistanceDomainFactory {
                 b = new StatusRPP();
             }
         }
+        b.setClave(info.getClave());
         b.setDescripcion(info.getDescripcion());
         b.setNombre(info.getNombre());
         return b;
@@ -430,6 +433,7 @@ public class PersistanceDomainFactory {
             }
         }
         b.setClave(info.getClave());
+        b.setNombre(info.getNombre());
         b.setDescripcion(info.getDescripcion());
         return b;
     }

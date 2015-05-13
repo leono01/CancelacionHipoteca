@@ -16,7 +16,6 @@
  */
 package com.gisnet.cancelacion.persistance.domain;
 
-import com.gisnet.cancelacion.events.Info;
 import com.gisnet.cancelacion.events.info.BitacoraRegistroNotarioInfo;
 import java.io.Serializable;
 import java.util.Date;

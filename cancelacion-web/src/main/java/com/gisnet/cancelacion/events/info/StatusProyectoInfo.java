@@ -25,6 +25,7 @@ import com.gisnet.cancelacion.events.Info;
 public class StatusProyectoInfo implements Info {
     
     private long id;
+    private int clave;
     private String nombre;
     private String descripcion;
 
@@ -37,6 +38,14 @@ public class StatusProyectoInfo implements Info {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public int getClave() {
+        return clave;
+    }
+
+    public void setClave(int clave) {
+        this.clave = clave;
     }
 
     public String getNombre() {

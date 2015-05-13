@@ -34,6 +34,7 @@ import javax.persistence.Table;
 public class StatusProyecto implements Infoable<StatusProyectoInfo>, Serializable {
     
     private long id;
+    private int clave;
     private String nombre;
     private String descripcion;
 
@@ -49,6 +50,15 @@ public class StatusProyecto implements Infoable<StatusProyectoInfo>, Serializabl
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    @Column(name = "CLAVE")
+    public int getClave() {
+        return clave;
+    }
+
+    public void setClave(int clave) {
+        this.clave = clave;
     }
 
     @Column(name = "NOMBRE_STATUS")
@@ -73,6 +83,7 @@ public class StatusProyecto implements Infoable<StatusProyectoInfo>, Serializabl
     public StatusProyectoInfo asInfo() {
         StatusProyectoInfo info = new StatusProyectoInfo();
         info.setId(id);
+        info.setClave(clave);
         info.setNombre(nombre);
         info.setDescripcion(descripcion);
         return info;

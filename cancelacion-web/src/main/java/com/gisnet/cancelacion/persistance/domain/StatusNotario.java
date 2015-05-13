@@ -35,6 +35,7 @@ public class StatusNotario implements Infoable<StatusNotarioInfo>, Serializable 
     
     private long id;
     private int clave;
+    private String nombre;
     private String descripcion;
 
     public StatusNotario() {
@@ -60,6 +61,15 @@ public class StatusNotario implements Infoable<StatusNotarioInfo>, Serializable 
         this.clave = clave;
     }
 
+    @Column(name = "NOMBRE")
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
     @Column(name = "DESCRIPCION")
     public String getDescripcion() {
         return descripcion;
@@ -74,6 +84,7 @@ public class StatusNotario implements Infoable<StatusNotarioInfo>, Serializable 
         StatusNotarioInfo info = new StatusNotarioInfo();
         info.setId(id);
         info.setClave(clave);
+        info.setNombre(nombre);
         info.setDescripcion(descripcion);
         return info;
     }
