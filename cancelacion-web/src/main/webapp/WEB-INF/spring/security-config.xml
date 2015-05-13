@@ -19,14 +19,21 @@
             class="com.gisnet.cancelacion.config.CsrfUrlMatcher" />
     
     <http>
-        <anonymous />
         <csrf request-matcher-ref="csrfTokenMatcher" />
-        <intercept-url pattern="/CartaCancelacionService**" access="ROLE_ANONYMOUS" />
-        <intercept-url pattern="/ConsultarListaDeNotarios**" access="ROLE_ANONYMOUS" />
-        <intercept-url pattern="/RegistraActualizaYConsultaCaso**" access="ROLE_ANONYMOUS" />
+        <!-- webservices -->
+        <intercept-url pattern="/CartaCancelacionService**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/ConsultarListaDeNotarios**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/RegistraActualizaYConsultaCaso**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <!-- recursos -->
+        <intercept-url pattern="/css/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/fonts/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/img/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/js/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/login" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <!-- webapp -->
         <intercept-url pattern="/**" access="ROLE_NOTARIO, ROLE_JURIDICO"/>
-        <form-login />
-        <logout logout-url="/logout" />
+        <form-login login-page="/login"/>
+        <logout logout-url="/logout"/>
     </http>
     
 </beans:beans>
