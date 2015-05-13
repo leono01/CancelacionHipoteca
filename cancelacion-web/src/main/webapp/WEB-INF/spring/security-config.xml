@@ -22,8 +22,11 @@
         <csrf request-matcher-ref="csrfTokenMatcher" />
         <!-- webservices -->
         <intercept-url pattern="/CartaCancelacionService**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/CartaCancelacionService**/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <intercept-url pattern="/ConsultarListaDeNotarios**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/ConsultarListaDeNotarios**/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <intercept-url pattern="/RegistraActualizaYConsultaCaso**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/RegistraActualizaYConsultaCaso**/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <!-- recursos -->
         <intercept-url pattern="/css/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <intercept-url pattern="/fonts/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
