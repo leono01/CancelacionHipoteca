@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://webservices.cancelacion.gisnet.com/" version="1.0" xmlns:tns="http://webservices.cancelacion.gisnet.com/">
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://webservices.cancelacion.gisnet.com/" version="1.0" xmlns:tns="http://webservices.cancelacion.gisnet.com/">
 
   <xs:element name="consultarListaDeNotarios" type="tns:consultarListaDeNotarios"/>
 
@@ -42,8 +43,8 @@
       <xs:element minOccurs="0" name="CEntidad" type="xs:string"/>
       <xs:element minOccurs="0" name="CMunicipio" type="xs:string"/>
       <xs:element minOccurs="0" name="calleNotaria" type="xs:string"/>
-      <xs:element minOccurs="0" name="codigoNotario" type="xs:int"/>
-      <xs:element minOccurs="0" name="codigoPostalNotaria" type="xs:int"/>
+      <xs:element name="codigoNotario" type="xs:int"/>
+      <xs:element name="codigoPostalNotaria" type="xs:int"/>
       <xs:element minOccurs="0" name="codigoRespuesta" type="xs:string"/>
       <xs:element minOccurs="0" name="coloniaNotaria" type="xs:string"/>
       <xs:element name="convenioInfonavit" type="xs:int"/>

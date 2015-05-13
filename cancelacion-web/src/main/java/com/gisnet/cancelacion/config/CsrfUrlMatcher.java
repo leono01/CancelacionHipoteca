@@ -30,7 +30,7 @@ public class CsrfUrlMatcher implements RequestMatcher {
     private final Pattern allowedMethods = Pattern.compile("^(GET)|(HEAD)|(TRACE)|(OPTIONS)$");
     
     private final AntPathRequestMatcher[] requestMatchers = {
-          new AntPathRequestMatcher("/CartaCancelacion**"),
+          new AntPathRequestMatcher("/ValidarCredito**"),
           new AntPathRequestMatcher("/ConsultarListaDeNotarios**"),
           new AntPathRequestMatcher("/RegistraActualizaYConsultaCaso**")
     };

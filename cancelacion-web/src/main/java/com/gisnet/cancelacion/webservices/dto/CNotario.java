@@ -28,9 +28,9 @@ public class CNotario  implements java.io.Serializable {
      private long notarioId;
      private String CMunicipio;
      private String   entidad; 
-     //private CUsuario CUsuario;
+     private String usuario;
      private String nombreNotario;
-     private Integer codigoNotario;
+     private int codigoNotario;
      private String notariaNumero;
      private int convenioInfonavit;
      private String email;
@@ -38,7 +38,7 @@ public class CNotario  implements java.io.Serializable {
      private String calleNotaria;
      private String numeroCalle;
      private String coloniaNotaria;
-     private Integer codigoPostalNotaria;
+     private int codigoPostalNotaria;
 
    
      private String codigoRespuesta;
@@ -51,7 +51,7 @@ public class CNotario  implements java.io.Serializable {
     public CNotario(long notarioId) {
         this.notarioId = notarioId;
     }
-    public CNotario(long notarioId, String CMunicipio, String nombreNotario, Integer codigoNotario, String notariaNumero, int convenioInfonavit, String email, String telefono, String calleNotaria, String numeroCalle, String coloniaNotaria, Integer codigoPostalNotaria) {
+    public CNotario(long notarioId, String CMunicipio, String nombreNotario, int codigoNotario, String notariaNumero, int convenioInfonavit, String email, String telefono, String calleNotaria, String numeroCalle, String coloniaNotaria, int codigoPostalNotaria) {
        this.notarioId = notarioId;
        this.CMunicipio = CMunicipio;
        //this.CUsuario = CUsuario;
@@ -90,11 +90,11 @@ public class CNotario  implements java.io.Serializable {
     public void setNombreNotario(String nombreNotario) {
         this.nombreNotario = nombreNotario;
     }
-    public Integer getCodigoNotario() {
+    public int getCodigoNotario() {
         return this.codigoNotario;
     }
     
-    public void setCodigoNotario(Integer codigoNotario) {
+    public void setCodigoNotario(int codigoNotario) {
         this.codigoNotario = codigoNotario;
     }
     public String getNotariaNumero() {
@@ -146,11 +146,11 @@ public class CNotario  implements java.io.Serializable {
     public void setColoniaNotaria(String coloniaNotaria) {
         this.coloniaNotaria = coloniaNotaria;
     }
-    public Integer getCodigoPostalNotaria() {
+    public int getCodigoPostalNotaria() {
         return this.codigoPostalNotaria;
     }
     
-    public void setCodigoPostalNotaria(Integer codigoPostalNotaria) {
+    public void setCodigoPostalNotaria(int codigoPostalNotaria) {
         this.codigoPostalNotaria = codigoPostalNotaria;
     }
 

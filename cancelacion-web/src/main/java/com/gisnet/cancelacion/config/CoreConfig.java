@@ -32,5 +32,9 @@ class CoreConfig {
         return new NotarioServiceHandler();
     }
     
+    @Bean
+    CasoService casoService() {
+        return new CasoServiceHandler();
+    }
 }
 

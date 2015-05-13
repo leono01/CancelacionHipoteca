@@ -3,6 +3,7 @@ package com.gisnet.cancelacion.webservices;
 import com.gisnet.cancelacion.webservices.dto.CCaso;
 import com.gisnet.cancelacion.webservices.dto.InfoDeActualizacion;
 import com.gisnet.cancelacion.webservices.dto.InfoDeConsulta;
+import com.gisnet.cancelacion.webservices.dto.StatusCaso;
 import com.gisnet.cancelacion.webservices.dto.StatusOperacion;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -29,6 +30,10 @@ public class RegistraActualizaYConsultaCasoDelegate{
 
     public InfoDeConsulta consultaCaso (@WebParam(name="numeroDeCredito") int numeroDeCredito, @WebParam(name="numeroDeCaso") int numeroDeCaso) {
         return _registraActualizaYConsultaCaso.consultaCaso(numeroDeCredito,numeroDeCaso);
+    }
+
+    public StatusCaso estadoDelCaso (@WebParam(name="numeroDeCaso") int numeroDeCaso) {
+        return _registraActualizaYConsultaCaso.estadoDelCaso(numeroDeCaso);
     }
 
     public RegistraActualizaYConsultaCasoDelegate() {

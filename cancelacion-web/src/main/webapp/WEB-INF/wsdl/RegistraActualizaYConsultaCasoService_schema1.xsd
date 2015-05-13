@@ -8,9 +8,33 @@
 
   <xs:element name="consultaCasoResponse" type="tns:consultaCasoResponse"/>
 
+  <xs:element name="estadoDelCaso" type="tns:estadoDelCaso"/>
+
+  <xs:element name="estadoDelCasoResponse" type="tns:estadoDelCasoResponse"/>
+
   <xs:element name="registraCaso" type="tns:registraCaso"/>
 
   <xs:element name="registraCasoResponse" type="tns:registraCasoResponse"/>
+
+  <xs:complexType name="estadoDelCaso">
+    <xs:sequence>
+      <xs:element name="numeroDeCaso" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="estadoDelCasoResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:statusCaso"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="statusCaso">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="descripcion" type="xs:string"/>
+      <xs:element minOccurs="0" name="fechaActualizacion" type="xs:dateTime"/>
+      <xs:element name="status" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
 
   <xs:complexType name="registraCaso">
     <xs:sequence>
@@ -76,8 +100,12 @@
   <xs:complexType name="infoDeConsulta">
     <xs:sequence>
       <xs:element minOccurs="0" name="cartaDeCancelacion" type="xs:string"/>
+      <xs:element minOccurs="0" name="entidad" type="xs:string"/>
+      <xs:element minOccurs="0" name="fecha" type="xs:dateTime"/>
       <xs:element minOccurs="0" name="fechaDeActualizacion" type="xs:dateTime"/>
       <xs:element minOccurs="0" name="fechaDeEmisionDeCarta" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="fechaEmisionCarta" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="nombreAcreditado" type="xs:string"/>
       <xs:element name="numeroDeCaso" type="xs:int"/>
       <xs:element name="numeroDeCredito" type="xs:int"/>
       <xs:element minOccurs="0" name="numeroDeFolio" type="xs:string"/>

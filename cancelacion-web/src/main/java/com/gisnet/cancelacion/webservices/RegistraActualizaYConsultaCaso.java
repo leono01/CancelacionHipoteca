@@ -19,6 +19,7 @@ package com.gisnet.cancelacion.webservices;
 import com.gisnet.cancelacion.webservices.dto.CCaso;
 import com.gisnet.cancelacion.webservices.dto.InfoDeActualizacion;
 import com.gisnet.cancelacion.webservices.dto.InfoDeConsulta;
+import com.gisnet.cancelacion.webservices.dto.StatusCaso;
 import com.gisnet.cancelacion.webservices.dto.StatusOperacion;
 
 import java.text.DateFormat;
@@ -183,5 +184,16 @@ public class RegistraActualizaYConsultaCaso {
             Logger.getLogger(CCaso.class.getName()).log(Level.SEVERE, null, ex);
         }
         return idc;
+    }
+    
+    public StatusCaso estadoDelCaso (int numeroDeCaso){
+    	StatusCaso sc = new StatusCaso();
+    	
+    	if(numeroDeCaso > 0 && numeroDeCaso <= 99999999){
+			sc.setStatus(1);
+			sc.setDescripcion("El caso se ha creado");
+			sc.setFechaActualizacion(new Date());
+		}
+    	return sc;
     }
 }

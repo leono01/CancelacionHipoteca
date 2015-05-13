@@ -21,10 +21,10 @@
     <http>
         <anonymous />
         <csrf request-matcher-ref="csrfTokenMatcher" />
-        <intercept-url pattern="/CartaCancelacionService**" access="ROLE_ANONYMOUS" />
+        <intercept-url pattern="/ValidarCredito**" access="ROLE_ANONYMOUS" />
         <intercept-url pattern="/ConsultarListaDeNotarios**" access="ROLE_ANONYMOUS" />
         <intercept-url pattern="/RegistraActualizaYConsultaCaso**" access="ROLE_ANONYMOUS" />
-        <intercept-url pattern="/**" access="ROLE_NOTARIO, ROLE_JURIDICO"/>
+        <!-- intercept-url pattern="/**" access="ROLE_NOTARIO, ROLE_JURIDICO"/-->
         <form-login />
         <logout logout-url="/logout" />
     </http>

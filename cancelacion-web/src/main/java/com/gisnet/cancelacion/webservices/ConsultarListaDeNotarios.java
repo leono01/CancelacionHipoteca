@@ -16,8 +16,16 @@
  */
 package com.gisnet.cancelacion.webservices;
 
+import com.gisnet.cancelacion.core.services.NotarioService;
+import com.gisnet.cancelacion.events.ListRequest;
+import com.gisnet.cancelacion.events.ListResponse;
+import com.gisnet.cancelacion.events.SaveRequest;
+import com.gisnet.cancelacion.events.SaveResponse;
+import com.gisnet.cancelacion.events.info.NotarioInfo;
+import com.gisnet.cancelacion.web.domain.NotarioForm;
 import com.gisnet.cancelacion.webservices.dto.CNotario;
 
+import java.security.Principal;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -27,6 +35,16 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 /**
  *
@@ -34,6 +52,54 @@ import java.util.List;
  */
 public class ConsultarListaDeNotarios {
 
+	//@Autowired
+    //private NotarioService service;
+	
+    
+    /**
+    @RequestMapping(value = "/juridico/registrar", method = RequestMethod.GET)
+    public String ver(Model model, Principal principal) {
+        
+        return "/juridico/registrar";
+    }
+    
+    @RequestMapping(value = "/juridico/registrar", method = RequestMethod.POST)
+    public String registrar(
+            @Valid @ModelAttribute("notarioForm") NotarioForm form,
+            BindingResult result,
+            RedirectAttributes redirectAttributes,
+            Model model,
+            Principal principal) {
+        
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.register", result);
+            redirectAttributes.addFlashAttribute("notarioInfo", form);
+            return "redirect:/juridico/registrar";
+        }
+        
+        NotarioInfo info = new NotarioInfo();
+        info.setNombre(form.getNombre());
+        info.setCodigo(form.getCodigo());
+        info.setNotariaNumero(form.getNotariaNumero());
+        info.setConvenioInfonavit(form.isConvenioInfonavit());
+        info.setEmail(form.getEmail());
+        info.setTelefono(form.getTelefono());
+        info.setCalleNotaria(form.getCalleNotaria());
+        info.setNumeroCalle(form.getNumeroCalle());
+        info.setColoniaNotaria(form.getColoniaNotaria());
+        info.setCodigoPostalNotaria(form.getCodigoPostalNotaria());
+        
+        info.setUsuarioId(0l);
+        info.setMunicipioId(0l);
+        info.setEntidadId(0l);
+        
+        SaveRequest<NotarioInfo> saveRequest = new SaveRequest<>();
+        saveRequest.setInfo(info);
+        SaveResponse<NotarioInfo> save = service.save(saveRequest);
+        return "redirect:/";
+    }
+	**/
+	
     /**
      * Es el Servicio Web que permite consultar la lista de notarios
      *
@@ -43,50 +109,24 @@ public class ConsultarListaDeNotarios {
      */
     public List<CNotario> consultarListaDeNotarios(int     numeroDeCredito,
                                                    String  entidad
-    ) {
-        List<CNotario> notarios = new ArrayList<CNotario>();
-        
-        
-        Connection conn = null;
-
-        try {
-
-            String dbURL = "jdbc:sqlserver://192.168.15.18:1433;databaseName=CANCELACION";
-            String usuario = "cancelacion_user";
-            String pwd = "cancelacion";
-            conn = DriverManager.getConnection(dbURL, usuario, pwd);
-            if (conn != null) {
-                DatabaseMetaData dm = (DatabaseMetaData) conn.getMetaData();
-                System.out.println("Driver name: " + dm.getDriverName());                
-
-                Statement statement = conn.createStatement();
-                String queryString = "select * from dbo.c_notario where numeroDeCredito=1";
-                ResultSet rs = statement.executeQuery(queryString);
-                
-                    while (rs.next()) {
-                    System.out.println(rs.getRow());
-                    System.out.println(rs.getString("NOMBRE_NOTARIO"));
-
-                }
-
-            }
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                if (conn != null && !conn.isClosed()) {
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-        
+    ) {       
     
+    	List<CNotario> notarios = new ArrayList<CNotario>();
+        //ListRequest lr = new ListRequest();
+        //ListResponse<NotarioInfo> list = service.list(lr);
+       
         
-        
+        /**for (String nombre : list) {
+        	 
+        	if (nombre.equals("Pedro")) {
+        	 
+        	lista.remove("Pedro");
+        	}
+        	 
+        }**/
+        //notarios = list.getList();
       
+        
         /*try {
          org.hibernate.Transaction tx = session.beginTransaction();
          Query q = session.createQuery("from CNotario as cn where cn.notarioId=" + numeroDeCredito);
@@ -94,7 +134,7 @@ public class ConsultarListaDeNotarios {
          } catch (Exception e) {
          e.printStackTrace();
          }*/
-        //CCaso caso = new CCaso();
+        
         
         boolean esNumero= false;
         
@@ -148,7 +188,7 @@ public class ConsultarListaDeNotarios {
            
         }
 
- 
+        //return list.getList();
         return notarios;
     }
         
@@ -159,100 +199,100 @@ public class ConsultarListaDeNotarios {
         if (numeroDeCredito > 0 && numeroDeCredito <= 999999999) {
 
             if (numeroDeCredito >= 0 && numeroDeCredito <= 30000) {
-                entidad = "CHI";
+                entidad = "CH";
             }
             if (numeroDeCredito >= 30001 && numeroDeCredito <= 60000) {
-                entidad = "SON";
+                entidad = "SO";
             }
             if (numeroDeCredito >= 60001 && numeroDeCredito <= 90000) {
-                entidad = "COA";
+                entidad = "CO";
             }
             if (numeroDeCredito >= 90001 && numeroDeCredito <= 120000) {
-                entidad = "DUR";
+                entidad = "DU";
             }
             if (numeroDeCredito >= 120001 && numeroDeCredito <= 150000) {
-                entidad = "OAX";
+                entidad = "OA";
             }
             if (numeroDeCredito >= 150001 && numeroDeCredito <= 180000) {
-                entidad = "TAM";
+                entidad = "TA";
             }
             if (numeroDeCredito >= 180001 && numeroDeCredito <= 210000) {
-                entidad = "JAL";
+                entidad = "JA";
             }
             if (numeroDeCredito >= 210001 && numeroDeCredito <= 240000) {
-                entidad = "ZAC";
+                entidad = "ZA";
             }
             if (numeroDeCredito >= 240001 && numeroDeCredito <= 270000) {
-                entidad = "BCS";
+                entidad = "BS";
             }
             if (numeroDeCredito >= 270001 && numeroDeCredito <= 300000) {
-                entidad = "CHP";
+                entidad = "CH";
             }
             if (numeroDeCredito >= 300001 && numeroDeCredito <= 330000) {
-                entidad = "VER";
+                entidad = "VE";
             }
             if (numeroDeCredito >= 330001 && numeroDeCredito <= 360000) {
-                entidad = "BCL";
+                entidad = "BC";
             }
             if (numeroDeCredito >= 360001 && numeroDeCredito <= 390000) {
-                entidad = "NLN";
+                entidad = "NL";
             }
             if (numeroDeCredito >= 390001 && numeroDeCredito <= 410000) {
-                entidad = "GUE";
+                entidad = "GU";
             }
             if (numeroDeCredito >= 410001 && numeroDeCredito <= 430000) {
-                entidad = "SLN";
+                entidad = "SL";
             }
             if (numeroDeCredito >= 430001 && numeroDeCredito <= 450000) {
-                entidad = "MCH";
+                entidad = "MI";
             }
             if (numeroDeCredito >= 450001 && numeroDeCredito <= 480000) {
-                entidad = "CAM";
+                entidad = "CA";
             }
             if (numeroDeCredito >= 480001 && numeroDeCredito <= 510000) {
-                entidad = "SIN";
+                entidad = "SI";
             }
             if (numeroDeCredito >= 510001 && numeroDeCredito <= 540000) {
-                entidad = "QUI";
+                entidad = "QR";
             }
             if (numeroDeCredito >= 540001 && numeroDeCredito <= 570000) {
-                entidad = "YUC";
+                entidad = "YU";
             }
             if (numeroDeCredito >= 570001 && numeroDeCredito <= 600000) {
-                entidad = "PUE";
+                entidad = "PU";
             }
             if (numeroDeCredito >= 600001 && numeroDeCredito <= 630000) {
-                entidad = "GUA";
+                entidad = "GU";
             }
             if (numeroDeCredito >= 630001 && numeroDeCredito <= 660000) {
-                entidad = "NAY";
+                entidad = "NA";
             }
             if (numeroDeCredito >= 660001 && numeroDeCredito <= 690000) {
-                entidad = "TAB";
+                entidad = "TA";
             }
             if (numeroDeCredito >= 690001 && numeroDeCredito <= 720000) {
-                entidad = "MEX";
+                entidad = "EM";
             }
             if (numeroDeCredito >= 720001 && numeroDeCredito <= 750000) {
-                entidad = "HID";
+                entidad = "HI";
             }
             if (numeroDeCredito >= 750001 && numeroDeCredito <= 780000) {
-                entidad = "QUE";
+                entidad = "QR";
             }
             if (numeroDeCredito >= 780001 && numeroDeCredito <= 810000) {
-                entidad = "COL";
+                entidad = "CO";
             }
             if (numeroDeCredito >= 810001 && numeroDeCredito <= 840000) {
-                entidad = "AGU";
+                entidad = "AG";
             }
             if (numeroDeCredito >= 840001 && numeroDeCredito <= 870000) {
-                entidad = "MOR";
+                entidad = "MO";
             }
             if (numeroDeCredito >= 870001 && numeroDeCredito <= 900000) {
-                entidad = "TLA";
+                entidad = "TA";
             }
             if (numeroDeCredito >= 900001) {
-                entidad = "DIF";
+                entidad = "DF";
             }
 
             
@@ -313,7 +353,8 @@ public class ConsultarListaDeNotarios {
         }
         
         
-        
+    	//ListRequest lr = new ListRequest();
+        //ListResponse<NotarioInfo> list = service.list(lr);
         return notarios;
     }
 
