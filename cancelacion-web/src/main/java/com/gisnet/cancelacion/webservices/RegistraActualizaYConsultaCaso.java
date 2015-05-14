@@ -16,6 +16,10 @@
  */
 package com.gisnet.cancelacion.webservices;
 
+import com.gisnet.cancelacion.core.services.CasoService;
+import com.gisnet.cancelacion.events.SaveRequest;
+import com.gisnet.cancelacion.events.SaveResponse;
+import com.gisnet.cancelacion.events.info.CasoInfo;
 import com.gisnet.cancelacion.webservices.dto.CCaso;
 import com.gisnet.cancelacion.webservices.dto.InfoDeActualizacion;
 import com.gisnet.cancelacion.webservices.dto.InfoDeConsulta;
@@ -29,6 +33,8 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 
 
 /**
@@ -36,7 +42,8 @@ import java.util.logging.Logger;
  * @author leonel
  */
 public class RegistraActualizaYConsultaCaso {
-
+	//@Autowired
+    //private CasoService service;
 
     public StatusOperacion registraCaso(int numeroDeCredito,
                                         int numeroDeCaso,
@@ -60,16 +67,20 @@ public class RegistraActualizaYConsultaCaso {
         } else {
             CCaso caso = new CCaso();
 
-            caso.setCasoId(1);
+            //caso.setCasoId(1);
             caso.setNumeroDeCredito(numeroDeCredito);
             caso.setNumeroDeCaso(numeroDeCaso);
             caso.setFechaDeCreacion(fechaDeCreacion);
             caso.setFechaDeCierre(null);
 
-            caso.setCNotario(null);
+            //caso.setNotarioId();
 
             caso.setNombreAcreditado(nombreAcreditado);
 
+            /**SaveRequest<CasoInfo> saveRequest = new SaveRequest<>();
+            saveRequest.setInfo(caso);
+            SaveResponse<CasoInfo> save = service.save(saveRequest);**/
+            
             System.out.println(caso.getNumeroDeCaso());
             so.setCodigo(0);
             so.setDescripcion("Caso creado con éxito");

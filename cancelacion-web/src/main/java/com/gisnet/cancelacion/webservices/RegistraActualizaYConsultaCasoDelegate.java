@@ -1,5 +1,9 @@
 package com.gisnet.cancelacion.webservices;
 
+import com.gisnet.cancelacion.core.services.CasoService;
+import com.gisnet.cancelacion.events.SaveRequest;
+import com.gisnet.cancelacion.events.SaveResponse;
+import com.gisnet.cancelacion.events.info.CasoInfo;
 import com.gisnet.cancelacion.webservices.dto.CCaso;
 import com.gisnet.cancelacion.webservices.dto.InfoDeActualizacion;
 import com.gisnet.cancelacion.webservices.dto.InfoDeConsulta;
@@ -11,6 +15,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import javax.jws.WebService;
 import javax.jws.WebParam;
 

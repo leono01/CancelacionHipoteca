@@ -112,9 +112,15 @@ public class ConsultarListaDeNotarios {
     ) {       
     
     	List<CNotario> notarios = new ArrayList<CNotario>();
-        //ListRequest lr = new ListRequest();
-        //ListResponse<NotarioInfo> list = service.list(lr);
+    	
+        /**ListRequest lr = new ListRequest();
+        ListResponse<NotarioInfo> list = service.list(lr);
        
+        for(NotarioInfo ni : list.getList()){
+        	CNotario cn = new CNotario();
+        	cn.setNombreNotario(ni.getNombre());
+        	notarios.add(cn);
+        }**/
         
         /**for (String nombre : list) {
         	 
