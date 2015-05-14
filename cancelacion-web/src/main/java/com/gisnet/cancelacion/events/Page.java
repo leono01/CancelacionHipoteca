@@ -20,27 +20,22 @@ package com.gisnet.cancelacion.events;
  *
  * @author marco-g8
  */
-public class FindByRequest {
+public class Page {
 
-    private final String key;
-    private final Object value;
+    private final int pageNumber;
+    private final int pageSize;
 
-    public FindByRequest(long id) {
-        this.key = "ID";
-        this.value = id;
+    public Page(int pageNumber, int pageSize) {
+        this.pageNumber = pageNumber;
+        this.pageSize = pageSize;
     }
 
-    public FindByRequest(String key, Object value) {
-        this.key = key;
-        this.value = value;
+    public int getPageNumber() {
+        return pageNumber;
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public Object getValue() {
-        return value;
+    public int getPageSize() {
+        return pageSize;
     }
 
 }

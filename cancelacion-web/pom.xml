@@ -11,9 +11,7 @@
         <version>0.1</version>
     </parent>
     
-    <groupId>com.gisnet</groupId>
     <artifactId>cancelacion-web</artifactId>
-    <version>0.1</version>
     <packaging>war</packaging>
     <name>cancelacion-web</name>
     

@@ -22,23 +22,28 @@ import com.gisnet.cancelacion.persistance.domain.ProyectoCancelacion;
 import com.gisnet.cancelacion.persistance.repository.ProyectoCancelacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
+/**
+ *
+ * @author marco-g8
+ */
 public class ProyectoCancelacionPersistanceServiceHandler implements ProyectoCancelacionPersistanceService {
-    
+
     @Autowired
     private PersistanceDomainFactory factory;
-    
+
     @Autowired
     private ProyectoCancelacionRepository repository;
 
     @Override
-    public FindResponse<ProyectoCancelacionInfo> find(FindByIdRequest event) {
-        return new FindResponse<>(repository.findOne(event.getId()).asInfo());
-    }
-
-    @Override
-    public FindResponse<ProyectoCancelacionInfo> find(FindByRequest<ProyectoCancelacionInfo, Object> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public FindResponse<ProyectoCancelacionInfo> find(FindByRequest event) {
+        switch (event.getKey()) {
+            case "ID":
+                if (!(event.getValue() instanceof Long)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return new FindResponse<>(repository.findOne((long) event.getValue()).asInfo());
+        }
+        throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
 
     @Override
@@ -58,7 +63,7 @@ public class ProyectoCancelacionPersistanceServiceHandler implements ProyectoCan
     public UpdateResponse<ProyectoCancelacionInfo> update(UpdateRequest<ProyectoCancelacionInfo> event) {
         return new UpdateResponse<>(saveOrUpdate(event.getInfo()));
     }
-    
+
     private ProyectoCancelacionInfo saveOrUpdate(ProyectoCancelacionInfo info) {
         ProyectoCancelacion u = factory.buildProyectoCancelacion(info);
         return repository.save(u).asInfo();
@@ -68,5 +73,5 @@ public class ProyectoCancelacionPersistanceServiceHandler implements ProyectoCan
     public DeleteResponse<ProyectoCancelacionInfo> delete(DeleteRequest event) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
 }

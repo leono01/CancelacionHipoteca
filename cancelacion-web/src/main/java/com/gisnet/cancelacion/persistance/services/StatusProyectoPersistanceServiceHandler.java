@@ -22,23 +22,28 @@ import com.gisnet.cancelacion.persistance.domain.StatusProyecto;
 import com.gisnet.cancelacion.persistance.repository.StatusProyectoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
+/**
+ *
+ * @author marco-g8
+ */
 public class StatusProyectoPersistanceServiceHandler implements StatusProyectoPersistanceService {
-    
+
     @Autowired
     private PersistanceDomainFactory factory;
-    
+
     @Autowired
     private StatusProyectoRepository repository;
 
     @Override
-    public FindResponse<StatusProyectoInfo> find(FindByIdRequest event) {
-        return new FindResponse<>(repository.findOne(event.getId()).asInfo());
-    }
-    
-    @Override
-    public FindResponse<StatusProyectoInfo> find(FindByRequest<StatusProyectoInfo, Object> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public FindResponse<StatusProyectoInfo> find(FindByRequest event) {
+        switch (event.getKey()) {
+            case "ID":
+                if (!(event.getValue() instanceof Long)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return new FindResponse<>(repository.findOne((long) event.getValue()).asInfo());
+        }
+        throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
 
     @Override
@@ -58,7 +63,7 @@ public class StatusProyectoPersistanceServiceHandler implements StatusProyectoPe
     public UpdateResponse<StatusProyectoInfo> update(UpdateRequest<StatusProyectoInfo> event) {
         return new UpdateResponse<>(saveOrUpdate(event.getInfo()));
     }
-    
+
     private StatusProyectoInfo saveOrUpdate(StatusProyectoInfo info) {
         StatusProyecto u = factory.buildStatusProyecto(info);
         return repository.save(u).asInfo();

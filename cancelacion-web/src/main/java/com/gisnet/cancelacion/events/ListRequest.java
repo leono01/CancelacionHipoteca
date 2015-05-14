@@ -21,4 +21,45 @@ package com.gisnet.cancelacion.events;
  * @author marco-g8
  */
 public class ListRequest {
+
+    private final String key;
+    private final Object value;
+
+    private Page page;
+    private boolean asc;
+
+    public ListRequest() {
+        this.key = "ALL";
+        this.value = null;
+    }
+
+    public ListRequest(String key, Object value) {
+        this.key = key;
+        this.value = value;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
+    public boolean isAsc() {
+        return asc;
+    }
+
+    public void setAsc(boolean asc) {
+        this.asc = asc;
+    }
+
 }

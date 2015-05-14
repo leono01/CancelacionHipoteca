@@ -24,5 +24,11 @@ import org.springframework.data.repository.CrudRepository;
  * @author marco-g8
  */
 public interface CasoRepository extends CrudRepository<Caso, Long> {
-    
+
+    Iterable<Caso> findAllByEntidad(String entidad);
+
+    Caso findByNumeroCaso(String caso);
+
+    Caso findByNumeroCredito(String numeroCredito);
+
 }

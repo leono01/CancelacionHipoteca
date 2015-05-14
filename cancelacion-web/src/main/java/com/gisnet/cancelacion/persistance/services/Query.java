@@ -29,7 +29,7 @@ import org.springframework.data.repository.CrudRepository;
  * @author marco-g8
  */
 public class Query {
-    
+
     public static <T extends Info, K extends Infoable<T>> ListResponse<T> list(Iterable<K> query) {
         List<T> list = new ArrayList<>();
         for (K k : query) {
@@ -37,11 +37,11 @@ public class Query {
         }
         return new ListResponse<>(list);
     }
-    
+
     public static <T extends Info> T saveOrUpdate(T info, CrudRepository repo) {
         throw new UnsupportedOperationException("not supported yet");
     }
-    
+
     public static DeleteResponse delete() {
         throw new UnsupportedOperationException("not supported yet");
     }

@@ -22,23 +22,28 @@ import com.gisnet.cancelacion.persistance.domain.ProyectoRPP;
 import com.gisnet.cancelacion.persistance.repository.ProyectoRPPRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
+/**
+ *
+ * @author marco-g8
+ */
 public class ProyectoRPPPersistanceServiceHandler implements ProyectoRPPPersistanceService {
-    
+
     @Autowired
     private PersistanceDomainFactory factory;
-    
+
     @Autowired
     private ProyectoRPPRepository repository;
 
     @Override
-    public FindResponse<ProyectoRPPInfo> find(FindByIdRequest event) {
-        return new FindResponse<>(repository.findOne(event.getId()).asInfo());
-    }
-
-    @Override
-    public FindResponse<ProyectoRPPInfo> find(FindByRequest<ProyectoRPPInfo, Object> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public FindResponse<ProyectoRPPInfo> find(FindByRequest event) {
+        switch (event.getKey()) {
+            case "ID":
+                if (!(event.getValue() instanceof Long)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return new FindResponse<>(repository.findOne((long) event.getValue()).asInfo());
+        }
+        throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
 
     @Override
@@ -58,7 +63,7 @@ public class ProyectoRPPPersistanceServiceHandler implements ProyectoRPPPersista
     public UpdateResponse<ProyectoRPPInfo> update(UpdateRequest<ProyectoRPPInfo> event) {
         return new UpdateResponse<>(saveOrUpdate(event.getInfo()));
     }
-    
+
     private ProyectoRPPInfo saveOrUpdate(ProyectoRPPInfo info) {
         ProyectoRPP u = factory.buildProyectoRPP(info);
         return repository.save(u).asInfo();
@@ -68,5 +73,5 @@ public class ProyectoRPPPersistanceServiceHandler implements ProyectoRPPPersista
     public DeleteResponse<ProyectoRPPInfo> delete(DeleteRequest event) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
 }

@@ -22,28 +22,55 @@ import com.gisnet.cancelacion.persistance.domain.Caso;
 import com.gisnet.cancelacion.persistance.repository.CasoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
+/**
+ *
+ * @author marco-g8
+ */
 public class CasoPersistanceServiceHandler implements CasoPersistanceService {
-    
+
     @Autowired
     private PersistanceDomainFactory factory;
-    
+
     @Autowired
     private CasoRepository repository;
 
     @Override
-    public FindResponse<CasoInfo> find(FindByIdRequest event) {
-        return new FindResponse<>(repository.findOne(event.getId()).asInfo());
-    }
+    public FindResponse<CasoInfo> find(FindByRequest event) {
+        switch (event.getKey()) {
+            case "ID":
+                if (!(event.getValue() instanceof Long)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return new FindResponse<>(repository.findOne((long) event.getValue()).asInfo());
 
-    @Override
-    public FindResponse<CasoInfo> find(FindByRequest<CasoInfo, Object> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+            case "numeroCaso":
+                if (!(event.getValue() instanceof String)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return new FindResponse<>(repository.findByNumeroCaso((String) event.getValue()).asInfo());
+
+            case "numeroCredito":
+                if (!(event.getValue() instanceof String)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return new FindResponse<>(repository.findByNumeroCredito((String) event.getValue()).asInfo());
+        }
+        throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
 
     @Override
     public ListResponse<CasoInfo> list(ListRequest event) {
-        return Query.list(repository.findAll());
+        switch (event.getKey()) {
+            case "ALL":
+                return Query.list(repository.findAll());
+
+            case "entidad":
+                if (!(event.getValue() instanceof String)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return Query.list(repository.findAllByEntidad((String) event.getValue()));
+        }
+        throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
 
     @Override
@@ -58,7 +85,7 @@ public class CasoPersistanceServiceHandler implements CasoPersistanceService {
     public UpdateResponse<CasoInfo> update(UpdateRequest<CasoInfo> event) {
         return new UpdateResponse<>(saveOrUpdate(event.getInfo()));
     }
-    
+
     private CasoInfo saveOrUpdate(CasoInfo info) {
         Caso u = factory.buildCaso(info);
         return repository.save(u).asInfo();
@@ -68,5 +95,5 @@ public class CasoPersistanceServiceHandler implements CasoPersistanceService {
     public DeleteResponse<CasoInfo> delete(DeleteRequest event) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
 }

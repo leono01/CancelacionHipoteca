@@ -22,34 +22,34 @@ import com.gisnet.cancelacion.persistance.domain.Usuario;
 import com.gisnet.cancelacion.persistance.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
+/**
+ *
+ * @author marco-g8
+ */
 public class UsuarioPersistanceServiceHandler implements UsuarioPersistanceService {
-    
+
     @Autowired
     private PersistanceDomainFactory factory;
-    
+
     @Autowired
     private UsuarioRepository repository;
 
     @Override
-    public FindResponse<UsuarioInfo> find(FindByIdRequest event) {
-        return new FindResponse<>(repository.findOne(event.getId()).asInfo());
-    }
-    
-    @Override
-    public FindResponse<UsuarioInfo> find(FindByRequest<UsuarioInfo, Object> event) {
-        Usuario usuario = null;
+    public FindResponse<UsuarioInfo> find(FindByRequest event) {
         switch (event.getKey()) {
-        case "nombreUsuario":
-            if (!(event.getValue() instanceof String)) {
-                throw new IllegalArgumentException("Valor de llave incorrecto"); }
-            usuario = repository.findByNombreUsuario((String) event.getValue());
-            break;
-        default:
-            throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
+            case "ID":
+                if (!(event.getValue() instanceof Long)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return new FindResponse<>(repository.findOne((long) event.getValue()).asInfo());
+
+            case "nombreUsuario":
+                if (!(event.getValue() instanceof String)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return new FindResponse<>(repository.findByNombreUsuario((String) event.getValue()).asInfo());
         }
-        
-        return new FindResponse<>(usuario != null ? usuario.asInfo() : null);
+        throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
 
     @Override
@@ -69,7 +69,7 @@ public class UsuarioPersistanceServiceHandler implements UsuarioPersistanceServi
     public UpdateResponse<UsuarioInfo> update(UpdateRequest<UsuarioInfo> event) {
         return new UpdateResponse<>(saveOrUpdate(event.getInfo()));
     }
-    
+
     private UsuarioInfo saveOrUpdate(UsuarioInfo info) {
         Usuario u = factory.buildUsuario(info);
         return repository.save(u).asInfo();
@@ -79,5 +79,5 @@ public class UsuarioPersistanceServiceHandler implements UsuarioPersistanceServi
     public DeleteResponse<UsuarioInfo> delete(DeleteRequest event) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
 }

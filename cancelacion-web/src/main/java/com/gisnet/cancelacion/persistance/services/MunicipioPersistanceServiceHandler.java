@@ -22,23 +22,28 @@ import com.gisnet.cancelacion.persistance.domain.Municipio;
 import com.gisnet.cancelacion.persistance.repository.MunicipioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
+/**
+ *
+ * @author marco-g8
+ */
 public class MunicipioPersistanceServiceHandler implements MunicipioPersistanceService {
-    
+
     @Autowired
     private PersistanceDomainFactory factory;
-    
+
     @Autowired
     private MunicipioRepository repository;
 
     @Override
-    public FindResponse<MunicipioInfo> find(FindByIdRequest event) {
-        return new FindResponse<>(repository.findOne(event.getId()).asInfo());
-    }
-
-    @Override
-    public FindResponse<MunicipioInfo> find(FindByRequest<MunicipioInfo, Object> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public FindResponse<MunicipioInfo> find(FindByRequest event) {
+        switch (event.getKey()) {
+            case "ID":
+                if (!(event.getValue() instanceof Long)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return new FindResponse<>(repository.findOne((long) event.getValue()).asInfo());
+        }
+        throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
 
     @Override
@@ -58,7 +63,7 @@ public class MunicipioPersistanceServiceHandler implements MunicipioPersistanceS
     public UpdateResponse<MunicipioInfo> update(UpdateRequest<MunicipioInfo> event) {
         return new UpdateResponse<>(saveOrUpdate(event.getInfo()));
     }
-    
+
     private MunicipioInfo saveOrUpdate(MunicipioInfo info) {
         Municipio u = factory.buildMunicipio(info);
         return repository.save(u).asInfo();
@@ -68,5 +73,5 @@ public class MunicipioPersistanceServiceHandler implements MunicipioPersistanceS
     public DeleteResponse<MunicipioInfo> delete(DeleteRequest event) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
 }

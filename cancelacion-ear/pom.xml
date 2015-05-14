@@ -7,9 +7,7 @@
     <version>0.1</version>
   </parent>
 
-    <groupId>com.gisnet</groupId>
     <artifactId>cancelacion-ear</artifactId>
-    <version>0.1</version>
     <packaging>ear</packaging>
 
     <name>cancelacion-ear</name>

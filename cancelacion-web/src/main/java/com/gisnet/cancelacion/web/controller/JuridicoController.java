@@ -24,8 +24,6 @@ import com.gisnet.cancelacion.events.SaveResponse;
 import com.gisnet.cancelacion.events.info.NotarioInfo;
 import com.gisnet.cancelacion.web.domain.NotarioForm;
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,23 +40,23 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 @Controller
 public class JuridicoController {
-    
+
     @Autowired
     private NotarioService service;
-    
+
     public String index(Model model, Principal principal) {
         ListRequest lr = new ListRequest();
         ListResponse<NotarioInfo> list = service.list(lr);
         model.addAttribute("list", list.getList());
         return "/juridico/index";
     }
-    
+
     @RequestMapping(value = "/juridico/registrar", method = RequestMethod.GET)
     public String ver(Model model, Principal principal) {
-        
+
         return "/juridico/registrar";
     }
-    
+
     @RequestMapping(value = "/juridico/registrar", method = RequestMethod.POST)
     public String registrar(
             @Valid @ModelAttribute("notarioForm") NotarioForm form,
@@ -66,13 +64,13 @@ public class JuridicoController {
             RedirectAttributes redirectAttributes,
             Model model,
             Principal principal) {
-        
+
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.register", result);
             redirectAttributes.addFlashAttribute("notarioInfo", form);
             return "redirect:/juridico/registrar";
         }
-        
+
         NotarioInfo info = new NotarioInfo();
         info.setNombre(form.getNombre());
         info.setCodigo(form.getCodigo());
@@ -84,22 +82,26 @@ public class JuridicoController {
         info.setNumeroCalle(form.getNumeroCalle());
         info.setColoniaNotaria(form.getColoniaNotaria());
         info.setCodigoPostalNotaria(form.getCodigoPostalNotaria());
-        
+
         info.setUsuarioId(0l);
         info.setMunicipioId(0l);
         info.setEntidadId(0l);
-        
+
+        info.setRfc("rfc");
+        info.setCurp("curp");
+        info.setHabilitado(true);
+        info.setEntidad2("entidad2");
+
         SaveRequest<NotarioInfo> saveRequest = new SaveRequest<>();
         saveRequest.setInfo(info);
         SaveResponse<NotarioInfo> save = service.save(saveRequest);
-        
+
         return "redirect:/";
     }
-    
+
     @ModelAttribute("notarioForm")
     public NotarioForm notarioForm() {
         return new NotarioForm();
     }
-    
-}
 
+}

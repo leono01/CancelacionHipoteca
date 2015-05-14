@@ -22,23 +22,28 @@ import com.gisnet.cancelacion.persistance.domain.BitacoraCaso;
 import com.gisnet.cancelacion.persistance.repository.BitacoraCasoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
+/**
+ *
+ * @author marco-g8
+ */
 public class BitacoraCasoPersistanceServiceHandler implements BitacoraCasoPersistanceService {
-    
+
     @Autowired
     private PersistanceDomainFactory factory;
-    
+
     @Autowired
     private BitacoraCasoRepository repository;
 
     @Override
-    public FindResponse<BitacoraCasoInfo> find(FindByIdRequest event) {
-        return new FindResponse<>(repository.findOne(event.getId()).asInfo());
-    }
-
-    @Override
-    public FindResponse<BitacoraCasoInfo> find(FindByRequest<BitacoraCasoInfo, Object> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public FindResponse<BitacoraCasoInfo> find(FindByRequest event) {
+        switch (event.getKey()) {
+            case "ID":
+                if (!(event.getValue() instanceof Long)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return new FindResponse<>(repository.findOne((long) event.getValue()).asInfo());
+        }
+        throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
 
     @Override
@@ -58,7 +63,7 @@ public class BitacoraCasoPersistanceServiceHandler implements BitacoraCasoPersis
     public UpdateResponse<BitacoraCasoInfo> update(UpdateRequest<BitacoraCasoInfo> event) {
         return new UpdateResponse<>(saveOrUpdate(event.getInfo()));
     }
-    
+
     private BitacoraCasoInfo saveOrUpdate(BitacoraCasoInfo info) {
         BitacoraCaso u = factory.buildBitacoraCaso(info);
         return repository.save(u).asInfo();
@@ -68,5 +73,5 @@ public class BitacoraCasoPersistanceServiceHandler implements BitacoraCasoPersis
     public DeleteResponse<BitacoraCasoInfo> delete(DeleteRequest event) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
 }

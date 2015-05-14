@@ -19,6 +19,7 @@ package com.gisnet.cancelacion.persistance.services;
 import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.NotarioInfo;
 import com.gisnet.cancelacion.persistance.domain.Notario;
+import com.gisnet.cancelacion.persistance.repository.CasoRepository;
 import com.gisnet.cancelacion.persistance.repository.NotarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,26 +28,56 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author marco-g8
  */
 public class NotarioPersistanceServiceHandler implements NotarioPersistanceService {
-    
+
     @Autowired
     private PersistanceDomainFactory factory;
+
+    @Autowired
+    private CasoRepository casoRepository;
 
     @Autowired
     private NotarioRepository repository;
 
     @Override
-    public FindResponse<NotarioInfo> find(FindByIdRequest event) {
-        return new FindResponse<>(repository.findOne(event.getId()).asInfo());
-    }
-    
-    @Override
-    public FindResponse<NotarioInfo> find(FindByRequest<NotarioInfo, Object> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public FindResponse<NotarioInfo> find(FindByRequest event) {
+        switch (event.getKey()) {
+            case "ID":
+                if (!(event.getValue() instanceof Long)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return new FindResponse<>(repository.findOne((long) event.getValue()).asInfo());
+
+            case "numeroCaso":
+                if (!(event.getValue() instanceof String)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return new FindResponse<>(casoRepository.findByNumeroCaso((String) event.getValue()).getNotario().asInfo());
+
+            case "numeroCredito":
+                if (!(event.getValue() instanceof String)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return new FindResponse<>(casoRepository.findByNumeroCredito((String) event.getValue()).getNotario().asInfo());
+        }
+        throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
 
     @Override
     public ListResponse<NotarioInfo> list(ListRequest event) {
-        return Query.list(repository.findAll());
+        switch (event.getKey()) {
+            case "ALL":
+                return Query.list(repository.findAll());
+
+            case "entidad":
+                if (!(event.getValue() instanceof String)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return Query.list(repository.findAllByEntidad2((String) event.getValue()));
+
+            case "numeroCredito":
+                throw new UnsupportedOperationException("Not supported yet.");
+        }
+        throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
 
     @Override
@@ -61,7 +92,7 @@ public class NotarioPersistanceServiceHandler implements NotarioPersistanceServi
     public UpdateResponse<NotarioInfo> update(UpdateRequest<NotarioInfo> event) {
         return new UpdateResponse<>(saveOrUpdate(event.getInfo()));
     }
-    
+
     private NotarioInfo saveOrUpdate(NotarioInfo info) {
         Notario u = factory.buildNotario(info);
         return repository.save(u).asInfo();

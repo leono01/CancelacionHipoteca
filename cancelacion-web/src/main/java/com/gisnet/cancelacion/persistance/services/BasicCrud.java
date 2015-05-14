@@ -24,17 +24,15 @@ import com.gisnet.cancelacion.events.*;
  * @param <T>
  */
 public interface BasicCrud<T extends Info> {
-    
-    public FindResponse<T> find(FindByIdRequest event);
-    
-    public FindResponse<T> find(FindByRequest<T, Object> event);
-    
+
+    public FindResponse<T> find(FindByRequest event);
+
     public ListResponse<T> list(ListRequest event);
-    
+
     public SaveResponse<T> save(SaveRequest<T> event);
-    
+
     public UpdateResponse<T> update(UpdateRequest<T> event);
-    
+
     public DeleteResponse<T> delete(DeleteRequest event);
-    
+
 }

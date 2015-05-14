@@ -22,23 +22,28 @@ import com.gisnet.cancelacion.persistance.domain.Entidad;
 import com.gisnet.cancelacion.persistance.repository.EntidadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
+/**
+ *
+ * @author marco-g8
+ */
 public class EntidadPersistanceServiceHandler implements EntidadPersistanceService {
-    
+
     @Autowired
     private PersistanceDomainFactory factory;
-    
+
     @Autowired
     private EntidadRepository repository;
 
     @Override
-    public FindResponse<EntidadInfo> find(FindByIdRequest event) {
-        return new FindResponse<>(repository.findOne(event.getId()).asInfo());
-    }
-
-    @Override
-    public FindResponse<EntidadInfo> find(FindByRequest<EntidadInfo, Object> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public FindResponse<EntidadInfo> find(FindByRequest event) {
+        switch (event.getKey()) {
+            case "ID":
+                if (!(event.getValue() instanceof Long)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return new FindResponse<>(repository.findOne((long) event.getValue()).asInfo());
+        }
+        throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
 
     @Override
@@ -58,7 +63,7 @@ public class EntidadPersistanceServiceHandler implements EntidadPersistanceServi
     public UpdateResponse<EntidadInfo> update(UpdateRequest<EntidadInfo> event) {
         return new UpdateResponse<>(saveOrUpdate(event.getInfo()));
     }
-    
+
     private EntidadInfo saveOrUpdate(EntidadInfo info) {
         Entidad u = factory.buildEntidad(info);
         return repository.save(u).asInfo();
@@ -68,5 +73,5 @@ public class EntidadPersistanceServiceHandler implements EntidadPersistanceServi
     public DeleteResponse<EntidadInfo> delete(DeleteRequest event) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
 }

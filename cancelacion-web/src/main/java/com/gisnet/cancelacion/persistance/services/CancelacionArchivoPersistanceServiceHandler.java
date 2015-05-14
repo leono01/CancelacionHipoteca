@@ -22,23 +22,28 @@ import com.gisnet.cancelacion.persistance.domain.CancelacionArchivo;
 import com.gisnet.cancelacion.persistance.repository.CancelacionArchivoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
+/**
+ *
+ * @author marco-g8
+ */
 public class CancelacionArchivoPersistanceServiceHandler implements CancelacionArchivoPersistanceService {
-    
+
     @Autowired
     private PersistanceDomainFactory factory;
-    
+
     @Autowired
     private CancelacionArchivoRepository repository;
 
     @Override
-    public FindResponse<CancelacionArchivoInfo> find(FindByIdRequest event) {
-        return new FindResponse<>(repository.findOne(event.getId()).asInfo());
-    }
-
-    @Override
-    public FindResponse<CancelacionArchivoInfo> find(FindByRequest<CancelacionArchivoInfo, Object> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public FindResponse<CancelacionArchivoInfo> find(FindByRequest event) {
+        switch (event.getKey()) {
+            case "ID":
+                if (!(event.getValue() instanceof Long)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return new FindResponse<>(repository.findOne((long) event.getValue()).asInfo());
+        }
+        throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
 
     @Override
@@ -58,7 +63,7 @@ public class CancelacionArchivoPersistanceServiceHandler implements CancelacionA
     public UpdateResponse<CancelacionArchivoInfo> update(UpdateRequest<CancelacionArchivoInfo> event) {
         return new UpdateResponse<>(saveOrUpdate(event.getInfo()));
     }
-    
+
     private CancelacionArchivoInfo saveOrUpdate(CancelacionArchivoInfo info) {
         CancelacionArchivo u = factory.buildCancelacionArchivo(info);
         return repository.save(u).asInfo();
@@ -68,5 +73,5 @@ public class CancelacionArchivoPersistanceServiceHandler implements CancelacionA
     public DeleteResponse<CancelacionArchivoInfo> delete(DeleteRequest event) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
 }

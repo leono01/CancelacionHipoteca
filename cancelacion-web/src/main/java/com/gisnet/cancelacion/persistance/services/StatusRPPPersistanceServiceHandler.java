@@ -22,23 +22,28 @@ import com.gisnet.cancelacion.persistance.domain.StatusRPP;
 import com.gisnet.cancelacion.persistance.repository.StatusRPPRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
+/**
+ *
+ * @author marco-g8
+ */
 public class StatusRPPPersistanceServiceHandler implements StatusRPPPersistanceService {
-    
+
     @Autowired
     private PersistanceDomainFactory factory;
-    
+
     @Autowired
     private StatusRPPRepository repository;
 
     @Override
-    public FindResponse<StatusRPPInfo> find(FindByIdRequest event) {
-        return new FindResponse<>(repository.findOne(event.getId()).asInfo());
-    }
-
-    @Override
-    public FindResponse<StatusRPPInfo> find(FindByRequest<StatusRPPInfo, Object> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public FindResponse<StatusRPPInfo> find(FindByRequest event) {
+        switch (event.getKey()) {
+            case "ID":
+                if (!(event.getValue() instanceof Long)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return new FindResponse<>(repository.findOne((long) event.getValue()).asInfo());
+        }
+        throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
 
     @Override
@@ -58,7 +63,7 @@ public class StatusRPPPersistanceServiceHandler implements StatusRPPPersistanceS
     public UpdateResponse<StatusRPPInfo> update(UpdateRequest<StatusRPPInfo> event) {
         return new UpdateResponse<>(saveOrUpdate(event.getInfo()));
     }
-    
+
     private StatusRPPInfo saveOrUpdate(StatusRPPInfo info) {
         StatusRPP u = factory.buildStatusRPP(info);
         return repository.save(u).asInfo();
@@ -68,5 +73,5 @@ public class StatusRPPPersistanceServiceHandler implements StatusRPPPersistanceS
     public DeleteResponse<StatusRPPInfo> delete(DeleteRequest event) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
 }

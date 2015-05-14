@@ -22,23 +22,28 @@ import com.gisnet.cancelacion.persistance.domain.BitacoraProyecto;
 import com.gisnet.cancelacion.persistance.repository.BitacoraProyectoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
+/**
+ *
+ * @author marco-g8
+ */
 public class BitacoraProyectoPersistanceServiceHandler implements BitacoraProyectoPersistanceService {
-    
+
     @Autowired
     private PersistanceDomainFactory factory;
-    
+
     @Autowired
     private BitacoraProyectoRepository repository;
 
     @Override
-    public FindResponse<BitacoraProyectoInfo> find(FindByIdRequest event) {
-        return new FindResponse<>(repository.findOne(event.getId()).asInfo());
-    }
-
-    @Override
-    public FindResponse<BitacoraProyectoInfo> find(FindByRequest<BitacoraProyectoInfo, Object> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public FindResponse<BitacoraProyectoInfo> find(FindByRequest event) {
+        switch (event.getKey()) {
+            case "ID":
+                if (!(event.getValue() instanceof Long)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return new FindResponse<>(repository.findOne((long) event.getValue()).asInfo());
+        }
+        throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
 
     @Override
@@ -58,7 +63,7 @@ public class BitacoraProyectoPersistanceServiceHandler implements BitacoraProyec
     public UpdateResponse<BitacoraProyectoInfo> update(UpdateRequest<BitacoraProyectoInfo> event) {
         return new UpdateResponse<>(saveOrUpdate(event.getInfo()));
     }
-    
+
     private BitacoraProyectoInfo saveOrUpdate(BitacoraProyectoInfo info) {
         BitacoraProyecto u = factory.buildBitacoraProyecto(info);
         return repository.save(u).asInfo();
@@ -68,5 +73,5 @@ public class BitacoraProyectoPersistanceServiceHandler implements BitacoraProyec
     public DeleteResponse<BitacoraProyectoInfo> delete(DeleteRequest event) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
 }

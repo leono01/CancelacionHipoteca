@@ -24,6 +24,7 @@ import org.springframework.data.repository.CrudRepository;
  * @author marco-g8
  */
 public interface NotarioRepository extends CrudRepository<Notario, Long> {
-    
-}
 
+    Iterable<Notario> findAllByEntidad2(String entidad2);
+
+}

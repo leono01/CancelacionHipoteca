@@ -22,23 +22,28 @@ import com.gisnet.cancelacion.persistance.domain.Empleado;
 import com.gisnet.cancelacion.persistance.repository.EmpleadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
+/**
+ *
+ * @author marco-g8
+ */
 public class EmpleadoPersistanceServiceHandler implements EmpleadoPersistanceService {
-    
+
     @Autowired
     private PersistanceDomainFactory factory;
-    
+
     @Autowired
     private EmpleadoRepository repository;
 
     @Override
-    public FindResponse<EmpleadoInfo> find(FindByIdRequest event) {
-        return new FindResponse<>(repository.findOne(event.getId()).asInfo());
-    }
-
-    @Override
-    public FindResponse<EmpleadoInfo> find(FindByRequest<EmpleadoInfo, Object> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public FindResponse<EmpleadoInfo> find(FindByRequest event) {
+        switch (event.getKey()) {
+            case "ID":
+                if (!(event.getValue() instanceof Long)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return new FindResponse<>(repository.findOne((long) event.getValue()).asInfo());
+        }
+        throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
 
     @Override
@@ -58,7 +63,7 @@ public class EmpleadoPersistanceServiceHandler implements EmpleadoPersistanceSer
     public UpdateResponse<EmpleadoInfo> update(UpdateRequest<EmpleadoInfo> event) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
     private EmpleadoInfo saveOrUpdate(EmpleadoInfo info) {
         Empleado u = factory.buildEmpleado(info);
         return repository.save(u).asInfo();
@@ -68,5 +73,5 @@ public class EmpleadoPersistanceServiceHandler implements EmpleadoPersistanceSer
     public DeleteResponse<EmpleadoInfo> delete(DeleteRequest event) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
 }

@@ -22,23 +22,28 @@ import com.gisnet.cancelacion.persistance.domain.StatusCaso;
 import com.gisnet.cancelacion.persistance.repository.StatusCasoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
+/**
+ *
+ * @author marco-g8
+ */
 public class StatusCasoPersistanceServiceHandler implements StatusCasoPersistanceService {
-    
+
     @Autowired
     private PersistanceDomainFactory factory;
-    
+
     @Autowired
     private StatusCasoRepository repository;
 
     @Override
-    public FindResponse<StatusCasoInfo> find(FindByIdRequest event) {
-        return new FindResponse<>(repository.findOne(event.getId()).asInfo());
-    }
-
-    @Override
-    public FindResponse<StatusCasoInfo> find(FindByRequest<StatusCasoInfo, Object> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public FindResponse<StatusCasoInfo> find(FindByRequest event) {
+        switch (event.getKey()) {
+            case "ID":
+                if (!(event.getValue() instanceof Long)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return new FindResponse<>(repository.findOne((long) event.getValue()).asInfo());
+        }
+        throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
 
     @Override
@@ -58,7 +63,7 @@ public class StatusCasoPersistanceServiceHandler implements StatusCasoPersistanc
     public UpdateResponse<StatusCasoInfo> update(UpdateRequest<StatusCasoInfo> event) {
         return new UpdateResponse<>(saveOrUpdate(event.getInfo()));
     }
-    
+
     private StatusCasoInfo saveOrUpdate(StatusCasoInfo info) {
         StatusCaso u = factory.buildStatusCaso(info);
         return repository.save(u).asInfo();
@@ -68,5 +73,5 @@ public class StatusCasoPersistanceServiceHandler implements StatusCasoPersistanc
     public DeleteResponse<StatusCasoInfo> delete(DeleteRequest event) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
 }

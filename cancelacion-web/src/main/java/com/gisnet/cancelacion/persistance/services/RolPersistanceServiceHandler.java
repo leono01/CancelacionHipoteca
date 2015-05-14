@@ -22,35 +22,35 @@ import com.gisnet.cancelacion.persistance.domain.Rol;
 import com.gisnet.cancelacion.persistance.repository.RolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
+/**
+ *
+ * @author marco-g8
+ */
 public class RolPersistanceServiceHandler implements RolPersistanceService {
-    
+
     @Autowired
     private PersistanceDomainFactory factory;
-    
+
     @Autowired
     RolRepository repository;
 
     @Override
-    public FindResponse<RolInfo> find(FindByIdRequest event) {
-        return new FindResponse<>(repository.findOne(event.getId()).asInfo());
-    }
-
-    @Override
-    public FindResponse<RolInfo> find(FindByRequest<RolInfo, Object> event) {
-        Rol rol = null;
+    public FindResponse<RolInfo> find(FindByRequest event) {
         switch (event.getKey()) {
-        case "nombre":
-        case "rol":
-            if (!(event.getValue() instanceof String)) {
-                throw new IllegalArgumentException("Valor de llave incorrecto"); }
-            rol = repository.findByNombre((String) event.getValue());
-            break;
-        default:
-            throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
+            case "ID":
+                if (!(event.getValue() instanceof Long)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return new FindResponse<>(repository.findOne((long) event.getValue()).asInfo());
+
+            case "nombre":
+            case "rol":
+                if (!(event.getValue() instanceof String)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return new FindResponse<>(repository.findByNombre((String) event.getValue()).asInfo());
         }
-        
-        return new FindResponse<>(rol != null ? rol.asInfo() : null);
+        throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
 
     @Override
@@ -70,7 +70,7 @@ public class RolPersistanceServiceHandler implements RolPersistanceService {
     public UpdateResponse<RolInfo> update(UpdateRequest<RolInfo> event) {
         return new UpdateResponse<>(saveOrUpdate(event.getInfo()));
     }
-    
+
     private RolInfo saveOrUpdate(RolInfo info) {
         Rol u = factory.builRol(info);
         return repository.save(u).asInfo();
@@ -80,5 +80,5 @@ public class RolPersistanceServiceHandler implements RolPersistanceService {
     public DeleteResponse<RolInfo> delete(DeleteRequest event) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
 }
