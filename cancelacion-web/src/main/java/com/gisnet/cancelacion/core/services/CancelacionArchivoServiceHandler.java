@@ -17,23 +17,32 @@
 package com.gisnet.cancelacion.core.services;
 
 import com.gisnet.cancelacion.events.*;
-import com.gisnet.cancelacion.events.info.NotarioInfo;
+import com.gisnet.cancelacion.events.info.CancelacionArchivoInfo;
+import com.gisnet.cancelacion.persistance.services.CancelacionArchivoPersistanceService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
  * @author marco-g8
  */
-public interface NotarioService {
+public class CancelacionArchivoServiceHandler implements CancelacionArchivoService {
     
-    public FindResponse<NotarioInfo> find(FindByRequest event);
-    
-    public ListResponse<NotarioInfo> list(ListRequest event);
-    
-    public SaveResponse<NotarioInfo> save(SaveRequest<NotarioInfo> event);
-    
-    public UpdateResponse<NotarioInfo> update(UpdateRequest<NotarioInfo> event);
-    
-    public DeleteResponse<NotarioInfo> delete(DeleteRequest event);
+    @Autowired
+    private CancelacionArchivoPersistanceService service;
+
+    @Override
+    public FindResponse<CancelacionArchivoInfo> findBy(FindByRequest event) {
+        return service.find(event);
+    }
+
+    @Override
+    public ListResponse<CancelacionArchivoInfo> list(ListRequest event) {
+        return service.list(event);
+    }
+
+    @Override
+    public SaveResponse<CancelacionArchivoInfo> save(SaveRequest<CancelacionArchivoInfo> event) {
+        return service.save(event);
+    }
     
 }
-

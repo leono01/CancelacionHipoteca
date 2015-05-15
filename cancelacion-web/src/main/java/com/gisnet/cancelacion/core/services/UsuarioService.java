@@ -14,25 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.gisnet.cancelacion.persistance.repository;
+package com.gisnet.cancelacion.core.services;
 
-import com.gisnet.cancelacion.persistance.domain.Notario;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
+import com.gisnet.cancelacion.events.FindResponse;
+import com.gisnet.cancelacion.events.info.UsuarioInfo;
 
 /**
  *
  * @author marco-g8
  */
-public interface NotarioRepository extends CrudRepository<Notario, Long> {
-
-    Iterable<Notario> findAllByEntidad2(String entidad2);
-
-    @Query("select n from Notario n where n.usuario.nombreUsuario = :nombreUsuario")
-    Notario findByNombreUsuario(@Param("nombreUsuario") String nombreUsuario);
-
-    @Query("select n from Notario n where n.usuario.id = :usuarioid")
-    Notario findByUsuarioId(@Param("usuarioid") long usuarioid);
-
+public interface UsuarioService {
+    
+    public FindResponse<UsuarioInfo> findByUsername(String username);
+    
 }

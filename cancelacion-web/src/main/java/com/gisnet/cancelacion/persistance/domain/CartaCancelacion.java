@@ -23,6 +23,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 /**
@@ -49,7 +50,7 @@ public class CartaCancelacion implements Infoable<CartaCancelacionInfo>, Seriali
     }
 
     public void setId(long id) {
-        id = id;
+        this.id = id;
     }
 
     @Column(name = "CODIGO_CARTA")
@@ -61,7 +62,8 @@ public class CartaCancelacion implements Infoable<CartaCancelacionInfo>, Seriali
         this.codigoCarta = codigoCarta;
     }
 
-    @Column(name = "PDF")
+    @Column(name = "PDF", columnDefinition = "VARBINARY(MAX)")
+    @Lob
     public byte[] getPdf() {
         return pdf;
     }
@@ -70,7 +72,8 @@ public class CartaCancelacion implements Infoable<CartaCancelacionInfo>, Seriali
         this.pdf = pdf;
     }
 
-    @Column(name = "XML")
+    @Column(name = "XML", columnDefinition = "VARBINARY(MAX)")
+    @Lob
     public byte[] getXml() {
         return xml;
     }
@@ -79,6 +82,7 @@ public class CartaCancelacion implements Infoable<CartaCancelacionInfo>, Seriali
         this.xml = xml;
     }
     
+    @Override
     public CartaCancelacionInfo asInfo() {
         CartaCancelacionInfo info = new CartaCancelacionInfo();
         info.setId(id);

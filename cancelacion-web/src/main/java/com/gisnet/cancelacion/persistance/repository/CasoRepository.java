@@ -17,7 +17,9 @@
 package com.gisnet.cancelacion.persistance.repository;
 
 import com.gisnet.cancelacion.persistance.domain.Caso;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
@@ -26,9 +28,12 @@ import org.springframework.data.repository.CrudRepository;
 public interface CasoRepository extends CrudRepository<Caso, Long> {
 
     Iterable<Caso> findAllByEntidad(String entidad);
+    
+    @Query("select c from Caso c where c.notario.id = :notarioId")
+    Iterable<Caso> findAllByNotarioId(@Param("notarioId") long notarioId);
 
-    Caso findByNumeroCaso(String caso);
+    Caso findByNumeroCaso(int caso);
 
-    Caso findByNumeroCredito(String numeroCredito);
+    Caso findByNumeroCredito(int numeroCredito);
 
 }

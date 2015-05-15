@@ -44,16 +44,16 @@ public class CasoPersistanceServiceHandler implements CasoPersistanceService {
                 return new FindResponse<>(repository.findOne((long) event.getValue()).asInfo());
 
             case "numeroCaso":
-                if (!(event.getValue() instanceof String)) {
+                if (!(event.getValue() instanceof Integer)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                return new FindResponse<>(repository.findByNumeroCaso((String) event.getValue()).asInfo());
+                return new FindResponse<>(repository.findByNumeroCaso((int) event.getValue()).asInfo());
 
             case "numeroCredito":
-                if (!(event.getValue() instanceof String)) {
+                if (!(event.getValue() instanceof Integer)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                return new FindResponse<>(repository.findByNumeroCredito((String) event.getValue()).asInfo());
+                return new FindResponse<>(repository.findByNumeroCredito((int) event.getValue()).asInfo());
         }
         throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
@@ -69,6 +69,12 @@ public class CasoPersistanceServiceHandler implements CasoPersistanceService {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
                 return Query.list(repository.findAllByEntidad((String) event.getValue()));
+                
+            case "notarioId":
+                if (!(event.getValue() instanceof Long)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return Query.list(repository.findAllByNotarioId((long) event.getValue()));
         }
         throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }

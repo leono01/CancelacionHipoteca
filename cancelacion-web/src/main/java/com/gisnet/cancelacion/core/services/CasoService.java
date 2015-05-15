@@ -20,6 +20,7 @@ package com.gisnet.cancelacion.core.services;
 import com.gisnet.cancelacion.events.DeleteRequest;
 import com.gisnet.cancelacion.events.DeleteResponse;
 import com.gisnet.cancelacion.events.FindByIdRequest;
+import com.gisnet.cancelacion.events.FindByRequest;
 import com.gisnet.cancelacion.events.FindResponse;
 import com.gisnet.cancelacion.events.ListRequest;
 import com.gisnet.cancelacion.events.ListResponse;
@@ -36,7 +37,9 @@ import com.gisnet.cancelacion.events.info.CasoInfo;
 
 public interface CasoService {
 	
-	public FindResponse<CasoInfo> find(FindByIdRequest event);
+    public FindResponse<CasoInfo> find(FindByIdRequest event);
+    
+    public FindResponse<CasoInfo> find(FindByRequest event);
     
     public ListResponse<CasoInfo> list(ListRequest event);
     

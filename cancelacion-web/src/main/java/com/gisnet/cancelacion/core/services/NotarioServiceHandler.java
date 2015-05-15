@@ -16,17 +16,7 @@
  */
 package com.gisnet.cancelacion.core.services;
 
-import com.gisnet.cancelacion.events.DeleteRequest;
-import com.gisnet.cancelacion.events.DeleteResponse;
-import com.gisnet.cancelacion.events.FindByIdRequest;
-import com.gisnet.cancelacion.events.FindByRequest;
-import com.gisnet.cancelacion.events.FindResponse;
-import com.gisnet.cancelacion.events.ListRequest;
-import com.gisnet.cancelacion.events.ListResponse;
-import com.gisnet.cancelacion.events.SaveRequest;
-import com.gisnet.cancelacion.events.SaveResponse;
-import com.gisnet.cancelacion.events.UpdateRequest;
-import com.gisnet.cancelacion.events.UpdateResponse;
+import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.NotarioInfo;
 import com.gisnet.cancelacion.persistance.services.NotarioPersistanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +34,8 @@ public class NotarioServiceHandler implements NotarioService {
     }
 
     @Override
-    public FindResponse<NotarioInfo> find(FindByIdRequest event) {
-        return service.find(new FindByRequest(event.getId()));
+    public FindResponse<NotarioInfo> find(FindByRequest event) {
+        return service.find(event);
     }
 
     @Override

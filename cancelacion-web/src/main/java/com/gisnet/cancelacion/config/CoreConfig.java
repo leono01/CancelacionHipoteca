@@ -28,6 +28,16 @@ import org.springframework.context.annotation.Configuration;
 class CoreConfig {
     
     @Bean
+    CancelacionArchivoService cancelacionArchivoService() {
+        return new CancelacionArchivoServiceHandler();
+    }
+    
+    @Bean
+    CartaCancelacionService cartaCancelacionService() {
+        return new CartaCancelacionServiceHandler();
+    }
+    
+    @Bean
     NotarioService notarioService() {
         return new NotarioServiceHandler();
     }
@@ -35,6 +45,11 @@ class CoreConfig {
     @Bean
     CasoService casoService() {
         return new CasoServiceHandler();
+    }
+    
+    @Bean
+    UsuarioService usuarioService() {
+        return new UsuarioServiceHandler();
     }
 }
 

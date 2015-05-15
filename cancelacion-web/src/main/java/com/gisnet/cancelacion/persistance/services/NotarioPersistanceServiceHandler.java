@@ -51,13 +51,25 @@ public class NotarioPersistanceServiceHandler implements NotarioPersistanceServi
                 if (!(event.getValue() instanceof String)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                return new FindResponse<>(casoRepository.findByNumeroCaso((String) event.getValue()).getNotario().asInfo());
+                return new FindResponse<>(casoRepository.findByNumeroCaso((int) event.getValue()).getNotario().asInfo());
 
             case "numeroCredito":
                 if (!(event.getValue() instanceof String)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                return new FindResponse<>(casoRepository.findByNumeroCredito((String) event.getValue()).getNotario().asInfo());
+                return new FindResponse<>(casoRepository.findByNumeroCredito((int) event.getValue()).getNotario().asInfo());
+
+            case "nombreUsuario":
+                if (!(event.getValue() instanceof String)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return new FindResponse<>(repository.findByNombreUsuario((String) event.getValue()).asInfo());
+                
+            case "usuarioId":
+                if (!(event.getValue() instanceof Long)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return new FindResponse<>(repository.findByUsuarioId((long) event.getValue()).asInfo());
         }
         throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
@@ -73,9 +85,6 @@ public class NotarioPersistanceServiceHandler implements NotarioPersistanceServi
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
                 return Query.list(repository.findAllByEntidad2((String) event.getValue()));
-
-            case "numeroCredito":
-                throw new UnsupportedOperationException("Not supported yet.");
         }
         throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
