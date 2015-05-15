@@ -39,8 +39,8 @@ import javax.persistence.TemporalType;
 public class Caso implements Infoable<CasoInfo>, Serializable {
     
     private long id;
-    private String numeroCredito;
-    private String numeroCaso;
+    private int numeroCredito; // int
+    private int numeroCaso; // int
     private Date fechaCreacion;
     private Date fechaCierre;
     private String nombreAcreditado;
@@ -70,20 +70,20 @@ public class Caso implements Infoable<CasoInfo>, Serializable {
     }
 
     @Column(name = "NUMERO_DE_CREDITO")
-    public String getNumeroCredito() {
+    public int getNumeroCredito() {
         return numeroCredito;
     }
 
-    public void setNumeroCredito(String numeroCredito) {
+    public void setNumeroCredito(int numeroCredito) {
         this.numeroCredito = numeroCredito;
     }
 
     @Column(name = "NUMERO_DE_CASO")
-    public String getNumeroCaso() {
+    public int getNumeroCaso() {
         return numeroCaso;
     }
 
-    public void setNumeroCaso(String numeroCaso) {
+    public void setNumeroCaso(int numeroCaso) {
         this.numeroCaso = numeroCaso;
     }
 

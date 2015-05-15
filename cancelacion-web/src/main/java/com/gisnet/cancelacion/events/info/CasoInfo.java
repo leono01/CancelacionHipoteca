@@ -26,8 +26,8 @@ import java.util.Date;
 public class CasoInfo implements Info {
     
     private long id;
-    private String numeroCredito;
-    private String numeroCaso;
+    private int numeroCredito;
+    private int numeroCaso;
     private Date fechaCreacion;
     private Date fechaCierre;
     private String nombreAcreditado;
@@ -53,19 +53,19 @@ public class CasoInfo implements Info {
         this.id = id;
     }
 
-    public String getNumeroCredito() {
+    public int getNumeroCredito() {
         return numeroCredito;
     }
 
-    public void setNumeroCredito(String numeroCredito) {
+    public void setNumeroCredito(int numeroCredito) {
         this.numeroCredito = numeroCredito;
     }
 
-    public String getNumeroCaso() {
+    public int getNumeroCaso() {
         return numeroCaso;
     }
 
-    public void setNumeroCaso(String numeroCaso) {
+    public void setNumeroCaso(int numeroCaso) {
         this.numeroCaso = numeroCaso;
     }
 
