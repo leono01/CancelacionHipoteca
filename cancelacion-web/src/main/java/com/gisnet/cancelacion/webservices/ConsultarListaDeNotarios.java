@@ -44,16 +44,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 
 /**
  *
  * @author leonel
  */
-public class ConsultarListaDeNotarios {
+public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
 
-	//@Autowired
-    //private NotarioService service;
+	@Autowired
+    private NotarioService service;
 	
     
     /**
@@ -113,36 +114,19 @@ public class ConsultarListaDeNotarios {
     
     	List<CNotario> notarios = new ArrayList<CNotario>();
     	
-        /**ListRequest lr = new ListRequest();
+        ListRequest lr = new ListRequest();
         ListResponse<NotarioInfo> list = service.list(lr);
        
         for(NotarioInfo ni : list.getList()){
         	CNotario cn = new CNotario();
         	cn.setNombreNotario(ni.getNombre());
         	notarios.add(cn);
-        }**/
+        }
         
-        /**for (String nombre : list) {
-        	 
-        	if (nombre.equals("Pedro")) {
-        	 
-        	lista.remove("Pedro");
-        	}
-        	 
-        }**/
-        //notarios = list.getList();
-      
-        
-        /*try {
-         org.hibernate.Transaction tx = session.beginTransaction();
-         Query q = session.createQuery("from CNotario as cn where cn.notarioId=" + numeroDeCredito);
-         cn = (List<CNotario>) q.list();
-         } catch (Exception e) {
-         e.printStackTrace();
-         }*/
+
         
         
-        boolean esNumero= false;
+        /**boolean esNumero= false;
         
         if (numeroDeCredito > 0 && numeroDeCredito <=99999999){
             esNumero = true;
@@ -192,9 +176,7 @@ public class ConsultarListaDeNotarios {
                 notarios.add(n1);
                 System.out.println("***** No fue numero o no fue clave");
            
-        }
-
-        //return list.getList();
+        }**/
         return notarios;
     }
         
