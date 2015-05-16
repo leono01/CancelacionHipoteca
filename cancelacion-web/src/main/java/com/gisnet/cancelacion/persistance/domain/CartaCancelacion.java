@@ -18,6 +18,8 @@ package com.gisnet.cancelacion.persistance.domain;
 
 import com.gisnet.cancelacion.events.info.CartaCancelacionInfo;
 import java.io.Serializable;
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,6 +27,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -38,6 +42,7 @@ public class CartaCancelacion implements Infoable<CartaCancelacionInfo>, Seriali
     private String codigoCarta;
     private byte[] pdf;
     private byte[] xml;
+    private Date fechaEmisionCarta;
 
     public CartaCancelacion() {
     }
@@ -80,6 +85,16 @@ public class CartaCancelacion implements Infoable<CartaCancelacionInfo>, Seriali
 
     public void setXml(byte[] xml) {
         this.xml = xml;
+    }
+    
+    @Column(name = "FECHA_EMISION_CARTA")
+    @Temporal(TemporalType.DATE)
+    public Date getFechaEmisionCarta() {
+        return fechaEmisionCarta;
+    }
+
+    public void setFechaEmisionCarta(Date fechaEmisionCarta) {
+        this.fechaEmisionCarta = fechaEmisionCarta;
     }
     
     @Override

@@ -16,6 +16,8 @@
  */
 package com.gisnet.cancelacion.events.info;
 
+import java.util.Date;
+
 import com.gisnet.cancelacion.events.Info;
 
 /**
@@ -28,8 +30,17 @@ public class CartaCancelacionInfo implements Info {
     private String codigoCarta;
     private byte[] pdf;
     private byte[] xml;
+    private Date fechaEmisionCarta;
 
-    public CartaCancelacionInfo() {
+    public Date getFechaEmisionCarta() {
+		return fechaEmisionCarta;
+	}
+
+	public void setFechaEmisionCarta(Date fechaEmisionCarta) {
+		this.fechaEmisionCarta = fechaEmisionCarta;
+	}
+
+	public CartaCancelacionInfo() {
     }
 
     public long getId() {
