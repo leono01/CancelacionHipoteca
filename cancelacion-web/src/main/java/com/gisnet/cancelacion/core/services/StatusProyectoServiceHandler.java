@@ -14,29 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.gisnet.cancelacion.core.services;
 
 import com.gisnet.cancelacion.events.*;
-import com.gisnet.cancelacion.events.info.StatusCasoInfo;
+import com.gisnet.cancelacion.events.info.StatusProyectoInfo;
+import com.gisnet.cancelacion.persistance.services.StatusProyectoPersistanceService;
+import org.springframework.beans.factory.annotation.Autowired;
 
-/**
-*
-* @author leonel
-*/
+public class StatusProyectoServiceHandler implements StatusProyectoService {
 
-public interface StatusCasoService {
-	
-    public FindResponse<StatusCasoInfo> find(FindByIdRequest event);
-    
-    public FindResponse<StatusCasoInfo> find(FindByRequest event);
-    
-    public ListResponse<StatusCasoInfo> list(ListRequest event);
-    
-    public SaveResponse<StatusCasoInfo> save(SaveRequest<StatusCasoInfo> event);
-    
-    public UpdateResponse<StatusCasoInfo> update(UpdateRequest<StatusCasoInfo> event);
-    
-    public DeleteResponse<StatusCasoInfo> delete(DeleteRequest event);
+    @Autowired
+    private StatusProyectoPersistanceService service;
+
+    @Override
+    public FindResponse<StatusProyectoInfo> find(FindByRequest event) {
+        return service.find(event);
+    }
+
+    @Override
+    public ListResponse<StatusProyectoInfo> list(ListRequest event) {
+        return service.list(event);
+    }
 
 }

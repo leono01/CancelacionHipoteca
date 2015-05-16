@@ -25,4 +25,6 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface StatusNotarioRepository extends CrudRepository<StatusNotario, Long> {
     
+    StatusNotario findByClave(int clave);
+    
 }

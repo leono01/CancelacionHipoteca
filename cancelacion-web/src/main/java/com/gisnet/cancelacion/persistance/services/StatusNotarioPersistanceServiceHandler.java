@@ -17,25 +17,21 @@
 package com.gisnet.cancelacion.persistance.services;
 
 import com.gisnet.cancelacion.events.*;
-import com.gisnet.cancelacion.events.info.StatusProyectoInfo;
-import com.gisnet.cancelacion.persistance.domain.StatusProyecto;
-import com.gisnet.cancelacion.persistance.repository.StatusProyectoRepository;
+import com.gisnet.cancelacion.events.info.StatusNotarioInfo;
+import com.gisnet.cancelacion.persistance.domain.StatusNotario;
+import com.gisnet.cancelacion.persistance.repository.StatusNotarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-/**
- *
- * @author marco-g8
- */
-public class StatusProyectoPersistanceServiceHandler implements StatusProyectoPersistanceService {
+public class StatusNotarioPersistanceServiceHandler implements StatusNotarioPersistanceService {
 
     @Autowired
     private PersistanceDomainFactory factory;
 
     @Autowired
-    private StatusProyectoRepository repository;
+    private StatusNotarioRepository repository;
 
     @Override
-    public FindResponse<StatusProyectoInfo> find(FindByRequest event) {
+    public FindResponse<StatusNotarioInfo> find(FindByRequest event) {
         switch (event.getKey()) {
             case "ID":
                 if (!(event.getValue() instanceof Long)) {
@@ -46,7 +42,7 @@ public class StatusProyectoPersistanceServiceHandler implements StatusProyectoPe
                 if (!(event.getValue() instanceof Integer)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                StatusProyecto status = repository.findByClave((int) event.getValue());
+                StatusNotario status = repository.findByClave((int) event.getValue());
                 return new FindResponse<>(status != null ? status.asInfo() : null);
             }
         }
@@ -54,12 +50,12 @@ public class StatusProyectoPersistanceServiceHandler implements StatusProyectoPe
     }
 
     @Override
-    public ListResponse<StatusProyectoInfo> list(ListRequest event) {
+    public ListResponse<StatusNotarioInfo> list(ListRequest event) {
         return Query.list(repository.findAll());
     }
 
     @Override
-    public SaveResponse<StatusProyectoInfo> save(SaveRequest<StatusProyectoInfo> event) {
+    public SaveResponse<StatusNotarioInfo> save(SaveRequest<StatusNotarioInfo> event) {
         if (event.getInfo().getId() > 0) {
             throw new IllegalArgumentException("ID invalido");
         }
@@ -67,17 +63,17 @@ public class StatusProyectoPersistanceServiceHandler implements StatusProyectoPe
     }
 
     @Override
-    public UpdateResponse<StatusProyectoInfo> update(UpdateRequest<StatusProyectoInfo> event) {
+    public UpdateResponse<StatusNotarioInfo> update(UpdateRequest<StatusNotarioInfo> event) {
         return new UpdateResponse<>(saveOrUpdate(event.getInfo()));
     }
 
-    private StatusProyectoInfo saveOrUpdate(StatusProyectoInfo info) {
-        StatusProyecto u = factory.buildStatusProyecto(info);
+    private StatusNotarioInfo saveOrUpdate(StatusNotarioInfo info) {
+        StatusNotario u = factory.buildStatusNotario(info);
         return repository.save(u).asInfo();
     }
 
     @Override
-    public DeleteResponse<StatusProyectoInfo> delete(DeleteRequest event) {
+    public DeleteResponse<StatusNotarioInfo> delete(DeleteRequest event) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

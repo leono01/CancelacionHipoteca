@@ -25,4 +25,6 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface StatusCasoRepository extends CrudRepository<StatusCaso, Long> {
     
+    StatusCaso findByClave(int clave);
+    
 }

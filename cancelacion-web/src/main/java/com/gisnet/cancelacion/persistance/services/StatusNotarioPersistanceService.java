@@ -14,18 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.gisnet.cancelacion.persistance.repository;
+package com.gisnet.cancelacion.persistance.services;
 
-import com.gisnet.cancelacion.persistance.domain.StatusRPP;
-import org.springframework.data.repository.CrudRepository;
+import com.gisnet.cancelacion.events.info.StatusNotarioInfo;
 
 /**
  *
  * @author marco-g8
  */
-public interface StatusRPPRepository extends CrudRepository<StatusRPP, Long> {
-
-    StatusRPP findByClave(int clave);
-;
-
+public interface StatusNotarioPersistanceService extends BasicCrud<StatusNotarioInfo> {
+    
 }

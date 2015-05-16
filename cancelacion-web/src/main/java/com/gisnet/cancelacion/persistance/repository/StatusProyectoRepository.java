@@ -24,5 +24,7 @@ import org.springframework.data.repository.CrudRepository;
  * @author marco-g8
  */
 public interface StatusProyectoRepository extends CrudRepository<StatusProyecto, Long> {
-    
+
+    StatusProyecto findByClave(int clave);
+
 }

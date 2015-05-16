@@ -26,40 +26,59 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 class CoreConfig {
-    
+
     @Bean
     CancelacionArchivoService cancelacionArchivoService() {
         return new CancelacionArchivoServiceHandler();
     }
-    
+
     @Bean
     CartaCancelacionService cartaCancelacionService() {
         return new CartaCancelacionServiceHandler();
     }
-    
-    @Bean
-    EmpleadoService empleadoService() {
-        return new EmpleadoServiceHandler();
-    }
-    
-    @Bean
-    NotarioService notarioService() {
-        return new NotarioServiceHandler();
-    }
-    
+
     @Bean
     CasoService casoService() {
         return new CasoServiceHandler();
     }
-    
+
+    @Bean
+    EmpleadoService empleadoService() {
+        return new EmpleadoServiceHandler();
+    }
+
+    @Bean
+    NotarioService notarioService() {
+        return new NotarioServiceHandler();
+    }
+
     @Bean
     ProyectoCancelacionService proyectoCancelacionService() {
         return new ProyectoCancelacionServiceHandler();
     }
-    
+
+    @Bean
+    StatusCasoService statusCasoService() {
+        return new StatusCasoServiceHandler();
+    }
+
+    @Bean
+    StatusNotarioService statusNotarioService() {
+        return new StatusNotarioServiceHandler();
+    }
+
+    @Bean
+    StatusProyectoService statusProyectoService() {
+        return new StatusProyectoServiceHandler();
+    }
+
+    @Bean
+    StatusRPPService statusRPPService() {
+        return new StatusRPPServiceHandler();
+    }
+
     @Bean
     UsuarioService usuarioService() {
         return new UsuarioServiceHandler();
     }
 }
-

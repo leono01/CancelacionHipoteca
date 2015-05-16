@@ -14,29 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.gisnet.cancelacion.core.services;
 
 import com.gisnet.cancelacion.events.*;
-import com.gisnet.cancelacion.events.info.StatusCasoInfo;
+import com.gisnet.cancelacion.events.info.StatusNotarioInfo;
+import com.gisnet.cancelacion.persistance.services.StatusNotarioPersistanceService;
+import org.springframework.beans.factory.annotation.Autowired;
 
-/**
-*
-* @author leonel
-*/
+public class StatusNotarioServiceHandler implements StatusNotarioService {
 
-public interface StatusCasoService {
-	
-    public FindResponse<StatusCasoInfo> find(FindByIdRequest event);
-    
-    public FindResponse<StatusCasoInfo> find(FindByRequest event);
-    
-    public ListResponse<StatusCasoInfo> list(ListRequest event);
-    
-    public SaveResponse<StatusCasoInfo> save(SaveRequest<StatusCasoInfo> event);
-    
-    public UpdateResponse<StatusCasoInfo> update(UpdateRequest<StatusCasoInfo> event);
-    
-    public DeleteResponse<StatusCasoInfo> delete(DeleteRequest event);
+    @Autowired
+    private StatusNotarioPersistanceService service;
+
+    @Override
+    public FindResponse<StatusNotarioInfo> find(FindByRequest event) {
+        return service.find(event);
+    }
+
+    @Override
+    public ListResponse<StatusNotarioInfo> list(ListRequest event) {
+        return service.list(event);
+    }
 
 }

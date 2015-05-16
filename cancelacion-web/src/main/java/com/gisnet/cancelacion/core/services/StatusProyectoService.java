@@ -14,18 +14,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.gisnet.cancelacion.persistance.repository;
+package com.gisnet.cancelacion.core.services;
 
-import com.gisnet.cancelacion.persistance.domain.StatusRPP;
-import org.springframework.data.repository.CrudRepository;
+import com.gisnet.cancelacion.events.*;
+import com.gisnet.cancelacion.events.info.StatusProyectoInfo;
 
 /**
  *
  * @author marco-g8
  */
-public interface StatusRPPRepository extends CrudRepository<StatusRPP, Long> {
+public interface StatusProyectoService {
 
-    StatusRPP findByClave(int clave);
-;
+    public FindResponse<StatusProyectoInfo> find(FindByRequest event);
+
+    public ListResponse<StatusProyectoInfo> list(ListRequest event);
 
 }

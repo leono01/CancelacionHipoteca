@@ -42,6 +42,13 @@ public class StatusCasoPersistanceServiceHandler implements StatusCasoPersistanc
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
                 return new FindResponse<>(repository.findOne((long) event.getValue()).asInfo());
+            case "clave": {
+                if (!(event.getValue() instanceof Integer)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                StatusCaso status = repository.findByClave((int) event.getValue());
+                return new FindResponse<>(status != null ? status.asInfo() : null);
+            }
         }
         throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
