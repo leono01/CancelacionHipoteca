@@ -17,9 +17,12 @@
 package com.gisnet.cancelacion.webservices;
 
 import com.gisnet.cancelacion.core.services.CasoService;
+import com.gisnet.cancelacion.events.FindByRequest;
+import com.gisnet.cancelacion.events.FindResponse;
 import com.gisnet.cancelacion.events.SaveRequest;
 import com.gisnet.cancelacion.events.SaveResponse;
 import com.gisnet.cancelacion.events.info.CasoInfo;
+import com.gisnet.cancelacion.events.info.StatusCasoInfo;
 import com.gisnet.cancelacion.webservices.dto.CCaso;
 import com.gisnet.cancelacion.webservices.dto.InfoDeActualizacion;
 import com.gisnet.cancelacion.webservices.dto.InfoDeConsulta;
@@ -34,6 +37,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 
 
@@ -41,9 +45,9 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author leonel
  */
-public class RegistraActualizaYConsultaCaso {
-	//@Autowired
-    //private CasoService service;
+public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport {
+	@Autowired
+    private CasoService service;
 
     public StatusOperacion registraCaso(int numeroDeCredito,
                                         int numeroDeCaso,
@@ -55,7 +59,7 @@ public class RegistraActualizaYConsultaCaso {
 
         Date fechaDeCreacion = new Date();
 
-        if(numeroDeCaso != (int) numeroDeCaso || numeroDeCredito != (int) numeroDeCredito){
+        /**if(numeroDeCaso != (int) numeroDeCaso || numeroDeCredito != (int) numeroDeCredito){
         
             so.setCodigo(2);
             so.setDescripcion("Error de datos de entrada");
@@ -77,18 +81,37 @@ public class RegistraActualizaYConsultaCaso {
 
             caso.setNombreAcreditado(nombreAcreditado);
 
-            /**SaveRequest<CasoInfo> saveRequest = new SaveRequest<>();
+            SaveRequest<CasoInfo> saveRequest = new SaveRequest<>();
             saveRequest.setInfo(caso);
-            SaveResponse<CasoInfo> save = service.save(saveRequest);**/
+            SaveResponse<CasoInfo> save = service.save(saveRequest);
             
             System.out.println(caso.getNumeroDeCaso());
             so.setCodigo(0);
             so.setDescripcion("Caso creado con éxito");
         }
 
-        }
-        
+        }**/
+        CasoInfo caso = new CasoInfo();
 
+        caso.setNombreAcreditado(nombreAcreditado);
+        caso.setNumeroCaso(numeroDeCaso);
+        caso.setNumeroCredito(numeroDeCredito);
+        caso.setFechaCreacion(fechaDeCreacion);
+        
+        try{
+        SaveRequest<CasoInfo> saveRequest = new SaveRequest<>();
+        saveRequest.setInfo(caso);
+        SaveResponse<CasoInfo> save = service.save(saveRequest);
+        so.setCodigo(0);
+        so.setDescripcion("Caso registrado con éxito");
+        
+    	}catch(Exception e){
+    		so.setCodigo(1);
+    		so.setDescripcion("No se hizo registro del caso");
+    		System.out.println(e);
+    	}
+        
+        
         return so;
 
     }
@@ -106,7 +129,7 @@ public class RegistraActualizaYConsultaCaso {
         InfoDeActualizacion ida = new InfoDeActualizacion();
 
         
-        CCaso caso = new CCaso();
+        /**CCaso caso = new CCaso();
 
         caso.setCasoId(1);
         caso.setNumeroDeCredito(numeroDeCredito);
@@ -121,31 +144,22 @@ public class RegistraActualizaYConsultaCaso {
         ida.setNumeroDeCaso(numeroDeCaso);
         ida.setNumeroDeCredito(numeroDeCredito);
 
-        System.out.println(caso);
+        System.out.println(caso);**/
+        try{
+        FindByRequest fbr = new FindByRequest("numeroCaso",numeroDeCaso);
+        FindResponse<CasoInfo> response = service.find(fbr);
         
+        response.getInfo().setNombreAcreditado("algo");
         
-        //Se actualizan los dos datos de entrada en la BD
-        
-
-        //Enviar el status del registro según corresponda
+        ida.setCodigo(0);
+        ida.setDescripcion("Se actualizó correctamente el caso.");
+        }catch(Exception e){
+        	ida.setCodigo(4);
+        	ida.setDescripcion("No se actualizó la información del caso");
+        	System.out.println(e);
+        }
         return ida;
     }
-
-    /**
-     *
-     * @param numeroDeCredito
-     * @param numeroDeCaso
-     * @return el estado de la consulta
-     */
-    /*@WebMethod(operationName = "consultaCaso")
-    public List<CCaso> consultaCaso(    @WebParam(name = "numeroDeCredito") String numeroDeCredito,
-    @WebParam(name = "numeroDeCaso") String numeroDeCaso
-    ) {
-    List<CCaso> notarios = null;
-    CCasoHelper cch = new CCasoHelper();
-    notarios = cch.queryConsultaCaso(numeroDeCredito,numeroDeCaso);
-    return notarios;
-    }*/
     
     
     
@@ -153,58 +167,26 @@ public class RegistraActualizaYConsultaCaso {
                                        	int numeroDeCaso
     ) {
         InfoDeConsulta idc = new InfoDeConsulta();
-        Date fechaDeActualizacion = new Date();
 
-        int dias = -15;
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(fechaDeActualizacion);
-        calendar.add(Calendar.DAY_OF_YEAR, dias);
-
-        Date fechaDeEmision;
-        fechaDeEmision = calendar.getTime();
-
-        String f1;
-        String f2;
-
-        DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
-
-        f1 = df.format(fechaDeActualizacion);
-        f2 = df.format(fechaDeEmision);
-
-        System.out.println(f1);
-        System.out.println(f2);
-        
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-
-        try {
-            Date ffda = formatter.parse(f1);
-            Date ffe = formatter.parse(f2);
- 
-            System.out.println(formatter.format(ffda));
-            System.out.println(formatter.format(ffe));
-            
-            idc.setNumeroDeCaso(numeroDeCaso);
-            idc.setNumeroDeCredito(numeroDeCredito);
-            idc.setNumeroDeFolio("43HG5K3H4G5KJH");
-            idc.setCartaDeCancelacion("CARTA DE CANCELACION");
-            idc.setStatus(20);
-            idc.setFechaDeActualizacion(fechaDeActualizacion);
-            idc.setFechaDeEmisionDeCarta(fechaDeEmision);
-        } catch (Exception ex) {
-            Logger.getLogger(CCaso.class.getName()).log(Level.SEVERE, null, ex);
-        }
         return idc;
     }
     
+    
+    
     public StatusCaso estadoDelCaso (int numeroDeCaso){
     	StatusCaso sc = new StatusCaso();
+    	try{
+    	FindByRequest fbr = new FindByRequest("numeroCaso",numeroDeCaso);
+        FindResponse<CasoInfo> response = service.find(fbr);
     	
-    	if(numeroDeCaso > 0 && numeroDeCaso <= 99999999){
-			sc.setStatus(1);
-			sc.setDescripcion("El caso se ha creado");
-			sc.setFechaActualizacion(new Date());
-		}
+    	StatusCasoInfo sci = response.getInfo().getStatusCaso();
+			sci.getClave();
+			sci.getNombre();
+			sci.getDescripcion();
+    	}catch(Exception e){
+    		
+    		System.out.println(e);
+    	}
     	return sc;
     }
 }

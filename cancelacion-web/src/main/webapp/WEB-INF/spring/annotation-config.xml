@@ -10,5 +10,6 @@
     
     <bean class="com.gisnet.cancelacion.config.CoreConfig"/>
     <bean class="com.gisnet.cancelacion.config.PersistanceConfig"/>
+    <bean class="com.gisnet.cancelacion.config.WebServicesConfig"/>
     
 </beans>

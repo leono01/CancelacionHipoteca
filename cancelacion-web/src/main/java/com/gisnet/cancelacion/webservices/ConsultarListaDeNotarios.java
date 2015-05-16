@@ -17,6 +17,8 @@
 package com.gisnet.cancelacion.webservices;
 
 import com.gisnet.cancelacion.core.services.NotarioService;
+import com.gisnet.cancelacion.events.FindByRequest;
+import com.gisnet.cancelacion.events.FindResponse;
 import com.gisnet.cancelacion.events.ListRequest;
 import com.gisnet.cancelacion.events.ListResponse;
 import com.gisnet.cancelacion.events.SaveRequest;
@@ -184,7 +186,7 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
 
         String entidad = "";
 
-        if (numeroDeCredito > 0 && numeroDeCredito <= 999999999) {
+        /**if (numeroDeCredito > 0 && numeroDeCredito <= 999999999) {
 
             if (numeroDeCredito >= 0 && numeroDeCredito <= 30000) {
                 entidad = "CH";
@@ -287,8 +289,15 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
 
         }else{
             entidad = "Error en la longitud del número de crédito. No más de 9 digitos.";
-        }
+        }**/
         
+        FindByRequest fbr = new FindByRequest("numeroCredito",numeroDeCredito);
+        FindResponse<NotarioInfo> response = service.find(fbr);
+        
+        //List <NotarioInfo> ls = response.getList();
+        NotarioInfo notario = response.getInfo();
+        
+        entidad = notario.getEntidad2();
         return entidad;
     }
 
