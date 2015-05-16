@@ -101,6 +101,7 @@ public class CartaCancelacion implements Infoable<CartaCancelacionInfo>, Seriali
         info.setCodigoCarta(codigoCarta);
         info.setPdf(pdf);
         info.setXml(xml);
+        info.setFechaEmisionCarta(fechaEmisionCarta);
         return info;
     }
 }

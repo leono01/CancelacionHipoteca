@@ -192,6 +192,7 @@ public class PersistanceDomainFactory {
         b.setCodigoCarta(info.getCodigoCarta());
         b.setPdf(info.getPdf());
         b.setXml(info.getXml());
+        b.setFechaEmisionCarta(info.getFechaEmisionCarta());
         return b;
     }
     
