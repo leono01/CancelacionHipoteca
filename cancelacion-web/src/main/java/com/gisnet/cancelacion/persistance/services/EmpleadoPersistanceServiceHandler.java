@@ -42,13 +42,32 @@ public class EmpleadoPersistanceServiceHandler implements EmpleadoPersistanceSer
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
                 return new FindResponse<>(repository.findOne((long) event.getValue()).asInfo());
+            case "nombreUsuario": {
+                if (!(event.getValue() instanceof String)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                Empleado empleado = repository.findByNombreUsuario((String) event.getValue());
+                return new FindResponse<>(empleado != null ? empleado.asInfo() : null);
+            }
+                
+            case "usuarioId": {
+                if (!(event.getValue() instanceof Long)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                Empleado empleado = repository.findByUsuarioId((long) event.getValue());
+                return new FindResponse<>(empleado != null ? empleado.asInfo() : null);
+            }
         }
         throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
 
     @Override
     public ListResponse<EmpleadoInfo> list(ListRequest event) {
-        return Query.list(repository.findAll());
+        switch (event.getKey()) {
+            case "ALL":
+                return Query.list(repository.findAll());
+        }
+        throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
 
     @Override

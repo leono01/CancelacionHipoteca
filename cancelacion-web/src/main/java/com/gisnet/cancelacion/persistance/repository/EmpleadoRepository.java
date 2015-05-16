@@ -17,12 +17,20 @@
 package com.gisnet.cancelacion.persistance.repository;
 
 import com.gisnet.cancelacion.persistance.domain.Empleado;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
  * @author marco-g8
  */
 public interface EmpleadoRepository extends CrudRepository<Empleado, Long> {
+    
+    @Query("select n from Empleado n where n.usuario.nombreUsuario = :nombreUsuario")
+    Empleado findByNombreUsuario(@Param("nombreUsuario") String nombreUsuario);
+    
+    @Query("select n from Empleado n where n.usuario.id = :usuarioid")
+    Empleado findByUsuarioId(@Param("usuarioid") long usuarioid);
     
 }

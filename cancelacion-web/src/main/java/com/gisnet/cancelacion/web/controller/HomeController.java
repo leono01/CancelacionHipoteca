@@ -44,7 +44,7 @@ public class HomeController {
         List<String> mensajes = new ArrayList<>();
         //mensajes.add("danger::prueba mensaje");
         //mensajes.add("success::prueba mensaje");
-        mensajes.add("info::prueba mensaje");
+        //mensajes.add("info::prueba mensaje");
         //mensajes.add("warning::prueba mensaje");
         model.addAttribute("mensajes", mensajes);
         
@@ -52,7 +52,7 @@ public class HomeController {
             return juridico.index(model, principal);
         }
         else if (request.isUserInRole("ROLE_NOTARIO")) {
-            return notario.index();
+            return notario.index(model, principal);
         }
         else {
             System.err.println("rol desconocido");

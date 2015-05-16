@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 GISNET
+ * Copyright (C) 2015 marco-g8
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,27 +17,39 @@
 package com.gisnet.cancelacion.core.services;
 
 import com.gisnet.cancelacion.events.*;
-import com.gisnet.cancelacion.events.info.UsuarioInfo;
-import com.gisnet.cancelacion.persistance.services.UsuarioPersistanceService;
+import com.gisnet.cancelacion.events.info.EmpleadoInfo;
+import com.gisnet.cancelacion.persistance.services.EmpleadoPersistanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-/**
- *
- * @author marco-g8
- */
-public class UsuarioServiceHandler implements UsuarioService {
+
+public class EmpleadoServiceHandler implements EmpleadoService {
     
     @Autowired
-    private UsuarioPersistanceService service;
+    private EmpleadoPersistanceService service;
 
     @Override
-    public FindResponse<UsuarioInfo> findByUsername(String username) {
-        return service.find(new FindByRequest("nombreUsuario", username));
+    public FindResponse<EmpleadoInfo> find(FindByRequest event) {
+        return service.find(event);
     }
 
     @Override
-    public ListResponse<UsuarioInfo> list(ListRequest event) {
+    public ListResponse<EmpleadoInfo> list(ListRequest event) {
         return service.list(event);
+    }
+
+    @Override
+    public SaveResponse<EmpleadoInfo> save(SaveRequest<EmpleadoInfo> event) {
+        return service.save(event);
+    }
+
+    @Override
+    public UpdateResponse<EmpleadoInfo> update(UpdateRequest<EmpleadoInfo> event) {
+        return service.update(event);
+    }
+
+    @Override
+    public DeleteResponse<EmpleadoInfo> delete(DeleteRequest event) {
+        return service.delete(event);
     }
     
 }

@@ -38,6 +38,11 @@ class CoreConfig {
     }
     
     @Bean
+    EmpleadoService empleadoService() {
+        return new EmpleadoServiceHandler();
+    }
+    
+    @Bean
     NotarioService notarioService() {
         return new NotarioServiceHandler();
     }
@@ -45,6 +50,11 @@ class CoreConfig {
     @Bean
     CasoService casoService() {
         return new CasoServiceHandler();
+    }
+    
+    @Bean
+    ProyectoCancelacionService proyectoCancelacionService() {
+        return new ProyectoCancelacionServiceHandler();
     }
     
     @Bean

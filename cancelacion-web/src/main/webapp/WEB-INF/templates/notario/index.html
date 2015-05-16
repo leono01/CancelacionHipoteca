@@ -51,7 +51,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div th:replace="layout/smartadmin::fr-notificaciones"></div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <div class="jarviswidget jarviswidget-color-orange" id="wid-id-0" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+                            <div class="jarviswidget jarviswidget-color-red" id="wid-id-0" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
                                 <header>
                                     <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
                                     <h2>Casos pendientes</h2>
@@ -69,29 +69,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>000000000</td>
-                                                <td>00000000000</td>
-                                                <td>nombre acreditado</td>
-                                                <td><a th:href="@{/notario/ver}">url</a></td>
-                                                <td>01/04/2015</td>
-                                                <td>estado</td>
+                                            <tr th:each="caso : ${casos}" th:object="${caso}">
+                                                <td th:text="*{numeroCaso}">000000000</td>
+                                                <td th:text="*{numeroCredito}">00000000000</td>
+                                                <td th:text="*{nombreAcreditado}">nombre acreditado</td>
+                                                <td><a th:href="@{/notario/caso/{numeroCaso}(numeroCaso=*{numeroCaso})}">url</a></td>
+                                                <td th:text="*{fechaCreacion}">01/04/2015</td>
+                                                <td th:text="*{statusCaso.nombre}">estado</td>
                                             </tr>
-                                            <tr>
-                                                <td>000000000</td>
-                                                <td>00000000000</td>
-                                                <td>nombre acreditado</td>
-                                                <td><a th:href="@{/notario/ver}">url</a></td>
-                                                <td>01/04/2015</td>
-                                                <td>estado</td>
-                                            </tr>
-                                            <tr>
-                                                <td>000000000</td>
-                                                <td>00000000000</td>
-                                                <td>nombre acreditado</td>
-                                                <td><a th:href="@{/notario/ver}">url</a></td>
-                                                <td>01/04/2015</td>
-                                                <td>estado</td>
+                                            <tr th:if="${casos.isEmpty()}">
+                                                <td colspan="6">Sin casos pendientes</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -104,12 +91,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <div class="jarviswidget" id="wid-id-1" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
                                 <header>
                                     <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
-                                    <h2>Subir archivo</h2>
+                                    <h2>Subir carta cancelacion</h2>
                                 </header>
                                 <div role="content" class="widget-body">
-                                    <form method="POST" enctype="multipart/form-data" action="#" th:action="@{/upload(${_csrf.parameterName}=${_csrf.token})}">
-                                        File to upload: <input type="file" name="file"/><br />
-                                        Name: <input type="text" name="name"/><br /><br />
+                                    <form method="POST" enctype="multipart/form-data" action="#" th:action="@{/uploadccp(${_csrf.parameterName}=${_csrf.token})}">
+                                        File to upload (pdf only): <input type="file" name="file"/><br />
+                                        codigo carta: <input type="text" name="codigocarta"/><br /><br />
                                         <input type="submit" value="Upload"/> Press here to upload the file!
                                     </form>
                                 </div><!-- fin jarviswidget content -->

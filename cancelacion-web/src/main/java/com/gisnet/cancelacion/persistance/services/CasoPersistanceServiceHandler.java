@@ -74,7 +74,8 @@ public class CasoPersistanceServiceHandler implements CasoPersistanceService {
                 if (!(event.getValue() instanceof Long)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                return Query.list(repository.findAllByNotarioId((long) event.getValue()));
+                Iterable<Caso> findAllByNotarioId = repository.findAllByNotarioId((long) event.getValue());
+                return Query.list(findAllByNotarioId);
         }
         throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }

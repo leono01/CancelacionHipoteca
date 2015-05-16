@@ -63,7 +63,8 @@ public class NotarioPersistanceServiceHandler implements NotarioPersistanceServi
                 if (!(event.getValue() instanceof String)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                return new FindResponse<>(repository.findByNombreUsuario((String) event.getValue()).asInfo());
+                Notario notario = repository.findByNombreUsuario((String) event.getValue());
+                return new FindResponse<>(notario != null ? notario.asInfo() : null);
                 
             case "usuarioId":
                 if (!(event.getValue() instanceof Long)) {

@@ -24,7 +24,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -58,7 +57,6 @@ public class CancelacionArchivo implements Infoable<CancelacionArchivoInfo>, Ser
     }
 
     @Column(name = "ARCHIVO", columnDefinition = "VARBINARY(MAX)")
-    @Lob
     public byte[] getArchivo() {
         return archivo;
     }

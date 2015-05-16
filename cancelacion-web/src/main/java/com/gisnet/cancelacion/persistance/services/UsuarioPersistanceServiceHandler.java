@@ -54,7 +54,17 @@ public class UsuarioPersistanceServiceHandler implements UsuarioPersistanceServi
 
     @Override
     public ListResponse<UsuarioInfo> list(ListRequest event) {
-        return Query.list(repository.findAll());
+        switch (event.getKey()) {
+            case "ALL":
+                return Query.list(repository.findAll());
+
+            case "rol":
+                if (!(event.getValue() instanceof String)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return Query.list(repository.findAllByRoles((String) event.getValue()));
+        }
+        throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
 
     @Override

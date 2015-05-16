@@ -10,7 +10,7 @@
 
     <jpa:repositories base-package="com.gisnet.cancelacion.persistance.repository" />
     
-    <jee:jndi-lookup id="datasource" jndi-name="CHipoteca" expected-type="javax.sql.DataSource" resource-ref="true"/>
+    <jee:jndi-lookup id="datasource" jndi-name="java:/jdbc/chipoteca" expected-type="javax.sql.DataSource" resource-ref="true"/>
 
     <bean id="entityManagerFactory"
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">

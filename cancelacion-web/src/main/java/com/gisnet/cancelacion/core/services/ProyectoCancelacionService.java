@@ -16,19 +16,21 @@
  */
 package com.gisnet.cancelacion.core.services;
 
-import com.gisnet.cancelacion.events.FindResponse;
-import com.gisnet.cancelacion.events.ListRequest;
-import com.gisnet.cancelacion.events.ListResponse;
-import com.gisnet.cancelacion.events.info.UsuarioInfo;
+import com.gisnet.cancelacion.events.*;
+import com.gisnet.cancelacion.events.info.ProyectoCancelacionInfo;
 
 /**
  *
  * @author marco-g8
  */
-public interface UsuarioService {
+public interface ProyectoCancelacionService {
     
-    public FindResponse<UsuarioInfo> findByUsername(String username);
+    public FindResponse<ProyectoCancelacionInfo> find(FindByRequest event);
     
-    public ListResponse<UsuarioInfo> list(ListRequest event);
+    public ListResponse<ProyectoCancelacionInfo> list(ListRequest event);
+    
+    public SaveResponse<ProyectoCancelacionInfo> save(SaveRequest<ProyectoCancelacionInfo> event);
+    
+    public UpdateResponse<ProyectoCancelacionInfo> update(UpdateRequest<ProyectoCancelacionInfo> event);
     
 }

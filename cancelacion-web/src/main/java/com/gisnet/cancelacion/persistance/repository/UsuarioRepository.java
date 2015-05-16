@@ -17,13 +17,18 @@
 package com.gisnet.cancelacion.persistance.repository;
 
 import com.gisnet.cancelacion.persistance.domain.Usuario;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
  * @author marco-g8
  */
 public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
+    
+    @Query("select u from Usuario u where (select r from Rol r where r.nombre = :rol) member of u.roles ")
+    Iterable<Usuario> findAllByRoles(@Param("rol") String rol);
     
     Usuario findByNombreUsuario(String nombreUsuario);
     

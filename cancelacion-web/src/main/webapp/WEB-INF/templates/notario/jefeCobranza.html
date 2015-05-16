@@ -1,4 +1,4 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<!DOCTYPE html>
 <!--
 Copyright (C) 2015 GISNET
 
@@ -27,14 +27,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
         <title>Cancelaci&oacute;n Hipoteca</title>
         <th:block th:replace="layout/smartadmin::fr-head"></th:block>
-        <style>
-            #pdf
-            {
-                display: block;
-                height: 480px;
-                width: 100%;
-            }
-        </style>
     </head>
     <body>
         <header th:replace="layout/smartadmin::fr-header"></header>
@@ -42,9 +34,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         
         <div id="main" role="main">
             <div id="ribbon">
+                <span th:replace="layout/smartadmin::fr-resetwidgets"></span>
                 <ol class="breadcrumb">
                     <li>Inicio</li>
-                    <li>caso <span th:text="${caso.numeroCaso}"></span></li>
+                    <li>caso</li>
                 </ol>
             </div>
             
@@ -62,18 +55,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <div class="jarviswidget" id="wid-id-0" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
                                 <header>
                                     <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
-                                    <h2>caso <span th:text="${caso.numeroCaso}"></span></h2>
+                                    <h2>Seleccionar jefe de cobranza</h2>
                                 </header>
                                 <div role="content" class="no-padding">
-                                    <object id="pdf" th:attr="data=@{/archivos/{id}/carta_de_cancelacion.pdf(id=${caso.cartaCancelacionId})}" type="application/pdf" style="width: 100%; height: 500px;">
-                                        <p>No se pudo mostrar la carta de cancelacion del caso <span th:text="${caso.numeroCaso}"></span> - <a th:href="@{/archivos/{id}/carta_de_cancelacion.pdf(id=${caso.cartaCancelacionId})}">carta_de_cancelacion.pdf</a></p>
-                                        <p th:text="${cartac}"></p>
-                                    </object>
-                                    
-                                    <div class="widget-footer">
-                                        <a class="btn btn-success" th:if="${caso.statusCaso.clave} == 2" th:href="@{/notario/caso/{id}/aceptar(id=${caso.numeroCaso})}" role="button">Aceptar</a>
-                                        <a class="btn btn-warning" th:if="${caso.statusCaso.clave} == 2" th:href="@{/notario/caso/{id}/rechazar(id=${caso.numeroCaso})}" role="button">Rechazar</a>
-                                    </div>
+                                    <form class="smart-form" th:action="@{/notario/caso/{id}/aceptar/jefecobranza(id=${caso.numeroCaso})}" method="POST" action="#">
+                                        <fieldset>
+                                            <label class="select">
+                                                <select type="radio" name="jefec" >
+                                                    <option th:each="jefe : ${jefesc}" th:text="|${jefe.nombre} ${jefe.apellidoPaterno} ${jefe.apellidoMaterno}|" th:value="${jefe.id}"></option>
+                                                </select>
+                                                <i></i>
+                                            </label>
+                                        </fieldset>
+                                        <footer>
+                                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                            <button class="btn btn-primary" role="button">Terminar</button>
+                                        </footer>
+                                    </form>
                                 </div><!-- fin jarviswidget content -->
                             </div><!-- fin jarviswidget -->
                         </div><!-- fin col -->

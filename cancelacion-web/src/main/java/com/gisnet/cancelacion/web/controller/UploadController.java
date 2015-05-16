@@ -16,6 +16,10 @@
  */
 package com.gisnet.cancelacion.web.controller;
 
+import com.gisnet.cancelacion.events.SaveRequest;
+import com.gisnet.cancelacion.events.SaveResponse;
+import com.gisnet.cancelacion.events.info.CartaCancelacionInfo;
+import com.gisnet.cancelacion.persistance.services.CartaCancelacionPersistanceService;
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,7 +37,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UploadController {
     
     @Autowired
-    Object multipartResolver;
+    private CartaCancelacionPersistanceService ccps;
     
     @RequestMapping(value="/upload", method=RequestMethod.POST)
     public @ResponseBody String handleFileUpload(
@@ -57,12 +61,21 @@ public class UploadController {
         }
         return r + "---end---";
     }
-    
-    @RequestMapping(value = "/uploadsimple", method = RequestMethod.POST)
-    public @ResponseBody String simpleform(@RequestParam("name") String name) {
-        String r = "resolver> " + multipartResolver;
-        r += "\nsimple> " + name;
-        return r;
+
+    @RequestMapping(value = "/uploadccp", method = RequestMethod.POST)
+    public @ResponseBody String uploadCartaCancelacionPDF(
+            @RequestParam("codigocarta") String codigocarta,
+            @RequestParam("file") MultipartFile file) {
+        
+        CartaCancelacionInfo cc = new CartaCancelacionInfo();
+        cc.setCodigoCarta(codigocarta);
+        try {
+            cc.setPdf(file.getBytes());
+        } catch (IOException ex) {
+            return "<pre>" + ex + "</pre>";
+        }
+        SaveResponse<CartaCancelacionInfo> save = ccps.save(new SaveRequest<>(cc));
+        return "<pre>success, id=" + save.getInfo().getId() + "</pre>";
     }
     
 }

@@ -43,7 +43,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <div id="content">
                 <div class="row">
                     <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-                        <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> caso 000000000</h1>
+                        <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> caso <span th:text="${caso.numeroCaso}"></span></h1>
                     </div>
                 </div>
                 
@@ -54,16 +54,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <div class="jarviswidget" id="wid-id-0" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
                                 <header>
                                     <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
-                                    <h2>caso 000000000</h2>
+                                    <h2>caso <span th:text="${caso.numeroCaso}"></span></h2>
                                 </header>
                                 <div role="content" class="widget-body">
-                                    <form>
+                                    <form th:action="@{/notario/caso/{id}/rechazar(id=${caso.numeroCaso})}" method="POST" action="#">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">motivo de rechazo</label>
-                                            <textarea id="exampleInputEmail1" class="form-control" rows="3"></textarea>
+                                            <label for="motivo">motivo de rechazo</label>
+                                            <textarea id="motivo" name="motivo" class="form-control" rows="3"></textarea>
                                         </div>
 
-                                        <a class="btn btn-primary" th:href="@{/}" role="button">enviar</a>
+                                        <div class="widget-footer">
+                                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                            <button class="btn btn-primary" role="button">Terminar</button>
+                                        </div>
                                     </form>
                                 </div><!-- fin jarviswidget content -->
                             </div><!-- fin jarviswidget -->

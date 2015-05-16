@@ -17,27 +17,37 @@
 package com.gisnet.cancelacion.core.services;
 
 import com.gisnet.cancelacion.events.*;
-import com.gisnet.cancelacion.events.info.UsuarioInfo;
-import com.gisnet.cancelacion.persistance.services.UsuarioPersistanceService;
+import com.gisnet.cancelacion.events.info.ProyectoCancelacionInfo;
+import com.gisnet.cancelacion.persistance.services.ProyectoCancelacionPersistanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
  * @author marco-g8
  */
-public class UsuarioServiceHandler implements UsuarioService {
+public class ProyectoCancelacionServiceHandler implements ProyectoCancelacionService {
     
     @Autowired
-    private UsuarioPersistanceService service;
+    private ProyectoCancelacionPersistanceService service;
 
     @Override
-    public FindResponse<UsuarioInfo> findByUsername(String username) {
-        return service.find(new FindByRequest("nombreUsuario", username));
+    public FindResponse<ProyectoCancelacionInfo> find(FindByRequest event) {
+        return service.find(event);
     }
 
     @Override
-    public ListResponse<UsuarioInfo> list(ListRequest event) {
+    public ListResponse<ProyectoCancelacionInfo> list(ListRequest event) {
         return service.list(event);
+    }
+
+    @Override
+    public SaveResponse<ProyectoCancelacionInfo> save(SaveRequest<ProyectoCancelacionInfo> event) {
+        return service.save(event);
+    }
+
+    @Override
+    public UpdateResponse<ProyectoCancelacionInfo> update(UpdateRequest<ProyectoCancelacionInfo> event) {
+        return service.update(event);
     }
     
 }
