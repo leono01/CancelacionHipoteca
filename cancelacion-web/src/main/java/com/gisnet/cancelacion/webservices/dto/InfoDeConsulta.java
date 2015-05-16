@@ -28,11 +28,29 @@ public class InfoDeConsulta {
     int 	numeroDeCaso;
     Date 	fecha;
     int 	status;
-    String 	cartaDeCancelacion;
+    byte[] 	cartaDeCancelacion;
     Date 	fechaEmisionCarta;
     String 	numeroDeFolio;
     String	nombreAcreditado;
     String 	entidad;
+    int	infoConsulta;
+    String descripcionConsulta;
+    
+    public int getInfoConsulta() {
+		return infoConsulta;
+	}
+
+	public void setInfoConsulta(int infoConsulta) {
+		this.infoConsulta = infoConsulta;
+	}
+
+	public String getDescripcionConsulta() {
+		return descripcionConsulta;
+	}
+
+	public void setDescripcionConsulta(String descripcionConsulta) {
+		this.descripcionConsulta = descripcionConsulta;
+	}
 
     public int getNumeroDeCredito() {
         return numeroDeCredito;
@@ -98,11 +116,11 @@ public class InfoDeConsulta {
         this.status = status;
     }
 
-    public String getCartaDeCancelacion() {
+    public byte[] getCartaDeCancelacion() {
         return cartaDeCancelacion;
     }
 
-    public void setCartaDeCancelacion(String cartaDeCancelacion) {
+    public void setCartaDeCancelacion(byte[] cartaDeCancelacion) {
         this.cartaDeCancelacion = cartaDeCancelacion;
     }
 
