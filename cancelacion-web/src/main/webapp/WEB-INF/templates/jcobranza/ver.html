@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<!--
+Copyright (C) 2015 GISNET
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+        
+        <meta name="description" content="Cancelacion de Hipoteca"/>
+        <meta name="author" content=""/>
+
+        <title>Cancelaci&oacute;n Hipoteca</title>
+        <th:block th:replace="layout/smartadmin::fr-head"></th:block>
+    </head>
+    <body>
+        <header th:replace="layout/smartadmin::fr-header"></header>
+        <aside th:replace="layout/smartadmin::fr-leftpanel"></aside>
+        
+        <div id="main" role="main">
+            <div id="ribbon">
+                <ol class="breadcrumb">
+                    <li>Inicio</li>
+                    <li>Caso <span th:text="${caso.numeroCaso}"></span></li>
+                </ol>
+            </div>
+            
+            <div id="content">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+                        <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Caso <span th:text="${caso.numeroCaso}"></span></h1>
+                    </div>
+                </div>
+                
+                <section id="widget-grid" class="">
+                    <div th:replace="layout/smartadmin::fr-notificaciones"></div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="jarviswidget" id="wid-id-0" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+                                <header>
+                                    <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
+                                    <h2>Caso <span th:text="${caso.numeroCaso}"></span></h2>
+                                </header>
+                                <div role="content" class="no-padding">
+                                    <object id="pdf" th:attr="data=@{/archivos/{id}/carta_de_cancelacion.pdf(id=${caso.cartaCancelacionId})}" type="application/pdf" style="width: 100%; height: 480px;">
+                                        <p>No se pudo mostrar la carta de cancelacion del caso <span th:text="${caso.numeroCaso}"></span> - <a th:href="@{/archivos/{id}/carta_de_cancelacion.pdf(id=${caso.cartaCancelacionId})}">carta_de_cancelacion.pdf</a></p>
+                                        <p th:text="${cartac}"></p>
+                                    </object>
+                                </div><!-- fin jarviswidget content -->
+                            </div><!-- fin jarviswidget -->
+                        </div><!-- fin col -->
+                    </div><!-- fin row -->
+                    <div class="row">
+                        <div class="col col-md-6">
+                            <div class="jarviswidget" id="wid-id-1" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+                                <header>
+                                    <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
+                                    <h2>Archivos adjuntos por notario</h2>
+                                </header>
+                                <div role="content" class="no-padding">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Descargar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each='a : ${archivos}' th:object='${a}'>
+                                                <td th:text='*{nombre}'></td>
+                                                <td><a th:href='@{/archivoss/{id}/{archivo}(id=${a.id},archivo=${a.nombre})}'>Descargar</a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div><!-- fin jarviswidget content -->
+                            </div><!-- fin jarviswidget -->
+                        </div><!-- fin col -->
+                        <div class="col col-md-6">
+                            <div class="jarviswidget" id="wid-id-2" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+                                <header>
+                                    <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
+                                    <h2>Estado del credito</h2>
+                                </header>
+                                <div role="content" class="widget-body">
+                                    <span th:if="${validaCredito.equals('SI')}">Credito procedente</span>
+                                    <span th:if="${validaCredito.equals('SI')} == false">Credito NO procedente</span>
+                                </div><!-- fin jarviswidget content -->
+                            </div><!-- fin jarviswidget -->
+                            <div class="jarviswidget" id="wid-id-1" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+                                <header>
+                                    <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
+                                    <h2>Acciones</h2>
+                                </header>
+                                <div role="content" class="no-padding">
+                                    <a class="btn btn-primary" href="#">Validar caso</a>
+                                </div><!-- fin jarviswidget content -->
+                            </div><!-- fin jarviswidget -->
+                        </div><!-- fin col -->
+                    </div><!-- fin row -->
+                </section><!-- fin de widget-grid -->
+            </div><!-- fin de content -->
+        </div><!-- fin de main -->
+        
+        <th:block th:replace="layout/smartadmin::fr-scripts"></th:block>
+    </body>
+</html>
+

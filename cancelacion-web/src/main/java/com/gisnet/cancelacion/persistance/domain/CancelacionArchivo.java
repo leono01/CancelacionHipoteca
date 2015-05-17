@@ -97,11 +97,16 @@ public class CancelacionArchivo implements Infoable<CancelacionArchivoInfo>, Ser
     public CancelacionArchivoInfo asInfo() {
         CancelacionArchivoInfo info = new CancelacionArchivoInfo();
         info.setId(id);
-        info.setArchivo(archivo);
         info.setNombre(nombre);
         if (proyectoCancelacion != null)
             info.setProyectoCancelacionId(proyectoCancelacion.getId());
         info.setMimetype(mimetype);
+        return info;
+    }
+    
+    public CancelacionArchivoInfo asInfoCompleto() {
+        CancelacionArchivoInfo info = asInfo();
+        info.setArchivo(archivo);
         return info;
     }
     

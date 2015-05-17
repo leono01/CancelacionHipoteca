@@ -48,7 +48,19 @@ public class ProyectoCancelacionPersistanceServiceHandler implements ProyectoCan
 
     @Override
     public ListResponse<ProyectoCancelacionInfo> list(ListRequest event) {
-        return Query.list(repository.findAll());
+        switch (event.getKey()) {
+            case "ALL":
+                return Query.list(repository.findAll());
+
+            case "empleadoId": {
+                if (!(event.getValue() instanceof Long)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                Iterable<ProyectoCancelacion> proyectos = repository.findAllByEmpleadoId((long) event.getValue());
+                return Query.list(proyectos);
+            }
+        }
+        throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
 
     @Override

@@ -345,8 +345,13 @@ public class PersistanceDomainFactory {
         b.setFechaCreacion(info.getFechaCreacion());
         b.setFechaRevision(info.getFechaRevision());
         b.setMotivoRechazo(info.getMotivoRechazo());
-        if (info.getStatusProyectoId() > 0) {
-            b.setStatusProyecto(statusProyectoRepository.findOne(info.getStatusProyectoId()));
+        if (info.getStatusProyecto() != null) {
+            if (info.getStatusProyecto().getId() > 0) {
+                b.setStatusProyecto(statusProyectoRepository.findOne(info.getStatusProyecto().getId()));
+            }
+            else if (info.getStatusProyecto().getClave() > 0) { // CLAVE
+                b.setStatusProyecto(statusProyectoRepository.findByClave(info.getStatusProyecto().getClave()));
+            }
         }
         return b;
     }

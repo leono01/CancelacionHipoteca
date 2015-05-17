@@ -153,7 +153,7 @@ public class ProyectoCancelacion implements Infoable<ProyectoCancelacionInfo>, S
         if (empleado != null)
             info.setEmpleadoId(empleado.getId());
         if (statusProyecto != null)
-            info.setStatusProyectoId(statusProyecto.getId());
+            info.setStatusProyecto(statusProyecto.asInfo());
         return info;
     }
     

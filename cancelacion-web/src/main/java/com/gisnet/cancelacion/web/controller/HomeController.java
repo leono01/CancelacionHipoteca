@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class HomeController {
     
+    @Autowired JCobranzaController cobranza;
     @Autowired JuridicoController juridico;
     @Autowired NotarioController notario;
 
@@ -54,9 +55,11 @@ public class HomeController {
         else if (request.isUserInRole("ROLE_NOTARIO")) {
             return notario.index(model, principal);
         }
+        else if (request.isUserInRole("ROLE_JEFE_COBRANZA")) {
+            return cobranza.index(model, principal);
+        }
         else {
-            System.err.println("rol desconocido");
-            return "/notario/index";
+            return "/norol";
         }
     }
     

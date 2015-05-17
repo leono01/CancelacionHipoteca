@@ -54,6 +54,13 @@ public class CasoPersistanceServiceHandler implements CasoPersistanceService {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
                 return new FindResponse<>(repository.findByNumeroCredito((int) event.getValue()).asInfo());
+                
+            case "proyectoCancelacionId": {
+                if (!(event.getValue() instanceof Long)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return new FindResponse<>(repository.findByProyectoCancelacionId((long) event.getValue()).asInfo());
+            }
         }
         throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }

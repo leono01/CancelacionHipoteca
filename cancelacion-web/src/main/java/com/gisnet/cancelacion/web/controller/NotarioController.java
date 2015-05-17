@@ -22,24 +22,10 @@ import com.gisnet.cancelacion.core.services.CasoService;
 import com.gisnet.cancelacion.core.services.EmpleadoService;
 import com.gisnet.cancelacion.core.services.NotarioService;
 import com.gisnet.cancelacion.core.services.ProyectoCancelacionService;
+import com.gisnet.cancelacion.core.services.StatusProyectoService;
 import com.gisnet.cancelacion.core.services.UsuarioService;
-import com.gisnet.cancelacion.events.FindByRequest;
-import com.gisnet.cancelacion.events.FindResponse;
-import com.gisnet.cancelacion.events.ListRequest;
-import com.gisnet.cancelacion.events.ListResponse;
-import com.gisnet.cancelacion.events.SaveRequest;
-import com.gisnet.cancelacion.events.SaveResponse;
-import com.gisnet.cancelacion.events.UpdateRequest;
-import com.gisnet.cancelacion.events.UpdateResponse;
-import com.gisnet.cancelacion.events.info.CancelacionArchivoInfo;
-import com.gisnet.cancelacion.events.info.CartaCancelacionInfo;
-import com.gisnet.cancelacion.events.info.CasoInfo;
-import com.gisnet.cancelacion.events.info.EmpleadoInfo;
-import com.gisnet.cancelacion.events.info.NotarioInfo;
-import com.gisnet.cancelacion.events.info.ProyectoCancelacionInfo;
-import com.gisnet.cancelacion.events.info.StatusCasoInfo;
-import com.gisnet.cancelacion.events.info.UsuarioInfo;
-import com.gisnet.cancelacion.persistance.repository.CasoRepository;
+import com.gisnet.cancelacion.events.*;
+import com.gisnet.cancelacion.events.info.*;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -77,6 +63,8 @@ public class NotarioController {
     @Autowired
     private ProyectoCancelacionService proyectoCancelacionService;
     @Autowired
+    private StatusProyectoService statusProyectoService;
+    @Autowired
     private UsuarioService usuarioService;
     
     public String index(Model model, Principal principal) {
@@ -90,16 +78,7 @@ public class NotarioController {
         ListResponse<CasoInfo> listresponse = casoService.list(
                 new ListRequest("notarioId", notario.getId()));
         model.addAttribute("casos", listresponse.getList());
-        
-        ///////
-        ListResponse<UsuarioInfo> list = usuarioService.list(new ListRequest("rol", "JEFE_COBRANZA"));
-        System.err.println("user cobranza found " + list.getList().size());
-        for (UsuarioInfo ui : list.getList()) {
-            System.err.println("user found " + ui.getNombreUsuario());
-        }
-        ///////
-        
-        
+
         return "/notario/index";
     }
     
@@ -109,15 +88,12 @@ public class NotarioController {
         CasoInfo caso = find.getInfo();
         model.addAttribute("caso", caso);
         
-        FindResponse<CartaCancelacionInfo> findcarta = cartaCancelacionService.findBy(
-                new FindByRequest(caso.getCartaCancelacionId()));
-        CartaCancelacionInfo cartac = findcarta.getInfo();
         return "/notario/view";
     }
     
     @RequestMapping(value = "/archivos/{id}/carta_de_cancelacion.pdf", method = RequestMethod.GET, produces = "application/pdf")
     public @ResponseBody byte[] renderpdf(@PathVariable long id, HttpServletResponse response) {
-        FindResponse<CartaCancelacionInfo> findcarta = cartaCancelacionService.findBy(
+        FindResponse<CartaCancelacionInfo> findcarta = cartaCancelacionService.find(
                 new FindByRequest(id));
         CartaCancelacionInfo cartac = findcarta.getInfo();
         return cartac.getPdf();
@@ -153,7 +129,9 @@ public class NotarioController {
         
         ProyectoCancelacionInfo proyecto = new ProyectoCancelacionInfo();
         proyecto.setFechaCreacion(new Date());
-        proyecto.setStatusProyectoId(1l);
+        FindResponse<StatusProyectoInfo> find1 = statusProyectoService.find(
+                new FindByRequest("clave", 1));
+        proyecto.setStatusProyecto(find1.getInfo());
         
         SaveResponse<ProyectoCancelacionInfo> saved = proyectoCancelacionService.save(
                 new SaveRequest<>(proyecto));
@@ -227,7 +205,6 @@ public class NotarioController {
                 new ListRequest("rol", "JEFE_COBRANZA"));
         List<EmpleadoInfo> jefesc = new ArrayList<>();
         for (UsuarioInfo ui : list.getList()) {
-            System.err.println("find empleado w");
             FindResponse<EmpleadoInfo> find = empleadoService.find(
                     new FindByRequest("usuarioId", ui.getId()));
             jefesc.add(find.getInfo());
@@ -255,7 +232,9 @@ public class NotarioController {
         
         // agregamos jefe cobranza, actualiza estado
         proyecto.setEmpleadoId(jefec);
-        proyecto.setStatusProyectoId(5l);
+        FindResponse<StatusProyectoInfo> find2 = statusProyectoService.find(
+                new FindByRequest("clave", 5));
+        proyecto.setStatusProyecto(find2.getInfo());
         UpdateResponse<ProyectoCancelacionInfo> update = proyectoCancelacionService.update(
                 new UpdateRequest<>(proyecto));
         //proyecto = update.getInfo();
@@ -292,10 +271,12 @@ public class NotarioController {
         model.addAttribute("caso", caso);
         
         // crea proyecto cancelacion
-        
         ProyectoCancelacionInfo proyecto = new ProyectoCancelacionInfo();
         proyecto.setFechaCreacion(new Date());
-        proyecto.setStatusProyectoId(11l); // cerrado por rechazo del notario
+        
+        FindResponse<StatusProyectoInfo> findstatus = statusProyectoService.find(
+                new FindByRequest("clave", 11));
+        proyecto.setStatusProyecto(findstatus.getInfo());
         proyecto.setMotivoRechazo(motivoRechazo);
         
         SaveResponse<ProyectoCancelacionInfo> saved = proyectoCancelacionService.save(
@@ -303,12 +284,12 @@ public class NotarioController {
         proyecto = saved.getInfo();
         
         caso.setProyectoCancelacionId(proyecto.getId());
-        StatusCasoInfo status = new StatusCasoInfo();
-        status.setId(1l);
-        caso.setStatusCaso(status);
+        //StatusCasoInfo status = new StatusCasoInfo();
+        //status.setId(1l); // ** NO CAMBIAR ESTADO, CAMBIAR DE NOTARIO **
+        //caso.setStatusCaso(status);
         
         // cambiar de notario
-        caso.setNotarioId(2l);
+        caso.setNotarioId(0l);
         
         UpdateResponse<CasoInfo> updated = casoService.update(new UpdateRequest<>(caso));
         caso = updated.getInfo();

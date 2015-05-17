@@ -9,8 +9,9 @@
     <authentication-manager>
         <authentication-provider>
             <user-service>
-                <user name="notario" password="notario" authorities="ROLE_NOTARIO" />
-                <user name="juridico" password="juridico" authorities="ROLE_JURIDICO" />
+                <user name="notario" password="notario" authorities="ROLE_NOTARIO"/>
+                <user name="juridico" password="juridico" authorities="ROLE_JURIDICO"/>
+                <user name="cobranza" password="cobranza" authorities="ROLE_JEFE_COBRANZA" />
             </user-service>
         </authentication-provider>
     </authentication-manager>
@@ -35,7 +36,10 @@
         <intercept-url pattern="/js/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <intercept-url pattern="/login" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <!-- webapp -->
-        <intercept-url pattern="/**" access="ROLE_NOTARIO, ROLE_JURIDICO"/>
+        <intercept-url pattern="/notario/**" access="ROLE_NOTARIO"/>
+        <intercept-url pattern="/juridico/**" access="ROLE_JURIDICO"/>
+        <intercept-url pattern="/cobranza/**" access="ROLE_JEFE_COBRANZA"/>
+        <intercept-url pattern="/**" access="ROLE_NOTARIO, ROLE_JURIDICO, ROLE_JEFE_COBRANZA"/>
         <form-login login-page="/login"/>
         <logout logout-url="/logout"/>
     </http>

@@ -17,12 +17,17 @@
 package com.gisnet.cancelacion.persistance.repository;
 
 import com.gisnet.cancelacion.persistance.domain.ProyectoCancelacion;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
  * @author marco-g8
  */
 public interface ProyectoCancelacionRepository extends CrudRepository<ProyectoCancelacion, Long> {
+    
+    @Query("select c from ProyectoCancelacion c where c.empleado.id = :empleadoId")
+    Iterable<ProyectoCancelacion> findAllByEmpleadoId(@Param("empleadoId") long empleadoId);
     
 }

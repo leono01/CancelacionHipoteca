@@ -21,6 +21,7 @@ import com.gisnet.cancelacion.events.SaveResponse;
 import com.gisnet.cancelacion.events.info.CartaCancelacionInfo;
 import com.gisnet.cancelacion.persistance.services.CartaCancelacionPersistanceService;
 import java.io.IOException;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,6 +69,15 @@ public class UploadController {
             @RequestParam("file") MultipartFile file) {
         
         CartaCancelacionInfo cc = new CartaCancelacionInfo();
+        cc.setDireccion("na");
+        cc.setEntidad("AG");
+        cc.setFechaEmisionCarta(new Date());
+        cc.setFojaEscritura("na");
+        cc.setFolio("na");
+        cc.setFolioEscritura("na");
+        cc.setLibroEscritura("na");
+        cc.setNombreAcreditado("na");
+        cc.setNombreNotario("na");
         cc.setCodigoCarta(codigocarta);
         try {
             cc.setPdf(file.getBytes());

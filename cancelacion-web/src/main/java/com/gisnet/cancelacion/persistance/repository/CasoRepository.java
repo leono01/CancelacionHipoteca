@@ -35,5 +35,8 @@ public interface CasoRepository extends CrudRepository<Caso, Long> {
     Caso findByNumeroCaso(int caso);
 
     Caso findByNumeroCredito(int numeroCredito);
+    
+    @Query("select c from Caso c where c.proyectoCancelacion.id = :proyectoCancelacionId")
+    Caso findByProyectoCancelacionId(@Param("proyectoCancelacionId") long proyectoCancelacionId);
 
 }

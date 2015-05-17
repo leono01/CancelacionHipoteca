@@ -34,7 +34,7 @@ public class ProyectoCancelacionInfo implements Info {
     private Date fechaAutorizacion;
     
     private long empleadoId;
-    private long statusProyectoId;
+    private StatusProyectoInfo statusProyecto;
 
     public ProyectoCancelacionInfo() {
     }
@@ -103,14 +103,12 @@ public class ProyectoCancelacionInfo implements Info {
         this.empleadoId = empleadoId;
     }
 
-    public long getStatusProyectoId() {
-        return statusProyectoId;
+    public StatusProyectoInfo getStatusProyecto() {
+        return statusProyecto;
     }
 
-    public void setStatusProyectoId(long statusProyectoId) {
-        this.statusProyectoId = statusProyectoId;
+    public void setStatusProyecto(StatusProyectoInfo statusProyecto) {
+        this.statusProyecto = statusProyecto;
     }
-    
-    
-    
+
 }

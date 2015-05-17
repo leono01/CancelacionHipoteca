@@ -64,5 +64,14 @@ public class CasoServiceHandler implements CasoService {
     public DeleteResponse<CasoInfo> delete(DeleteRequest event) {
         return service.delete(event);
     }
+    
+    @Override
+    public String validaCredito(CasoInfo event) {
+        ///// temporal
+        if (event.getNumeroCaso() < 200 && event.getNumeroCredito() < 200) {
+            return "SI";
+        }
+        return "NO";
+    }
 
 }

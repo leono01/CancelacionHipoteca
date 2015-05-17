@@ -49,4 +49,6 @@ public interface CasoService {
     
     public DeleteResponse<CasoInfo> delete(DeleteRequest event);
 
+
+    public String validaCredito(CasoInfo event);
 }
