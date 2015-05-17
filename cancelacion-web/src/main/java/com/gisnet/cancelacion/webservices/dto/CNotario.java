@@ -25,63 +25,42 @@ import java.util.Set;
 public class CNotario  implements java.io.Serializable {
 
 
-     private long notarioId;
-     private String CMunicipio;
-     private String   entidad; 
-     private String usuario;
-     private String nombreNotario;
-     private int codigoNotario;
-     private String notariaNumero;
-     private int convenioInfonavit;
-     private String email;
-     private String telefono;
-     private String calleNotaria;
-     private String numeroCalle;
-     private String coloniaNotaria;
-     private int codigoPostalNotaria;
-
-   
-     private String codigoRespuesta;
+     
+     
+     private String   	entidad;      
+     private String 	nombreNotario;
+     private int 		codigoNotario;
+     private String 	notariaNumero;     
+     private String		convenioInfonavit;
+     private String 	email;
+     private String 	telefono;      
+     
      
 
     public CNotario() {
     }
 
 	
-    public CNotario(long notarioId) {
-        this.notarioId = notarioId;
-    }
-    public CNotario(long notarioId, String CMunicipio, String nombreNotario, int codigoNotario, String notariaNumero, int convenioInfonavit, String email, String telefono, String calleNotaria, String numeroCalle, String coloniaNotaria, int codigoPostalNotaria) {
-       this.notarioId = notarioId;
-       this.CMunicipio = CMunicipio;
-       //this.CUsuario = CUsuario;
-       this.nombreNotario = nombreNotario;
-       this.codigoNotario = codigoNotario;
-       this.notariaNumero = notariaNumero;
-       this.convenioInfonavit = convenioInfonavit;
-       this.email = email;
-       this.telefono = telefono;
-       this.calleNotaria = calleNotaria;
-       this.numeroCalle = numeroCalle;
-       this.coloniaNotaria = coloniaNotaria;
-       this.codigoPostalNotaria = codigoPostalNotaria;
+    public CNotario(String nombreNotario, 
+    				int codigoNotario, 
+    				String notariaNumero, 
+    				String convenioInfonavit,
+    				String email,
+    				String telefono,
+    				String entidad
+    				) {
+       
+
+       this.nombreNotario 		= nombreNotario;
+       this.codigoNotario 		= codigoNotario;
+       this.notariaNumero 		= notariaNumero;
+       this.convenioInfonavit 	= convenioInfonavit;
+       this.email 				= email;
+       this.telefono 			= telefono;
+       this.entidad 			= entidad;
 
     }
    
-    public long getNotarioId() {
-        return this.notarioId;
-    }
-    
-    public void setNotarioId(long notarioId) {
-        this.notarioId = notarioId;
-    }
-    public String getCMunicipio() {
-        return this.CMunicipio;
-    }
-    
-    public void setCMunicipio(String CMunicipio) {
-        this.CMunicipio = CMunicipio;
-    }
 
     public String getNombreNotario() {
         return this.nombreNotario;
@@ -104,11 +83,11 @@ public class CNotario  implements java.io.Serializable {
     public void setNotariaNumero(String notariaNumero) {
         this.notariaNumero = notariaNumero;
     }
-    public int getConvenioInfonavit() {
+    public String getConvenioInfonavit() {
         return this.convenioInfonavit;
     }
     
-    public void setConvenioInfonavit(int convenioInfonavit) {
+    public void setConvenioInfonavit(String convenioInfonavit) {
         this.convenioInfonavit = convenioInfonavit;
     }
     public String getEmail() {
@@ -125,34 +104,9 @@ public class CNotario  implements java.io.Serializable {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
-    public String getCalleNotaria() {
-        return this.calleNotaria;
-    }
     
-    public void setCalleNotaria(String calleNotaria) {
-        this.calleNotaria = calleNotaria;
-    }
-    public String getNumeroCalle() {
-        return this.numeroCalle;
-    }
     
-    public void setNumeroCalle(String numeroCalle) {
-        this.numeroCalle = numeroCalle;
-    }
-    public String getColoniaNotaria() {
-        return this.coloniaNotaria;
-    }
     
-    public void setColoniaNotaria(String coloniaNotaria) {
-        this.coloniaNotaria = coloniaNotaria;
-    }
-    public int getCodigoPostalNotaria() {
-        return this.codigoPostalNotaria;
-    }
-    
-    public void setCodigoPostalNotaria(int codigoPostalNotaria) {
-        this.codigoPostalNotaria = codigoPostalNotaria;
-    }
 
     public String getCEntidad() {
         return entidad;
@@ -170,13 +124,7 @@ public class CNotario  implements java.io.Serializable {
         this.entidad = entidad;
     }
 
-    public String getCodigoRespuesta() {
-        return codigoRespuesta;
-    }
 
-    public void setCodigoRespuesta(String codigoRespuesta) {
-        this.codigoRespuesta = codigoRespuesta;
-    }
 
 
 }

@@ -27,4 +27,16 @@ public interface CartaCancelacionService {
     
     public FindResponse<CartaCancelacionInfo> findBy(FindByRequest event);
     
+    public FindResponse<CartaCancelacionInfo> find(FindByIdRequest event);
+    
+    public FindResponse<CartaCancelacionInfo> find(FindByRequest event);
+    
+    public ListResponse<CartaCancelacionInfo> list(ListRequest event);
+    
+    public SaveResponse<CartaCancelacionInfo> save(SaveRequest<CartaCancelacionInfo> event);
+    
+    public UpdateResponse<CartaCancelacionInfo> update(UpdateRequest<CartaCancelacionInfo> event);
+    
+    public DeleteResponse<CartaCancelacionInfo> delete(DeleteRequest event);
+    
 }

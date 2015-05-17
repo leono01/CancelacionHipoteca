@@ -37,11 +37,20 @@ import javax.persistence.TemporalType;
 @Table(name = "C_CARTA_DE_CANCELACION")
 public class CartaCancelacion implements Infoable<CartaCancelacionInfo>, Serializable {
     
-    private long id;
-    private String codigoCarta;
-    private byte[] pdf;
-    private byte[] xml;
-    private Date fechaEmisionCarta;
+    private long 	id;
+    private String 	codigoCarta;
+    private byte[] 	pdf;
+    private byte[] 	xml;
+    private Date 	fechaEmisionCarta;
+    private String 	folio;
+    private String	entidad;
+	private String	nombreAcreditado;
+	private String	nombreNotario;
+	private String 	notaria;
+	private String	direccion;
+	private String	folioEscritura;
+	private String	fojaEscritura;
+	private String	libroEscritura;
 
     public CartaCancelacion() {
     }
@@ -94,6 +103,89 @@ public class CartaCancelacion implements Infoable<CartaCancelacionInfo>, Seriali
         this.fechaEmisionCarta = fechaEmisionCarta;
     }
     
+    @Column(name = "FOLIO")
+    public String getFolio() {
+		return folio;
+	}
+
+	public void setFolio(String folio) {
+		this.folio = folio;
+	}
+    
+	@Column(name = "ENTIDAD")
+    public String getEntidad() {
+		return entidad;
+	}
+
+	public void setEntidad(String entidad) {
+		this.entidad = entidad;
+	}
+
+	@Column(name = "NOMBRE_ACREDITADO")
+    public String getNombreAcreditado() {
+		return nombreAcreditado;
+	}
+
+	public void setNombreAcreditado(String nombreAcreditado) {
+		this.nombreAcreditado = nombreAcreditado;
+	}
+
+	@Column(name = "NOMBRE_NOTARIO")
+	public String getNombreNotario() {
+		return nombreNotario;
+	}
+
+	public void setNombreNotario(String nombreNotario) {
+		this.nombreNotario = nombreNotario;
+	}
+
+	@Column(name = "NOTARIA")
+	public String getNotaria() {
+		return notaria;
+	}
+
+	public void setNotaria(String notaria) {
+		this.notaria = notaria;
+	}
+
+	@Column(name = "DIRECCION")
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	@Column(name = "FOLIO_ESCRITURA")
+	public String getFolioEscritura() {
+		return folioEscritura;
+	}
+
+	public void setFolioEscritura(String folioEscritura) {
+		this.folioEscritura = folioEscritura;
+	}
+
+	@Column(name = "FOJA_ESCRITURA")
+	public String getFojaEscritura() {
+		return fojaEscritura;
+	}
+
+	public void setFojaEscritura(String fojaEscritura) {
+		this.fojaEscritura = fojaEscritura;
+	}
+
+	@Column(name = "LIBRO_ESCRITURA")
+	public String getLibroEscritura() {
+		return libroEscritura;
+	}
+
+	public void setLibroEscritura(String libroEscritura) {
+		this.libroEscritura = libroEscritura;
+	}
+
+    
+    
     @Override
     public CartaCancelacionInfo asInfo() {
         CartaCancelacionInfo info = new CartaCancelacionInfo();
@@ -102,6 +194,15 @@ public class CartaCancelacion implements Infoable<CartaCancelacionInfo>, Seriali
         info.setPdf(pdf);
         info.setXml(xml);
         info.setFechaEmisionCarta(fechaEmisionCarta);
+        info.setFolio(folio);
+        info.setEntidad(entidad);
+        info.setNombreAcreditado(nombreAcreditado);
+        info.setNombreNotario(nombreNotario);
+        info.setNotaria(notaria);
+        info.setDireccion(direccion);
+        info.setFolioEscritura(folioEscritura);
+        info.setFojaEscritura(fojaEscritura);
+        info.setLibroEscritura(libroEscritura);
         return info;
     }
 }

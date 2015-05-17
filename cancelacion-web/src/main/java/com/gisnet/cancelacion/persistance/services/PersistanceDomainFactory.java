@@ -193,6 +193,16 @@ public class PersistanceDomainFactory {
         b.setPdf(info.getPdf());
         b.setXml(info.getXml());
         b.setFechaEmisionCarta(info.getFechaEmisionCarta());
+        b.setFolio(info.getFolio());
+        b.setEntidad(info.getEntidad());
+        b.setNombreAcreditado(info.getNombreAcreditado());
+        b.setNombreNotario(info.getNombreNotario());
+        b.setNotaria(info.getNotaria());
+        b.setDireccion(info.getDireccion());
+        b.setFolioEscritura(info.getFolioEscritura());
+        b.setFojaEscritura(info.getFojaEscritura());
+        b.setLibroEscritura(info.getLibroEscritura());
+        
         return b;
     }
     

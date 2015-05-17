@@ -26,19 +26,20 @@ import com.gisnet.cancelacion.events.Info;
  */
 public class CartaCancelacionInfo implements Info {
     
-    private long id;
-    private String codigoCarta;
-    private byte[] pdf;
-    private byte[] xml;
-    private Date fechaEmisionCarta;
-
-    public Date getFechaEmisionCarta() {
-		return fechaEmisionCarta;
-	}
-
-	public void setFechaEmisionCarta(Date fechaEmisionCarta) {
-		this.fechaEmisionCarta = fechaEmisionCarta;
-	}
+    private long 	id;
+    private String 	codigoCarta;
+    private byte[] 	pdf;
+    private byte[] 	xml;
+    private Date 	fechaEmisionCarta;
+    private String 	folio;
+    private String 	entidad;
+	private String	nombreAcreditado;
+	private String	nombreNotario;
+	private String 	notaria;
+	private String	direccion;
+	private String	folioEscritura;
+	private String	fojaEscritura;
+	private String	libroEscritura;
 
 	public CartaCancelacionInfo() {
     }
@@ -75,6 +76,85 @@ public class CartaCancelacionInfo implements Info {
         this.xml = xml;
     }
     
-    
+
+	public Date getFechaEmisionCarta() {
+		return fechaEmisionCarta;
+	}
+
+	public void setFechaEmisionCarta(Date fechaEmisionCarta) {
+		this.fechaEmisionCarta = fechaEmisionCarta;
+	}
+
+	public String getFolio() {
+		return folio;
+	}
+
+	public void setFolio(String folio) {
+		this.folio = folio;
+	}
+	
+	public String getEntidad() {
+		return entidad;
+	}
+
+	public void setEntidad(String entidad) {
+		this.entidad = entidad;
+	}
+
+	public String getNombreAcreditado() {
+		return nombreAcreditado;
+	}
+
+	public void setNombreAcreditado(String nombreAcreditado) {
+		this.nombreAcreditado = nombreAcreditado;
+	}
+
+	public String getNombreNotario() {
+		return nombreNotario;
+	}
+
+	public void setNombreNotario(String nombreNotario) {
+		this.nombreNotario = nombreNotario;
+	}
+
+	public String getNotaria() {
+		return notaria;
+	}
+
+	public void setNotaria(String notaria) {
+		this.notaria = notaria;
+	}
+
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	public String getFolioEscritura() {
+		return folioEscritura;
+	}
+
+	public void setFolioEscritura(String folioEscritura) {
+		this.folioEscritura = folioEscritura;
+	}
+
+	public String getFojaEscritura() {
+		return fojaEscritura;
+	}
+
+	public void setFojaEscritura(String fojaEscritura) {
+		this.fojaEscritura = fojaEscritura;
+	}
+
+	public String getLibroEscritura() {
+		return libroEscritura;
+	}
+
+	public void setLibroEscritura(String libroEscritura) {
+		this.libroEscritura = libroEscritura;
+	}
     
 }
