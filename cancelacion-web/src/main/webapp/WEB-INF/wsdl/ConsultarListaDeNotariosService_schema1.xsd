@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://webservices.cancelacion.gisnet.com/" version="1.0" xmlns:tns="http://webservices.cancelacion.gisnet.com/">
+
+  <xs:element name="consultarListaDeNotarios" type="tns:consultarListaDeNotarios"/>
+
+  <xs:element name="consultarListaDeNotariosAdai" type="tns:consultarListaDeNotariosAdai"/>
+
+  <xs:element name="consultarListaDeNotariosAdaiResponse" type="tns:consultarListaDeNotariosAdaiResponse"/>
+
+  <xs:element name="consultarListaDeNotariosResponse" type="tns:consultarListaDeNotariosResponse"/>
+
+  <xs:element name="entidad" type="tns:entidad"/>
+
+  <xs:element name="entidadResponse" type="tns:entidadResponse"/>
+
+  <xs:complexType name="entidad">
+    <xs:sequence>
+      <xs:element name="numeroDeCredito" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="entidadResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="consultarListaDeNotarios">
+    <xs:sequence>
+      <xs:element name="numeroDeCredito" type="xs:int"/>
+      <xs:element minOccurs="0" name="entidad" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="consultarListaDeNotariosResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:cNotario"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="cNotario">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CEntidad" type="xs:string"/>
+      <xs:element name="codigoNotario" type="xs:int"/>
+      <xs:element minOccurs="0" name="convenioInfonavit" type="xs:string"/>
+      <xs:element minOccurs="0" name="email" type="xs:string"/>
+      <xs:element minOccurs="0" name="entidad" type="xs:string"/>
+      <xs:element minOccurs="0" name="nombreNotario" type="xs:string"/>
+      <xs:element minOccurs="0" name="notariaNumero" type="xs:string"/>
+      <xs:element minOccurs="0" name="telefono" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="consultarListaDeNotariosAdai">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="entidad" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="consultarListaDeNotariosAdaiResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:cNotario"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
