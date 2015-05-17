@@ -50,17 +50,40 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <section id="widget-grid" class="">
                     <div th:replace="layout/smartadmin::fr-notificaciones"></div>
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-12" th:if="${proyecto.statusProyecto.clave}==5">
                             <div class="jarviswidget" id="wid-id-0" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
                                 <header>
                                     <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
                                     <h2>caso <span th:text="${caso.numeroCaso}"></span></h2>
                                 </header>
                                 <div role="content" class="no-padding">
-                                    <form class="smart-form" th:action="@{/cobranza/caso/{numeroCaso}/fechafirma(id=${numeroCaso})}" method="POST" action="#">
+                                    <form class="smart-form" th:action="@{/cobranza/caso/{numeroCaso}/fechafirma(numeroCaso=${caso.numeroCaso})}" method="POST" action="#">
                                         <fieldset>
                                             <label class="input">
-                                                <input name='fechaFirma' />
+                                                <label class="label">Fecha asignada para firma del notario</label>
+                                                <input name='fechaFirma' placeholder="dd/mm/yyyy" />
+                                            </label>
+                                        </fieldset>
+                                        <footer>
+                                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                            <button class="btn btn-primary" role="button">Aceptar</button>
+                                        </footer>
+                                    </form>
+                                </div><!-- fin jarviswidget content -->
+                            </div><!-- fin jarviswidget -->
+                        </div><!-- fin col -->
+                        <div class="col-sm-12" th:if="${proyecto.statusProyecto.clave}==8">
+                            <div class="jarviswidget" id="wid-id-1" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+                                <header>
+                                    <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
+                                    <h2>caso <span th:text="${caso.numeroCaso}"></span></h2>
+                                </header>
+                                <div role="content" class="no-padding">
+                                    <form class="smart-form" th:action="@{/cobranza/caso/{numeroCaso}/registrarfirma(numeroCaso=${caso.numeroCaso})}" method="POST" action="#">
+                                        <fieldset>
+                                            <label class="input">
+                                                <label class="label">Fecha de Firma por notario</label>
+                                                <input name='fechaFirma' placeholder="dd/mm/yyyy" />
                                             </label>
                                         </fieldset>
                                         <footer>

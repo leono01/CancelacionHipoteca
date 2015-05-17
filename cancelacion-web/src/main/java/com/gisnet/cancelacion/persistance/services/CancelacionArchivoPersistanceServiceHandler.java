@@ -48,7 +48,17 @@ public class CancelacionArchivoPersistanceServiceHandler implements CancelacionA
 
     @Override
     public ListResponse<CancelacionArchivoInfo> list(ListRequest event) {
-        return Query.list(repository.findAll());
+        switch (event.getKey()) {
+            case "ALL":
+                return Query.list(repository.findAll());
+
+            case "proyectoCancelacionId":
+                if (!(event.getValue() instanceof Long)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return Query.list(repository.findAllByProyectoCancelacionId((long) event.getValue()));
+        }
+        throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
 
     @Override

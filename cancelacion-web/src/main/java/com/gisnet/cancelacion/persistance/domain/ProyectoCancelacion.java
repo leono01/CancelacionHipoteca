@@ -47,6 +47,9 @@ public class ProyectoCancelacion implements Infoable<ProyectoCancelacionInfo>, S
     
     private Empleado empleado;
     private StatusProyecto statusProyecto;
+    
+    private Date fechaAsignadaParaFirma;
+    private Date fechaFirmaNotario;
 
     public ProyectoCancelacion() {
     }
@@ -139,6 +142,26 @@ public class ProyectoCancelacion implements Infoable<ProyectoCancelacionInfo>, S
     public void setStatusProyecto(StatusProyecto statusProyecto) {
         this.statusProyecto = statusProyecto;
     }
+
+    @Column(name = "FECHA_ASIGNADA_PARA_FIRMA")
+    @Temporal(javax.persistence.TemporalType.DATE)
+    public Date getFechaAsignadaParaFirma() {
+        return fechaAsignadaParaFirma;
+    }
+
+    public void setFechaAsignadaParaFirma(Date fechaAsignadaParaFirma) {
+        this.fechaAsignadaParaFirma = fechaAsignadaParaFirma;
+    }
+
+    @Column(name = "FECHA_FIRMA_NOTARIO")
+    @Temporal(javax.persistence.TemporalType.DATE)
+    public Date getFechaFirmaNotario() {
+        return fechaFirmaNotario;
+    }
+
+    public void setFechaFirmaNotario(Date fechaFirmaNotario) {
+        this.fechaFirmaNotario = fechaFirmaNotario;
+    }
     
     @Override
     public ProyectoCancelacionInfo asInfo() {
@@ -154,6 +177,8 @@ public class ProyectoCancelacion implements Infoable<ProyectoCancelacionInfo>, S
             info.setEmpleadoId(empleado.getId());
         if (statusProyecto != null)
             info.setStatusProyecto(statusProyecto.asInfo());
+        info.setFechaAsignadaParaFirma(fechaAsignadaParaFirma);
+        info.setFechaFirmaNotario(fechaFirmaNotario);
         return info;
     }
     

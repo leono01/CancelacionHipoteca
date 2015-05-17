@@ -104,10 +104,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <div class="jarviswidget" id="wid-id-1" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
                                 <header>
                                     <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
-                                    <h2>Acciones</h2>
+                                    <h2>Firma de notario</h2>
                                 </header>
-                                <div role="content" class="no-padding">
-                                    <a class="btn btn-primary" href="#">Validar caso</a>
+                                <div role="content" class="widget-body">
+                                    <a class="btn btn-primary" th:href="@{/cobranza/caso/{numeroCaso}/fechafirma(numeroCaso=${caso.numeroCaso})}">
+                                        <span th:if="${proyecto.statusProyecto.clave}==5">Agendar</span>
+                                        <span th:if="${proyecto.statusProyecto.clave}==8">Registrar</span>
+                                    </a>
                                 </div><!-- fin jarviswidget content -->
                             </div><!-- fin jarviswidget -->
                         </div><!-- fin col -->

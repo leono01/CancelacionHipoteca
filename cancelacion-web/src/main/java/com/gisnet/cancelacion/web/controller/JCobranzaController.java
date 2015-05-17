@@ -28,6 +28,7 @@ import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.*;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -36,6 +37,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -73,15 +75,22 @@ public class JCobranzaController {
         }
         ListResponse<ProyectoCancelacionInfo> listresponse = proyectoCancelacionService.list(
                 new ListRequest("empleadoId", empleado.getId()));
-        List<CasoInfo> casos = new ArrayList<>();
+        List<CasoInfo> casosRevizar = new ArrayList<>();
+        List<CasoInfo> casosEspera = new ArrayList<>();
         for (ProyectoCancelacionInfo info : listresponse.getList()) {
             if (info.getStatusProyecto().getClave() == 5) {
                 FindResponse<CasoInfo> find = casoService.find(
                         new FindByRequest("proyectoCancelacionId", info.getId()));
-                casos.add(find.getInfo());
+                casosRevizar.add(find.getInfo());
+            }
+            else if (info.getStatusProyecto().getClave() == 8) {
+                FindResponse<CasoInfo> find = casoService.find(
+                        new FindByRequest("proyectoCancelacionId", info.getId()));
+                casosEspera.add(find.getInfo());
             }
         }
-        model.addAttribute("casos", casos);
+        model.addAttribute("casosrevizar", casosRevizar);
+        model.addAttribute("casosespera", casosEspera);
         return "/jcobranza/index";
     }
 
@@ -90,11 +99,17 @@ public class JCobranzaController {
         FindResponse<CasoInfo> find = casoService.find(new FindByRequest("numeroCaso", numeroCaso));
         CasoInfo caso = find.getInfo();
         model.addAttribute("caso", caso);
+        
+        FindResponse<ProyectoCancelacionInfo> find1 = proyectoCancelacionService.find(
+                new FindByRequest(caso.getProyectoCancelacionId()));
+        ProyectoCancelacionInfo proyecto = find1.getInfo();
+        model.addAttribute("proyecto", proyecto);
 
         String validaCredito = casoService.validaCredito(caso);
         model.addAttribute("validaCredito", validaCredito);
 
-        ListResponse<CancelacionArchivoInfo> listresp = cancelacionArchivoService.list(new ListRequest());
+        ListResponse<CancelacionArchivoInfo> listresp = cancelacionArchivoService.list(
+                new ListRequest("proyectoCancelacionId", proyecto.getId()));
         model.addAttribute("archivos", listresp.getList());
 
         return "/jcobranza/ver";
@@ -110,17 +125,56 @@ public class JCobranzaController {
 
     @RequestMapping(value = "/cobranza/caso/{numeroCaso}/fechafirma", method = RequestMethod.GET)
     public String asignarFechaFirmaNotario(@PathVariable int numeroCaso, Model model) {
-        model.addAttribute("numeroCaso", numeroCaso);
+        FindResponse<CasoInfo> find = casoService.find(new FindByRequest("numeroCaso", numeroCaso));
+        CasoInfo caso = find.getInfo();
+        model.addAttribute("caso", caso);
+        
+        FindResponse<ProyectoCancelacionInfo> find1 = proyectoCancelacionService.find(
+                new FindByRequest(caso.getProyectoCancelacionId()));
+        model.addAttribute("proyecto", find1.getInfo());
+        
         return "/jcobranza/firma";
     }
 
     @RequestMapping(value = "/cobranza/caso/{numeroCaso}/fechafirma", method = RequestMethod.POST)
-    public String guardaFechaFirmaNotario(@PathVariable int numeroCaso, Model model) {
+    public String guardaFechaFirmaNotario(
+            @PathVariable int numeroCaso,
+            @RequestParam("fechaFirma") Date fechaAsignada,
+            Model model) {
         FindResponse<CasoInfo> find = casoService.find(new FindByRequest("numeroCaso", numeroCaso));
         CasoInfo caso = find.getInfo();
         model.addAttribute("caso", caso);
 
         // TODO guarda fecha firma con notario / actualizacion de estados
-        return "/jcobranza/firma";
+        FindResponse<ProyectoCancelacionInfo> find1 = proyectoCancelacionService.find(
+                new FindByRequest(caso.getProyectoCancelacionId()));
+        ProyectoCancelacionInfo proyecto = find1.getInfo();
+        FindResponse<StatusProyectoInfo> find2 = statusProyectoService.find(new FindByRequest("clave", 8));
+        proyecto.setStatusProyecto(find2.getInfo());
+        proyecto.setFechaAsignadaParaFirma(fechaAsignada);
+        
+        UpdateResponse<ProyectoCancelacionInfo> update = proyectoCancelacionService.update(new UpdateRequest<>(proyecto));
+        return "redirect:/";
+    }
+
+    @RequestMapping(value = "/cobranza/caso/{numeroCaso}/registrarfirma", method = RequestMethod.POST)
+    public String guardaRegistrarFechaFirmaNotario(
+            @PathVariable int numeroCaso,
+            @RequestParam("fechaFirma") Date fechaAsignada,
+            Model model) {
+        FindResponse<CasoInfo> find = casoService.find(new FindByRequest("numeroCaso", numeroCaso));
+        CasoInfo caso = find.getInfo();
+        model.addAttribute("caso", caso);
+
+        // TODO guarda fecha firma con notario / actualizacion de estados
+        FindResponse<ProyectoCancelacionInfo> find1 = proyectoCancelacionService.find(
+                new FindByRequest(caso.getProyectoCancelacionId()));
+        ProyectoCancelacionInfo proyecto = find1.getInfo();
+        FindResponse<StatusProyectoInfo> find2 = statusProyectoService.find(new FindByRequest("clave", 9));
+        proyecto.setStatusProyecto(find2.getInfo());
+        proyecto.setFechaFirmaNotario(fechaAsignada);
+        
+        UpdateResponse<ProyectoCancelacionInfo> update = proyectoCancelacionService.update(new UpdateRequest<>(proyecto));
+        return "redirect:/";
     }
 }

@@ -26,6 +26,7 @@ import com.gisnet.cancelacion.core.services.StatusProyectoService;
 import com.gisnet.cancelacion.core.services.UsuarioService;
 import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.*;
+import com.gisnet.cancelacion.web.domain.CasoCompleto;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -77,7 +78,19 @@ public class NotarioController {
         }
         ListResponse<CasoInfo> listresponse = casoService.list(
                 new ListRequest("notarioId", notario.getId()));
-        model.addAttribute("casos", listresponse.getList());
+        
+        List<CasoCompleto> casos = new ArrayList<>();
+        for (CasoInfo caso : listresponse.getList()) {
+            CasoCompleto casocompleto = new CasoCompleto();
+            casocompleto.setCaso(caso);
+            if (caso.getProyectoCancelacionId() > 0) {
+                FindResponse<ProyectoCancelacionInfo> find = proyectoCancelacionService.find(
+                        new FindByRequest(caso.getProyectoCancelacionId()));
+                casocompleto.setProyectoCancelacion(find.getInfo());
+            }
+            casos.add(casocompleto);
+        }
+        model.addAttribute("casos", casos);
 
         return "/notario/index";
     }

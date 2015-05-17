@@ -353,6 +353,8 @@ public class PersistanceDomainFactory {
                 b.setStatusProyecto(statusProyectoRepository.findByClave(info.getStatusProyecto().getClave()));
             }
         }
+        b.setFechaAsignadaParaFirma(info.getFechaAsignadaParaFirma());
+        b.setFechaFirmaNotario(info.getFechaFirmaNotario());
         return b;
     }
     

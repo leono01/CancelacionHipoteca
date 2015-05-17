@@ -69,13 +69,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr th:each="caso : ${casos}" th:object="${caso}">
+                                            <tr th:each="caso : ${casos}" th:object="${caso.caso}">
                                                 <td th:text="*{numeroCaso}">000000000</td>
                                                 <td th:text="*{numeroCredito}">00000000000</td>
                                                 <td th:text="*{nombreAcreditado}">nombre acreditado</td>
                                                 <td><a th:href="@{/notario/caso/{numeroCaso}(numeroCaso=*{numeroCaso})}">url</a></td>
                                                 <td th:text="*{fechaCreacion}">01/04/2015</td>
-                                                <td th:text="*{statusCaso.nombre}">estado</td>
+                                                <td>
+                                                    <p th:text="*{statusCaso.nombre}"></p> 
+                                                    <p th:if="${caso.proyectoCancelacion.statusProyecto.clave}==8" th:text="|Pasar a firmar el dia ${caso.proyectoCancelacion.fechaAsignadaParaFirma}|">estado</p>
+                                                </td>
                                             </tr>
                                             <tr th:if="${casos.isEmpty()}">
                                                 <td colspan="6">Sin casos pendientes</td>
@@ -86,6 +89,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             </div><!-- fin jarviswidget -->
                         </div><!-- fin col -->
                     </div><!-- fin row -->
+                    <!--
                     <div class="row">
                         <div class="col-md-6">
                             <div class="jarviswidget" id="wid-id-1" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
@@ -99,10 +103,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                         codigo carta: <input type="text" name="codigocarta"/><br /><br />
                                         <input type="submit" value="Upload"/> Press here to upload the file!
                                     </form>
-                                </div><!-- fin jarviswidget content -->
-                            </div><!-- fin jarviswidget -->
-                        </div><!-- fin col-->
-                    </div><!-- fin row -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    -->
                 </section><!-- fin de widget-grid -->
             </div><!-- fin de content -->
         </div><!-- fin de main -->

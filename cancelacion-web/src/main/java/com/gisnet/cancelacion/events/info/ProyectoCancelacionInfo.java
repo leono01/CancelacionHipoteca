@@ -35,6 +35,8 @@ public class ProyectoCancelacionInfo implements Info {
     
     private long empleadoId;
     private StatusProyectoInfo statusProyecto;
+    private Date fechaAsignadaParaFirma;
+    private Date fechaFirmaNotario;
 
     public ProyectoCancelacionInfo() {
     }
@@ -109,6 +111,22 @@ public class ProyectoCancelacionInfo implements Info {
 
     public void setStatusProyecto(StatusProyectoInfo statusProyecto) {
         this.statusProyecto = statusProyecto;
+    }
+
+    public Date getFechaAsignadaParaFirma() {
+        return fechaAsignadaParaFirma;
+    }
+
+    public void setFechaAsignadaParaFirma(Date fechaAsignadaParaFirma) {
+        this.fechaAsignadaParaFirma = fechaAsignadaParaFirma;
+    }
+
+    public Date getFechaFirmaNotario() {
+        return fechaFirmaNotario;
+    }
+
+    public void setFechaFirmaNotario(Date fechaFirmaNotario) {
+        this.fechaFirmaNotario = fechaFirmaNotario;
     }
 
 }

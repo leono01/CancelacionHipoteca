@@ -69,13 +69,53 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                             </tr>
                                         </thead>
                                          <tbody>
-                                             <tr th:each="caso : ${casos}" th:object="${caso}">
+                                             <tr th:each="caso : ${casosrevizar}" th:object="${caso}">
                                                 <td th:text="*{numeroCaso}">000000000</td>
                                                 <td th:text="*{numeroCredito}">00000000000</td>
                                                 <td th:text="*{nombreAcreditado}">nombre acreditado</td>
                                                 <td><a th:href="@{/cobranza/caso/{numeroCaso}(numeroCaso=*{numeroCaso})}">url</a></td>
                                                 <td th:text="*{fechaCreacion}">01/04/2015</td>
                                                 <td th:text="*{statusCaso.nombre}">estado</td>
+                                             </tr>
+                                             <tr th:if="${casosrevizar.isEmpty()}">
+                                                 <td colspan="6">Sin casos por revizar</td>
+                                             </tr>
+                                         </tbody>
+                                     </table>
+                                </div><!-- fin jarviswidget content -->
+                            </div><!-- fin jarviswidget -->
+                        </div><!-- fin col -->
+                    </div><!-- fin row -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="jarviswidget" id="wid-id-1" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+                                <header>
+                                    <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
+                                    <h2>Casos en espera de firma</h2>
+                                </header>
+                                <div role="content" class="no-padding">
+                                     <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>no caso</th>
+                                                <th>no ss (credito)</th>
+                                                <th>nombre acreditado</th>
+                                                <th>url (pdf)</th>
+                                                <th>fecha</th>
+                                                <th>estado</th>
+                                            </tr>
+                                        </thead>
+                                         <tbody>
+                                             <tr th:each="caso : ${casosespera}" th:object="${caso}">
+                                                <td th:text="*{numeroCaso}">000000000</td>
+                                                <td th:text="*{numeroCredito}">00000000000</td>
+                                                <td th:text="*{nombreAcreditado}">nombre acreditado</td>
+                                                <td><a th:href="@{/cobranza/caso/{numeroCaso}(numeroCaso=*{numeroCaso})}">url</a></td>
+                                                <td th:text="*{fechaCreacion}">01/04/2015</td>
+                                                <td th:text="*{statusCaso.nombre}">estado</td>
+                                             </tr>
+                                             <tr th:if="${casosespera.isEmpty()}">
+                                                 <td colspan="6">Sin casos por revizar</td>
                                              </tr>
                                          </tbody>
                                      </table>
