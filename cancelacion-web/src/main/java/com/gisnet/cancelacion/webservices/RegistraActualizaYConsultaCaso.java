@@ -55,12 +55,9 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport {
 	@Autowired
     private CasoService service;
-	
-	@Autowired
-	private CartaCancelacionService service2;
 
 	@Autowired
-	private StatusCasoService service3;
+	private StatusCasoService statusService;
 	
 	@Autowired
 	private CartaCancelacionService ccService;
@@ -123,29 +120,48 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
         FindByRequest fbr = new FindByRequest("numeroCaso",numeroDeCaso);
         FindResponse<CasoInfo> casoresponse = service.find(fbr);
         
+        //if(casoresponse.getInfo() != null){
         
-        FindByRequest clave = new FindByRequest("clave",status);
-        FindResponse<StatusCasoInfo> scresponse = service3.find(clave);
+        	
+	        FindByRequest clave = new FindByRequest("clave",status);
+	        
+	        if(clave != null){
+	        	
+	        	FindResponse<StatusCasoInfo> scresponse = statusService.find(clave);
+	        	casoresponse.getInfo().setStatusCaso(scresponse.getInfo());
+	        
+	        }
+	        casoresponse.getInfo().setFechaActualizacion(fecha);
+	        
+	        
+	        
+	        long idCarta = casoresponse.getInfo().getCartaCancelacionId();
+	        
+	        System.out.println(".-.-.-.-.-.-.-.-.-.-.-.-.-.-..-.-.-.-.. " + idCarta);
+	        
+	        if(idCarta != 0){
+	        	
+		        FindByRequest fbr2 = new FindByRequest(idCarta);
+		        FindResponse<CartaCancelacionInfo> response2 = ccService.findBy(fbr2);
+		        
+		        response2.getInfo().setCodigoCarta(numeroDeFolio);
+		        response2.getInfo().setPdf(cartaDeCancelacionPdf);
+		        response2.getInfo().setFechaEmisionCarta(fechaEmisionCarta);
+	        
+	        }
+	        
+	        ida.setCodigo(0);
+	        ida.setDescripcion("Se actualizó correctamente el caso.");
+	        ida.setNumeroDeCaso(casoresponse.getInfo().getNumeroCaso());
+	        ida.setNumeroDeCredito(casoresponse.getInfo().getNumeroCredito());
+	        
+        /**}else{
+        	ida.setCodigo(4);
+        	ida.setDescripcion("No se actualizó la información del caso");
+        	ida.setNumeroDeCaso(numeroDeCaso);
+            ida.setNumeroDeCredito(numeroDeCredito);        	
+        }**/
         
-        casoresponse.getInfo().setFechaActualizacion(fecha);
-        casoresponse.getInfo().setStatusCaso(scresponse.getInfo());
-        
-        
-        long idCarta = casoresponse.getInfo().getCartaCancelacionId();
-        
-        System.out.println(".-.-.-.-.-.-.-.-.-.-.-.-.-.-..-.-.-.-.. " + idCarta);
-        
-        FindByRequest fbr2 = new FindByRequest(idCarta);
-        FindResponse<CartaCancelacionInfo> response2 = service2.findBy(fbr2);
-        
-        response2.getInfo().setCodigoCarta(numeroDeFolio);
-        response2.getInfo().setPdf(cartaDeCancelacionPdf);
-        response2.getInfo().setFechaEmisionCarta(fechaEmisionCarta);
-        
-        ida.setCodigo(0);
-        ida.setDescripcion("Se actualizó correctamente el caso.");
-        ida.setNumeroDeCaso(casoresponse.getInfo().getNumeroCaso());
-        ida.setNumeroDeCredito(casoresponse.getInfo().getNumeroCredito());
         }catch(Exception e){
         	ida.setCodigo(4);
         	ida.setDescripcion("No se actualizó la información del caso");
@@ -164,27 +180,45 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
         InfoDeConsulta idc = new InfoDeConsulta();
 
         try{
-        	FindByRequest fbr = new FindByRequest("numeroCaso",numeroDeCaso);
+        	
+        	FindByRequest fbr = new FindByRequest("numeroCaso",numeroDeCaso);        	
             FindResponse<CasoInfo> casoresponse = service.find(fbr);
-          
-            long idCarta = casoresponse.getInfo().getCartaCancelacionId();
             
-            FindByRequest fbr2 = new FindByRequest(idCarta);
-            FindResponse<CartaCancelacionInfo> responseCarta = service2.findBy(fbr2);
+            System.out.println(".-.-.-.-.-.-.-.-.-.-.-.-.-.-..-.-.-.-.. " + casoresponse.getInfo().getId());
             
-            idc.setNumeroDeFolio(responseCarta.getInfo().getCodigoCarta());
-            idc.setFechaDeEmisionDeCarta(responseCarta.getInfo().getFechaEmisionCarta());
-            idc.setCartaDeCancelacion(responseCarta.getInfo().getPdf());
-            idc.setFecha(casoresponse.getInfo().getFechaCreacion());
+            if(casoresponse.getInfo().getId() != 0){  
+            	
+	            long idCarta = casoresponse.getInfo().getCartaCancelacionId();
+	            
+	            System.out.println(".-.-.-.-.-.-.-.-.-.-.-.-.-.-..-.-.-.-.. " + idCarta);
+	            
+	            if(idCarta != 0){
+	            	
+		            FindByRequest fbr2 = new FindByRequest(idCarta);
+		            FindResponse<CartaCancelacionInfo> responseCarta = ccService.findBy(fbr2);
+		            
+		            idc.setNumeroDeFolio(responseCarta.getInfo().getCodigoCarta());
+		            idc.setFechaDeEmisionDeCarta(responseCarta.getInfo().getFechaEmisionCarta());
+		            idc.setCartaDeCancelacion(responseCarta.getInfo().getPdf());
+		            
+	            }
+	            
+	            idc.setFecha(casoresponse.getInfo().getFechaCreacion());            
+	            idc.setNombreAcreditado(casoresponse.getInfo().getNombreAcreditado());
+	            idc.setEntidad(casoresponse.getInfo().getEntidad());
+	            idc.setNumeroDeCaso(casoresponse.getInfo().getNumeroCaso());
+	            idc.setNumeroDeCredito(casoresponse.getInfo().getNumeroCredito());
+	    
+	            if (casoresponse.getInfo().getStatusCaso() != null){
+	            	idc.setStatus(casoresponse.getInfo().getStatusCaso().getClave());
+	            }
+	            idc.setInfoConsulta(0);
+	            idc.setDescripcionConsulta("Caso consultado satisfactoriamente.");
             
-            idc.setNombreAcreditado(casoresponse.getInfo().getNombreAcreditado());
-            idc.setEntidad(casoresponse.getInfo().getEntidad());
-            idc.setNumeroDeCaso(casoresponse.getInfo().getNumeroCaso());
-            idc.setNumeroDeCredito(casoresponse.getInfo().getNumeroCredito());
-            
-            idc.setStatus(casoresponse.getInfo().getStatusCaso().getClave());
-            idc.setInfoConsulta(0);
-            idc.setDescripcionConsulta("Caso consultado satisfactoriamente.");
+            }else{
+            	idc.setInfoConsulta(6);
+            	idc.setDescripcionConsulta("No existe el caso " + numeroDeCaso);
+            }
             
         }catch(Exception e){
         	idc.setInfoConsulta(5);
@@ -198,17 +232,27 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
     
     public StatusCaso estadoDelCaso (int numeroDeCaso){
     	StatusCaso sc = new StatusCaso();
-    	
+    	StatusCasoInfo sci = null;
     	try{
     	
     		FindByRequest fbr = new FindByRequest("numeroCaso",numeroDeCaso);
     		FindResponse<CasoInfo> response = service.find(fbr);
-    	
-    		StatusCasoInfo sci = response.getInfo().getStatusCaso();
-			
-    		sci.getClave();
-			sci.getNombre();
-			sci.getDescripcion();
+    		
+    		if(response.getInfo() != null){
+    			
+	    		if(response.getInfo().getStatusCaso() != null){
+		    		sci = response.getInfo().getStatusCaso();
+		    		sc.setClave(sci.getClave());
+					sc.setNombre(sci.getNombre());
+					sc.setDescripcion(sci.getDescripcion());
+					sc.setFechaActualizacion(response.getInfo().getFechaActualizacion());
+    			}
+    		}else{
+    			sc.setClave(1);
+    			sc.setNombre("Error en la consulta del status del caso.");
+    			sc.setDescripcion("El número de caso no existe en el sistema.");
+    			sc.setFechaActualizacion(new Date());
+    		}
     	
     	}catch(Exception e){
     		
@@ -325,27 +369,38 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
             
             long idCarta = casoresponse.getInfo().getCartaCancelacionId();
             
-            FindByRequest carta = new FindByRequest(idCarta);
-            FindResponse<CartaCancelacionInfo> cartaresponse = ccService.find(carta);
+            System.out.println(".-.-.-.-.-.-.-.-.-.-.-.-.-.-..-.-.-.-.. " + idCarta);
             
-            cartaresponse.getInfo().setCodigoCarta(codigoCarta);
-            cartaresponse.getInfo().setPdf(base64);
-            cartaresponse.getInfo().setFolio(folio);
-            cartaresponse.getInfo().setEntidad(entidad);
-            cartaresponse.getInfo().setFechaEmisionCarta(fechaEmision);
-            cartaresponse.getInfo().setNombreAcreditado(nombreAcreditado);
-            cartaresponse.getInfo().setNombreNotario(nombreNotario);
-            cartaresponse.getInfo().setNotaria(notaria);
-            cartaresponse.getInfo().setDireccion(direccion);
-            cartaresponse.getInfo().setFolioEscritura(folioEscritura);
-            cartaresponse.getInfo().setFojaEscritura(fojaEscritura);
-            cartaresponse.getInfo().setLibroEscritura(libroEscritura);
+            if(idCarta != 0){
             
-            
-            
-            sc.setClave(5);
-			sc.setNombre("Se actualizó carta");
-			sc.setDescripcion("La carta de cancelación se actualizó correctamente.");
+	            FindByRequest carta = new FindByRequest(idCarta);
+	            FindResponse<CartaCancelacionInfo> cartaresponse = ccService.find(carta);
+	            
+	            cartaresponse.getInfo().setCodigoCarta(codigoCarta);
+	            cartaresponse.getInfo().setPdf(base64);
+	            cartaresponse.getInfo().setFolio(folio);
+	            cartaresponse.getInfo().setEntidad(entidad);
+	            cartaresponse.getInfo().setFechaEmisionCarta(fechaEmision);
+	            cartaresponse.getInfo().setNombreAcreditado(nombreAcreditado);
+	            cartaresponse.getInfo().setNombreNotario(nombreNotario);
+	            cartaresponse.getInfo().setNotaria(notaria);
+	            cartaresponse.getInfo().setDireccion(direccion);
+	            cartaresponse.getInfo().setFolioEscritura(folioEscritura);
+	            cartaresponse.getInfo().setFojaEscritura(fojaEscritura);
+	            cartaresponse.getInfo().setLibroEscritura(libroEscritura);
+	            
+	            
+	            
+	            sc.setClave(5);
+				sc.setNombre("Se actualizó carta");
+				sc.setDescripcion("La carta de cancelación se actualizó correctamente.");
+            }else{
+            	
+            	sc.setClave(6);
+				sc.setNombre("No se actualizó carta");
+				sc.setDescripcion("La carta de cancelación no se actualizó correctamente.");
+            	
+            }
             
     	}
     	catch(Exception e){
@@ -367,8 +422,16 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
         
         long idCarta = casoresponse.getInfo().getCartaCancelacionId();
         
-        FindByRequest carta = new FindByRequest(idCarta);
-        FindResponse<CartaCancelacionInfo> cartaresponse = ccService.find(carta);
+        System.out.println(".-.-.-.-.-.-.-.-.-.-.-.-.-.-..-.-.-.-.. " + idCarta);
+        
+        FindResponse<CartaCancelacionInfo> cartaresponse = null;
+        
+        if(idCarta != 0){
+	        
+        	FindByRequest carta = new FindByRequest(idCarta);
+	        cartaresponse = ccService.find(carta);
+        
+        }
         return cartaresponse.getInfo();    
     }
     

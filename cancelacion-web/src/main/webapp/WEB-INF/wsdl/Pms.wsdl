@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://ws.infonavit.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Pms" targetNamespace="http://ws.infonavit.com/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" targetNamespace="http://ws.infonavit.com/" version="1.0">
+
+  <xs:element name="statusCaso" type="tns:statusCaso"/>
+
+  <xs:element name="statusCasoResponse" type="tns:statusCasoResponse"/>
+
+  <xs:element name="validarCredito" type="tns:validarCredito"/>
+
+  <xs:element name="validarCreditoResponse" type="tns:validarCreditoResponse"/>
+
+  <xs:complexType name="validarCredito">
+    <xs:sequence>
+      <xs:element name="numeroDeCredito" type="xs:int"/>
+      <xs:element name="numeroDeCaso" type="xs:int"/>
+      <xs:element minOccurs="0" name="entidad" type="xs:string"/>
+      <xs:element name="status" type="xs:int"/>
+      <xs:element minOccurs="0" name="descripcion" type="xs:string"/>
+      <xs:element minOccurs="0" name="cartaDeCancelacion" type="xs:base64Binary"/>
+      <xs:element minOccurs="0" name="fechaEmisionCarta" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="nombreAcreditado" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="validarCreditoResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:infoPms"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="infoPms">
+    <xs:sequence>
+      <xs:element name="codigoNotario" type="xs:int"/>
+      <xs:element minOccurs="0" name="convenioInfonavit" type="xs:string"/>
+      <xs:element minOccurs="0" name="descripcion" type="xs:string"/>
+      <xs:element minOccurs="0" name="direccion" type="xs:string"/>
+      <xs:element minOccurs="0" name="email" type="xs:string"/>
+      <xs:element minOccurs="0" name="entidad" type="xs:string"/>
+      <xs:element minOccurs="0" name="nombreNotario" type="xs:string"/>
+      <xs:element minOccurs="0" name="notaria" type="xs:string"/>
+      <xs:element name="numeroDeCaso" type="xs:int"/>
+      <xs:element name="numeroDeCredito" type="xs:int"/>
+      <xs:element name="procede" type="xs:boolean"/>
+      <xs:element name="status" type="xs:int"/>
+      <xs:element minOccurs="0" name="telefono" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="statusCaso">
+    <xs:sequence>
+      <xs:element name="numeroDeCaso" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="statusCasoResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:infoStatusCaso"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="infoStatusCaso">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="descripcion" type="xs:string"/>
+      <xs:element minOccurs="0" name="fechaActualizacion" type="xs:dateTime"/>
+      <xs:element name="status" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="statusCaso">
+    <wsdl:part element="tns:statusCaso" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="validarCreditoResponse">
+    <wsdl:part element="tns:validarCreditoResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="validarCredito">
+    <wsdl:part element="tns:validarCredito" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="statusCasoResponse">
+    <wsdl:part element="tns:statusCasoResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="Pms">
+    <wsdl:operation name="validarCredito">
+      <wsdl:input message="tns:validarCredito" name="validarCredito">
+    </wsdl:input>
+      <wsdl:output message="tns:validarCreditoResponse" name="validarCreditoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="statusCaso">
+      <wsdl:input message="tns:statusCaso" name="statusCaso">
+    </wsdl:input>
+      <wsdl:output message="tns:statusCasoResponse" name="statusCasoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PmsSoapBinding" type="tns:Pms">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="validarCredito">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="validarCredito">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="validarCreditoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="statusCaso">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="statusCaso">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="statusCasoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Pms">
+    <wsdl:port binding="tns:PmsSoapBinding" name="PmsPort">
+      <soap:address location="http://189.199.222.141:8080/WebServicePms/Pms"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

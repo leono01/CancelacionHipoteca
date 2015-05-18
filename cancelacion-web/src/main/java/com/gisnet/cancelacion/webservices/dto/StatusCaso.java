@@ -5,15 +5,23 @@ import java.util.Date;
 
 public class StatusCaso {
 	
-	int 	status;
+	int 	clave;
+	String  nombre;
 	String	descripcion; 
 	Date	fechaActualizacion;
 	
-	public int getStatus() {
-		return status;
+	
+	public int getClave() {
+		return clave;
 	}
-	public void setStatus(int status) {
-		this.status = status;
+	public void setClave(int clave) {
+		this.clave = clave;
+	}
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 	public String getDescripcion() {
 		return descripcion;
