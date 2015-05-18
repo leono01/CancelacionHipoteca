@@ -74,11 +74,11 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
     
     	List<CNotario> notarios = new ArrayList<CNotario>();
     	
-        ListRequest lr = new ListRequest();
-        ListResponse<NotarioInfo> list = service.list(lr);
-        
-        //ListRequest lr = new ListRequest("entidad",entidad);
+        //ListRequest lr = new ListRequest();
         //ListResponse<NotarioInfo> list = service.list(lr);
+        
+        ListRequest lr = new ListRequest("entidad",entidad);
+        ListResponse<NotarioInfo> list = service.list(lr);
         
         for(NotarioInfo ni : list.getList()){
         	CNotario cn = new CNotario();

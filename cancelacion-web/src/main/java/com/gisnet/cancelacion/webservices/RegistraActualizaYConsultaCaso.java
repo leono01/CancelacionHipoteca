@@ -133,6 +133,8 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
         
         long idCarta = casoresponse.getInfo().getCartaCancelacionId();
         
+        System.out.println(".-.-.-.-.-.-.-.-.-.-.-.-.-.-..-.-.-.-.. " + idCarta);
+        
         FindByRequest fbr2 = new FindByRequest(idCarta);
         FindResponse<CartaCancelacionInfo> response2 = service2.findBy(fbr2);
         
