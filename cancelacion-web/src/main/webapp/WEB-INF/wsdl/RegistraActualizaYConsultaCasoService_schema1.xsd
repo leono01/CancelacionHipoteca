@@ -105,9 +105,10 @@
 
   <xs:complexType name="statusCaso">
     <xs:sequence>
+      <xs:element name="clave" type="xs:int"/>
       <xs:element minOccurs="0" name="descripcion" type="xs:string"/>
       <xs:element minOccurs="0" name="fechaActualizacion" type="xs:dateTime"/>
-      <xs:element name="status" type="xs:int"/>
+      <xs:element minOccurs="0" name="nombre" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 
