@@ -22,11 +22,12 @@ import com.gisnet.cancelacion.core.services.CasoService;
 import com.gisnet.cancelacion.core.services.EmpleadoService;
 import com.gisnet.cancelacion.core.services.NotarioService;
 import com.gisnet.cancelacion.core.services.ProyectoCancelacionService;
+import com.gisnet.cancelacion.core.services.StatusCasoService;
 import com.gisnet.cancelacion.core.services.StatusProyectoService;
 import com.gisnet.cancelacion.core.services.UsuarioService;
 import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.*;
-import com.gisnet.cancelacion.web.domain.CasoCompleto;
+import com.gisnet.cancelacion.web.domain.SesionNotario;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -64,43 +65,62 @@ public class NotarioController {
     @Autowired
     private ProyectoCancelacionService proyectoCancelacionService;
     @Autowired
+    private StatusCasoService statusCasoService;
+    @Autowired
     private StatusProyectoService statusProyectoService;
     @Autowired
     private UsuarioService usuarioService;
     
+    @Autowired
+    private SesionNotario sesion;
+    
     public String index(Model model, Principal principal) {
-        FindResponse<NotarioInfo> findresponse = notarioService.find(
-                new FindByRequest("nombreUsuario", principal.getName()));
-        NotarioInfo notario = findresponse.getInfo();
-        if (notario == null) {
-            model.addAttribute("casos", new ArrayList<CasoInfo>());
-            return "/notario/index";
+        if (sesion.getNotarioInfo() == null) {
+            FindResponse<NotarioInfo> findresponse = notarioService.find(
+                    new FindByRequest("nombreUsuario", principal.getName()));
+            if (findresponse.getInfo() == null) {
+                model.addAttribute("casos", new ArrayList<CasoInfo>());
+                return "/notario/index";
+            }
+            sesion.setNotarioInfo(findresponse.getInfo());
         }
+
+        List<String> mensajes = Utils.getMensajes(model);
+
         ListResponse<CasoInfo> listresponse = casoService.list(
-                new ListRequest("notarioId", notario.getId()));
+                new ListRequest("notarioId", sesion.getNotarioInfo().getId()));
         
-        List<CasoCompleto> casos = new ArrayList<>();
         for (CasoInfo caso : listresponse.getList()) {
-            CasoCompleto casocompleto = new CasoCompleto();
-            casocompleto.setCaso(caso);
             if (caso.getProyectoCancelacionId() > 0) {
                 FindResponse<ProyectoCancelacionInfo> find = proyectoCancelacionService.find(
                         new FindByRequest(caso.getProyectoCancelacionId()));
-                casocompleto.setProyectoCancelacion(find.getInfo());
+                ProyectoCancelacionInfo info = find.getInfo();
+                if (info.getStatusProyecto().getClave() == 8) {
+                    mensajes.add("info::Pasar a firmar el caso " + caso.getNumeroCaso() + ", el dia " + info.getFechaAsignadaParaFirma());
+                }
             }
-            casos.add(casocompleto);
         }
-        model.addAttribute("casos", casos);
+        model.addAttribute("casos", listresponse.getList());
 
         return "/notario/index";
     }
     
+    private CasoInfo getCaso(int numeroCaso) {
+        if (sesion.getCasoInfo() != null) {
+            if (sesion.getCasoInfo().getNumeroCaso() == numeroCaso) {
+                return sesion.getCasoInfo();
+            }
+        }
+        sesion.getCancelacionArchivos().clear();
+        FindResponse<CasoInfo> find = casoService.find(new FindByRequest("numeroCaso", numeroCaso));
+        sesion.setCasoInfo(find.getInfo());
+        return sesion.getCasoInfo();
+    }
+    
     @RequestMapping(value = "/notario/caso/{numeroCaso}", method = RequestMethod.GET)
     public String ver(@PathVariable int numeroCaso, Model model) {
-        FindResponse<CasoInfo> find = casoService.find(new FindByRequest("numeroCaso", numeroCaso));
-        CasoInfo caso = find.getInfo();
+        CasoInfo caso = getCaso(numeroCaso);
         model.addAttribute("caso", caso);
-        
         return "/notario/view";
     }
     
@@ -114,14 +134,13 @@ public class NotarioController {
 
     @RequestMapping(value = "/notario/caso/{numeroCaso}/aceptar", method = RequestMethod.GET)
     public String aceptar(@PathVariable int numeroCaso, Model model) {
-        FindResponse<CasoInfo> find = casoService.find(new FindByRequest("numeroCaso", numeroCaso));
-        CasoInfo caso = find.getInfo();
+        CasoInfo caso = getCaso(numeroCaso);
         model.addAttribute("caso", caso);
         return "/notario/accept";
     }
     
     @RequestMapping(value = "/notario/caso/{numeroCaso}/aceptar", method = RequestMethod.POST)
-    public String aceptarCaso(
+    public String agregaArchivos(
             @PathVariable int numeroCaso,
             Model model,
             RedirectAttributes redirectAttributes,
@@ -134,59 +153,42 @@ public class NotarioController {
         List<String> messages = new ArrayList<>();
         redirectAttributes.addFlashAttribute("messages", messages);
         
-        FindResponse<CasoInfo> find = casoService.find(new FindByRequest("numeroCaso", numeroCaso));
-        CasoInfo caso = find.getInfo();
+        CasoInfo caso = getCaso(numeroCaso);
         model.addAttribute("caso", caso);
         
-        // crea proyecto cancelacion
-        
-        ProyectoCancelacionInfo proyecto = new ProyectoCancelacionInfo();
-        proyecto.setFechaCreacion(new Date());
-        FindResponse<StatusProyectoInfo> find1 = statusProyectoService.find(
-                new FindByRequest("clave", 1));
-        proyecto.setStatusProyecto(find1.getInfo());
-        
-        SaveResponse<ProyectoCancelacionInfo> saved = proyectoCancelacionService.save(
-                new SaveRequest<>(proyecto));
-        proyecto = saved.getInfo();
-        
-        caso.setProyectoCancelacionId(proyecto.getId());
-        UpdateResponse<CasoInfo> updated = casoService.update(new UpdateRequest<>(caso));
-        //caso = updated.getInfo();
-        
         // guarda archivos
-        
+        sesion.getCancelacionArchivos().clear();
         if (!file1.isEmpty()) {
             try {
-                guardaCancelacionArchivo(file1, proyecto.getId());
+                guardaCancelacionArchivo(file1);
             } catch (IOException ex) {
                 return "redirect:/";
             }
         }
         if (!file2.isEmpty()) {
             try {
-                guardaCancelacionArchivo(file2, proyecto.getId());
+                guardaCancelacionArchivo(file2);
             } catch (IOException ex) {
                 return "redirect:/";
             }
         }
         if (!file3.isEmpty()) {
             try {
-                guardaCancelacionArchivo(file3, proyecto.getId());
+                guardaCancelacionArchivo(file3);
             } catch (IOException ex) {
                 return "redirect:/";
             }
         }
         if (!file4.isEmpty()) {
             try {
-                guardaCancelacionArchivo(file4, proyecto.getId());
+                guardaCancelacionArchivo(file4);
             } catch (IOException ex) {
                 return "redirect:/";
             }
         }
         if (!file5.isEmpty()) {
             try {
-                guardaCancelacionArchivo(file5, proyecto.getId());
+                guardaCancelacionArchivo(file5);
             } catch (IOException ex) {
                 return "redirect:/";
             }
@@ -194,14 +196,13 @@ public class NotarioController {
         return "redirect:/notario/caso/" + numeroCaso + "/aceptar/jefecobranza";
     }
     
-    private void guardaCancelacionArchivo(MultipartFile file, long proyectoCancelacionId) throws IOException {
+    private void guardaCancelacionArchivo(MultipartFile file) throws IOException {
         CancelacionArchivoInfo archivo = new CancelacionArchivoInfo();
         archivo.setArchivo(file.getBytes());
         archivo.setNombre(file.getOriginalFilename());
         archivo.setMimetype(file.getContentType());
-        archivo.setProyectoCancelacionId(proyectoCancelacionId);
         
-        SaveResponse<CancelacionArchivoInfo> save = cancelacionArchivoService.save(new SaveRequest<>(archivo));
+        sesion.getCancelacionArchivos().add(archivo);
     }
     
     @RequestMapping(value = "/notario/caso/{numeroCaso}/aceptar/jefecobranza", method = RequestMethod.GET)
@@ -209,9 +210,7 @@ public class NotarioController {
             @PathVariable int numeroCaso,
             Model model) {
         
-        FindResponse<CasoInfo> find0 = casoService.find(
-                new FindByRequest("numeroCaso", numeroCaso));
-        CasoInfo caso = find0.getInfo();
+        CasoInfo caso = getCaso(numeroCaso);
         model.addAttribute("caso", caso);
 
         ListResponse<UsuarioInfo> list = usuarioService.list(
@@ -228,35 +227,39 @@ public class NotarioController {
     }
     
     @RequestMapping(value = "/notario/caso/{numeroCaso}/aceptar/jefecobranza", method = RequestMethod.POST)
-    public String guardaJefeCobranza(
+    public String aceptaCasoYGuardaArchivos(
             @PathVariable int numeroCaso,
             @RequestParam("jefec") long jefec,
             Model model) {
         
-        FindResponse<CasoInfo> find = casoService.find(
-                new FindByRequest("numeroCaso", numeroCaso));
-        CasoInfo caso = find.getInfo();
+        CasoInfo caso = getCaso(numeroCaso);
         model.addAttribute("caso", caso);
         
-        // obtiene proyecto cancelacion
-        FindResponse<ProyectoCancelacionInfo> find1 = proyectoCancelacionService.find(
-                new FindByRequest(caso.getProyectoCancelacionId()));
-        ProyectoCancelacionInfo proyecto = find1.getInfo();
-        
-        // agregamos jefe cobranza, actualiza estado
+        // crea proyecto cancelacion
+        ProyectoCancelacionInfo proyecto = new ProyectoCancelacionInfo();
+        proyecto.setFechaCreacion(new Date());
         proyecto.setEmpleadoId(jefec);
         FindResponse<StatusProyectoInfo> find2 = statusProyectoService.find(
                 new FindByRequest("clave", 5));
         proyecto.setStatusProyecto(find2.getInfo());
-        UpdateResponse<ProyectoCancelacionInfo> update = proyectoCancelacionService.update(
-                new UpdateRequest<>(proyecto));
-        //proyecto = update.getInfo();
         
-        // actualiza estado caso
-        StatusCasoInfo sc = new StatusCasoInfo();
-        sc.setId(4l);
-        caso.setStatusCaso(sc);
-        casoService.update(new UpdateRequest<>(caso));
+        SaveResponse<ProyectoCancelacionInfo> saved = proyectoCancelacionService.save(
+                new SaveRequest<>(proyecto));
+        proyecto = saved.getInfo();
+        
+        // guarda archivos
+        for (CancelacionArchivoInfo archivo : sesion.getCancelacionArchivos()) {
+            archivo.setProyectoCancelacionId(proyecto.getId());
+            cancelacionArchivoService.save(new SaveRequest<>(archivo));
+        }
+        sesion.getCancelacionArchivos().clear();
+        
+        // Actualiza caso
+        caso.setProyectoCancelacionId(proyecto.getId());
+        FindResponse<StatusCasoInfo> find = statusCasoService.find(new FindByRequest("clave", 4));
+        caso.setStatusCaso(find.getInfo());
+        UpdateResponse<CasoInfo> updated = casoService.update(new UpdateRequest<>(caso));
+        caso = updated.getInfo();
         
         return "redirect:/";
     }
@@ -266,21 +269,17 @@ public class NotarioController {
     public String rechazar(
             @PathVariable int numeroCaso,
             Model model) {
-        FindResponse<CasoInfo> find = casoService.find(
-                new FindByRequest("numeroCaso", numeroCaso));
-        CasoInfo caso = find.getInfo();
+        CasoInfo caso = getCaso(numeroCaso);
         model.addAttribute("caso", caso);
         return "/notario/reject";
     }
     
     @RequestMapping(value = "/notario/caso/{numeroCaso}/rechazar", method = RequestMethod.POST)
-    public String rechazar(
+    public String rechazaCaso(
             @PathVariable int numeroCaso,
             @RequestParam("motivo") String motivoRechazo,
             Model model) {
-        FindResponse<CasoInfo> find = casoService.find(
-                new FindByRequest("numeroCaso", numeroCaso));
-        CasoInfo caso = find.getInfo();
+        CasoInfo caso = getCaso(numeroCaso);
         model.addAttribute("caso", caso);
         
         // crea proyecto cancelacion
@@ -297,10 +296,6 @@ public class NotarioController {
         proyecto = saved.getInfo();
         
         caso.setProyectoCancelacionId(proyecto.getId());
-        //StatusCasoInfo status = new StatusCasoInfo();
-        //status.setId(1l); // ** NO CAMBIAR ESTADO, CAMBIAR DE NOTARIO **
-        //caso.setStatusCaso(status);
-        
         // cambiar de notario
         caso.setNotarioId(0l);
         

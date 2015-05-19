@@ -69,16 +69,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr th:each="caso : ${casos}" th:object="${caso.caso}">
+                                            <tr th:each="caso : ${casos}" th:object="${caso}">
                                                 <td th:text="*{numeroCaso}">000000000</td>
                                                 <td th:text="*{numeroCredito}">00000000000</td>
                                                 <td th:text="*{nombreAcreditado}">nombre acreditado</td>
                                                 <td><a th:href="@{/notario/caso/{numeroCaso}(numeroCaso=*{numeroCaso})}">url</a></td>
                                                 <td th:text="*{fechaCreacion}">01/04/2015</td>
-                                                <td>
-                                                    <p th:text="*{statusCaso.nombre}"></p> 
-                                                    <p th:if="${caso.proyectoCancelacion.statusProyecto.clave}==8" th:text="|Pasar a firmar el dia ${caso.proyectoCancelacion.fechaAsignadaParaFirma}|">estado</p>
-                                                </td>
+                                                <td th:text="*{statusCaso.nombre}"></td>
                                             </tr>
                                             <tr th:if="${casos.isEmpty()}">
                                                 <td colspan="6">Sin casos pendientes</td>

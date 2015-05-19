@@ -30,6 +30,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -70,7 +71,8 @@ public class JCobranzaController {
         EmpleadoInfo empleado = findresponse.getInfo();
         if (empleado == null) {
             // ERROR empleado no encontrado
-            model.addAttribute("casos", new ArrayList<CasoInfo>());
+            model.addAttribute("casosrevizar", new ArrayList<>());
+            model.addAttribute("casosespera", new ArrayList<>());
             return "/notario/index";
         }
         ListResponse<ProyectoCancelacionInfo> listresponse = proyectoCancelacionService.list(
@@ -116,10 +118,13 @@ public class JCobranzaController {
     }
 
     @RequestMapping(value = "/archivoss/{id}/{filename}", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
-    public @ResponseBody
-    byte[] descargar(@PathVariable long id, @PathVariable String filename) {
+    public @ResponseBody byte[] descargar(
+            @PathVariable long id,
+            @PathVariable String filename,
+            HttpServletResponse response) {
         FindResponse<CancelacionArchivoInfo> file = cancelacionArchivoService.findBy(new FindByRequest(id));
         CancelacionArchivoInfo info = file.getInfo();
+        response.setContentType(info.getMimetype());
         return info.getArchivo();
     }
 
