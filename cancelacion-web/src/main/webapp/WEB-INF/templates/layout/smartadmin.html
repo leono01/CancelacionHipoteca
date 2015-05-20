@@ -30,9 +30,9 @@
         <!-- Specifying a Webpage Icon for Web Clip 
              Ref: https://developer.apple.com/library/ios/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html -->
         <link rel="apple-touch-icon" th:href="@{/img/splash/sptouch-icon-iphone.png}"/>
-        <link rel="apple-touch-icon" sizes="76x76" href="@{/img/splash/touch-icon-ipad.png}"/>
-        <link rel="apple-touch-icon" sizes="120x120" href="@{/img/splash/touch-icon-iphone-retina.png}"/>
-        <link rel="apple-touch-icon" sizes="152x152" href="@{/img/splash/touch-icon-ipad-retina.png}"/>
+        <link rel="apple-touch-icon" sizes="76x76" th:href="@{/img/splash/touch-icon-ipad.png}"/>
+        <link rel="apple-touch-icon" sizes="120x120" th:href="@{/img/splash/touch-icon-iphone-retina.png}"/>
+        <link rel="apple-touch-icon" sizes="152x152" th:href="@{/img/splash/touch-icon-ipad-retina.png}"/>
 
         <!-- iOS web-app metas : hides Safari UI Components and Changes Status Bar Appearance -->
         <meta name="apple-mobile-web-app-capable" content="yes"/>
@@ -189,56 +189,10 @@
 
             <script type="text/javascript">
                 $(document).ready(function () {
-
-                    /* DO NOT REMOVE : GLOBAL FUNCTIONS!
-                     *
-                     * pageSetUp(); WILL CALL THE FOLLOWING FUNCTIONS
-                     *
-                     * // activate tooltips
-                     * $("[rel=tooltip]").tooltip();
-                     *
-                     * // activate popovers
-                     * $("[rel=popover]").popover();
-                     *
-                     * // activate popovers with hover states
-                     * $("[rel=popover-hover]").popover({ trigger: "hover" });
-                     *
-                     * // activate inline charts
-                     * runAllCharts();
-                     *
-                     * // setup widgets
-                     * setup_widgets_desktop();
-                     *
-                     * // run form elements
-                     * runAllForms();
-                     *
-                     ********************************
-                     *
-                     * pageSetUp() is needed whenever you load a page.
-                     * It initializes and checks for all basic elements of the page
-                     * and makes rendering easier.
-                     *
-                     */
-
                     pageSetUp();
 
                     /*
                      * ALL PAGE RELATED SCRIPTS CAN GO BELOW HERE
-                     * eg alert("my home function");
-                     * 
-                     * var pagefunction = function() {
-                     *   ...
-                     * }
-                     * loadScript("js/plugin/_PLUGIN_NAME_.js", pagefunction);
-                     * 
-                     * TO LOAD A SCRIPT:
-                     * var pagefunction = function (){ 
-                     *  loadScript(".../plugin.js", run_after_loaded);	
-                     * }
-                     * 
-                     * OR
-                     * 
-                     * loadScript(".../plugin.js", run_after_loaded);
                      */
 
                 });

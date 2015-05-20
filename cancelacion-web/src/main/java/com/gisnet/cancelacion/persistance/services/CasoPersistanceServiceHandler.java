@@ -41,25 +41,29 @@ public class CasoPersistanceServiceHandler implements CasoPersistanceService {
                 if (!(event.getValue() instanceof Long)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                return new FindResponse<>(repository.findOne((long) event.getValue()).asInfo());
+                Caso findOne = repository.findOne((long) event.getValue());
+                return new FindResponse<>(findOne != null ? findOne.asInfo() : null);
 
             case "numeroCaso":
                 if (!(event.getValue() instanceof Integer)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                return new FindResponse<>(repository.findByNumeroCaso((int) event.getValue()).asInfo());
+                Caso findByNumeroCaso = repository.findByNumeroCaso((int) event.getValue());
+                return new FindResponse<>(findByNumeroCaso != null ? findByNumeroCaso.asInfo() : null);
 
             case "numeroCredito":
                 if (!(event.getValue() instanceof Integer)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                return new FindResponse<>(repository.findByNumeroCredito((int) event.getValue()).asInfo());
+                Caso findByNumeroCredito = repository.findByNumeroCredito((int) event.getValue());
+                return new FindResponse<>(findByNumeroCredito != null ? findByNumeroCredito.asInfo() : null);
                 
             case "proyectoCancelacionId": {
                 if (!(event.getValue() instanceof Long)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                return new FindResponse<>(repository.findByProyectoCancelacionId((long) event.getValue()).asInfo());
+                Caso findByProyectoCancelacionId = repository.findByProyectoCancelacionId((long) event.getValue());
+                return new FindResponse<>(findByProyectoCancelacionId != null ? findByProyectoCancelacionId.asInfo() : null);
             }
         }
         throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");

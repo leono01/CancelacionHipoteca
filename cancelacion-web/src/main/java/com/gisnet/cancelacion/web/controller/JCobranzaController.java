@@ -26,6 +26,7 @@ import com.gisnet.cancelacion.core.services.StatusProyectoService;
 import com.gisnet.cancelacion.core.services.UsuarioService;
 import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.*;
+import com.gisnet.cancelacion.web.domain.SesionJCobranza;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -64,19 +65,25 @@ public class JCobranzaController {
     private StatusProyectoService statusProyectoService;
     @Autowired
     private UsuarioService usuarioService;
+    
+    @Autowired
+    private SesionJCobranza sesion;
 
     public String index(Model model, Principal principal) {
-        FindResponse<EmpleadoInfo> findresponse = empleadoService.find(
+        if (sesion.getEmpleado() == null) {
+            FindResponse<EmpleadoInfo> findresponse = empleadoService.find(
                 new FindByRequest("nombreUsuario", principal.getName()));
-        EmpleadoInfo empleado = findresponse.getInfo();
-        if (empleado == null) {
-            // ERROR empleado no encontrado
-            model.addAttribute("casosrevizar", new ArrayList<>());
-            model.addAttribute("casosespera", new ArrayList<>());
-            return "/notario/index";
+            EmpleadoInfo empleado = findresponse.getInfo();
+            if (empleado == null) {
+                // ERROR empleado no encontrado
+                model.addAttribute("casosrevizar", new ArrayList<>());
+                model.addAttribute("casosespera", new ArrayList<>());
+                return "/notario/index";
+            }
         }
+        
         ListResponse<ProyectoCancelacionInfo> listresponse = proyectoCancelacionService.list(
-                new ListRequest("empleadoId", empleado.getId()));
+                new ListRequest("empleadoId", sesion.getEmpleado().getId()));
         List<CasoInfo> casosRevizar = new ArrayList<>();
         List<CasoInfo> casosEspera = new ArrayList<>();
         for (ProyectoCancelacionInfo info : listresponse.getList()) {

@@ -23,6 +23,9 @@
     <bean name="sesionNotario" class="com.gisnet.cancelacion.web.domain.SesionNotario" scope="globalSession">
         <aop:scoped-proxy/>
     </bean>
+    <bean name="sesionJCobranza" class="com.gisnet.cancelacion.web.domain.SesionJCobranza" scope="globalSession">
+        <aop:scoped-proxy/>
+    </bean>
 
     <!-- VIEWS -->
     <mvc:view-controller path="/login" view-name="login" />
