@@ -20,6 +20,7 @@ package com.gisnet.cancelacion.core.services;
 import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.CasoInfo;
 import com.gisnet.cancelacion.persistance.services.CasoPersistanceService;
+import com.gisnet.cancelacion.wsclient.pms.ClienteMicroflujoService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -31,6 +32,9 @@ public class CasoServiceHandler implements CasoService {
 	
     @Autowired
     private CasoPersistanceService service;
+    
+    @Autowired
+    private ClienteMicroflujoService microflujo;
     
     public CasoServiceHandler() {
     }
@@ -64,14 +68,17 @@ public class CasoServiceHandler implements CasoService {
     public DeleteResponse<CasoInfo> delete(DeleteRequest event) {
         return service.delete(event);
     }
-    
+
     @Override
-    public String validaCredito(CasoInfo event) {
-        ///// temporal
-        if (event.getNumeroCaso() < 200 && event.getNumeroCredito() < 200) {
-            return "SI";
-        }
-        return "NO";
+    public SaveResponse<CasoInfo> validarCredito(SaveRequest<CasoInfo> event) {
+        return microflujo.validarCredito(event);
     }
+
+    @Override
+    public UpdateRequest<CasoInfo> actualizarCaso(UpdateRequest<CasoInfo> event) {
+        return microflujo.actualizarCaso(event);
+    }
+    
+    
 
 }

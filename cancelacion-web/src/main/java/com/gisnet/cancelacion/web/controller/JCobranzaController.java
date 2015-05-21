@@ -80,8 +80,9 @@ public class JCobranzaController {
                 model.addAttribute("casosespera", new ArrayList<>());
                 return "/notario/index";
             }
+            sesion.setEmpleado(empleado);
         }
-        
+        System.out.println(sesion.getEmpleado().getId());
         ListResponse<ProyectoCancelacionInfo> listresponse = proyectoCancelacionService.list(
                 new ListRequest("empleadoId", sesion.getEmpleado().getId()));
         List<CasoInfo> casosRevizar = new ArrayList<>();
@@ -114,8 +115,10 @@ public class JCobranzaController {
         ProyectoCancelacionInfo proyecto = find1.getInfo();
         model.addAttribute("proyecto", proyecto);
 
-        String validaCredito = casoService.validaCredito(caso);
-        model.addAttribute("validaCredito", validaCredito);
+        
+        SaveResponse<CasoInfo> validarCredito = casoService.validarCredito(new SaveRequest<>(caso));
+        caso = validarCredito.getInfo();
+        model.addAttribute("validaCredito", caso.getProcedeCredito());
 
         ListResponse<CancelacionArchivoInfo> listresp = cancelacionArchivoService.list(
                 new ListRequest("proyectoCancelacionId", proyecto.getId()));
