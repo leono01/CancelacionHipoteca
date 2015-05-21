@@ -3,4 +3,4 @@
 //
 
 @javax.xml.bind.annotation.XmlSchema(namespace = "http://ws.infonavit.com/")
-package com.infonavit.ws;
+package com.gisnet.cancelacion.wsclient.pms;

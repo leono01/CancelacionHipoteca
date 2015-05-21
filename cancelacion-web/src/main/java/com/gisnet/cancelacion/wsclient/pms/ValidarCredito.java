@@ -3,7 +3,7 @@
 //
 
 
-package com.infonavit.ws;
+package com.gisnet.cancelacion.wsclient.pms;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -30,6 +30,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="cartaDeCancelacion" type="{http://www.w3.org/2001/XMLSchema}base64Binary" minOccurs="0"/>
  *         &lt;element name="fechaEmisionCarta" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
  *         &lt;element name="nombreAcreditado" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="tipoOperacion" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -47,7 +48,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "descripcion",
     "cartaDeCancelacion",
     "fechaEmisionCarta",
-    "nombreAcreditado"
+    "nombreAcreditado",
+    "tipoOperacion"
 })
 public class ValidarCredito {
 
@@ -60,6 +62,7 @@ public class ValidarCredito {
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar fechaEmisionCarta;
     protected String nombreAcreditado;
+    protected int tipoOperacion;
 
     /**
      * Gets the value of the numeroDeCredito property.
@@ -225,6 +228,22 @@ public class ValidarCredito {
      */
     public void setNombreAcreditado(String value) {
         this.nombreAcreditado = value;
+    }
+
+    /**
+     * Gets the value of the tipoOperacion property.
+     * 
+     */
+    public int getTipoOperacion() {
+        return tipoOperacion;
+    }
+
+    /**
+     * Sets the value of the tipoOperacion property.
+     * 
+     */
+    public void setTipoOperacion(int value) {
+        this.tipoOperacion = value;
     }
 
 }

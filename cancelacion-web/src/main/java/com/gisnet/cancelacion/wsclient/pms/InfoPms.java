@@ -3,7 +3,7 @@
 //
 
 
-package com.infonavit.ws;
+package com.gisnet.cancelacion.wsclient.pms;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="notaria" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="numeroDeCaso" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="numeroDeCredito" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="procede" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+ *         &lt;element name="procede" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="telefono" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
@@ -69,7 +69,7 @@ public class InfoPms {
     protected String notaria;
     protected int numeroDeCaso;
     protected int numeroDeCredito;
-    protected boolean procede;
+    protected String procede;
     protected int status;
     protected String telefono;
 
@@ -292,16 +292,24 @@ public class InfoPms {
     /**
      * Gets the value of the procede property.
      * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public boolean isProcede() {
+    public String getProcede() {
         return procede;
     }
 
     /**
      * Sets the value of the procede property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
      */
-    public void setProcede(boolean value) {
+    public void setProcede(String value) {
         this.procede = value;
     }
 

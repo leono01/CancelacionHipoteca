@@ -1,4 +1,4 @@
-package com.infonavit.ws;
+package com.gisnet.cancelacion.wsclient.pms;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -18,8 +18,8 @@ public class PmsPortProxy{
     protected Descriptor _descriptor;
 
     public class Descriptor {
-        private com.infonavit.ws.Pms_Service _service = null;
-        private com.infonavit.ws.Pms _proxy = null;
+        private com.gisnet.cancelacion.wsclient.pms.Pms_Service _service = null;
+        private com.gisnet.cancelacion.wsclient.pms.Pms _proxy = null;
         private Dispatch<Source> _dispatch = null;
         private boolean _useJNDIOnly = false;
 
@@ -28,7 +28,7 @@ public class PmsPortProxy{
         }
 
         public Descriptor(URL wsdlLocation, QName serviceName) {
-            _service = new com.infonavit.ws.Pms_Service(wsdlLocation, serviceName);
+            _service = new com.gisnet.cancelacion.wsclient.pms.Pms_Service(wsdlLocation, serviceName);
             initCommon();
         }
 
@@ -39,7 +39,7 @@ public class PmsPortProxy{
             try
             {
                 InitialContext ctx = new InitialContext();
-                _service = (com.infonavit.ws.Pms_Service)ctx.lookup("java:comp/env/service/Pms");
+                _service = (com.gisnet.cancelacion.wsclient.pms.Pms_Service)ctx.lookup("java:comp/env/service/Pms");
             }
             catch (NamingException e)
             {
@@ -50,7 +50,7 @@ public class PmsPortProxy{
             }
 
             if (_service == null && !_useJNDIOnly)
-                _service = new com.infonavit.ws.Pms_Service();
+                _service = new com.gisnet.cancelacion.wsclient.pms.Pms_Service();
             initCommon();
         }
 
@@ -58,7 +58,7 @@ public class PmsPortProxy{
             _proxy = _service.getPmsPort();
         }
 
-        public com.infonavit.ws.Pms getProxy() {
+        public com.gisnet.cancelacion.wsclient.pms.Pms getProxy() {
             return _proxy;
         }
 
@@ -116,12 +116,12 @@ public class PmsPortProxy{
         return _descriptor;
     }
 
-    public InfoPms validarCredito(int numeroDeCredito, int numeroDeCaso, String entidad, int status, String descripcion, byte[] cartaDeCancelacion, XMLGregorianCalendar fechaEmisionCarta, String nombreAcreditado) {
-        return _getDescriptor().getProxy().validarCredito(numeroDeCredito,numeroDeCaso,entidad,status,descripcion,cartaDeCancelacion,fechaEmisionCarta,nombreAcreditado);
+    public InfoPms validarCredito(int numeroDeCredito, int numeroDeCaso, String entidad, int status, String descripcion, byte[] cartaDeCancelacion, XMLGregorianCalendar fechaEmisionCarta, String nombreAcreditado, int tipoOperacion) {
+        return _getDescriptor().getProxy().validarCredito(numeroDeCredito,numeroDeCaso,entidad,status,descripcion,cartaDeCancelacion,fechaEmisionCarta,nombreAcreditado,tipoOperacion);
     }
 
-    public InfoStatusCaso statusCaso(int numeroDeCaso) {
-        return _getDescriptor().getProxy().statusCaso(numeroDeCaso);
+    public InfoStatusCaso statusCaso(int numeroDeCredito, int numeroDeCaso, String entidad, int status, String descripcion, byte[] cartaDeCancelacion, XMLGregorianCalendar fechaEmisionCarta, String nombreAcreditado, int tipoOperacion) {
+        return _getDescriptor().getProxy().statusCaso(numeroDeCredito,numeroDeCaso,entidad,status,descripcion,cartaDeCancelacion,fechaEmisionCarta,nombreAcreditado,tipoOperacion);
     }
 
 }

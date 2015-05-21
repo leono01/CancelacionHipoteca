@@ -79,6 +79,22 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
         caso.setNumeroCredito(numeroDeCredito);
         caso.setFechaCreacion(fechaDeCreacion);
         
+        int s = 1;
+        
+        FindByRequest clave = new FindByRequest("clave",s);
+        
+        System.out.println("Clave " + clave);
+        
+        
+        if(clave != null){
+        	
+        	FindResponse<StatusCasoInfo> scresponse = statusService.find(clave);
+        	caso.setStatusCaso(scresponse.getInfo());
+        
+        }
+        
+        //caso.setStatusCaso(statusCaso);
+        
         try{
         	
         	SaveRequest<CasoInfo> saveRequest = new SaveRequest<>();
@@ -111,9 +127,10 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
                                         ) {
 
         InfoDeActualizacion ida = new InfoDeActualizacion();
-        
-        
-        StatusCaso statusCaso = new StatusCaso();
+        com.gisnet.cancelacion.wsclient.pms.Pms_Service pmsService = new com.gisnet.cancelacion.wsclient.pms.Pms_Service();
+        com.gisnet.cancelacion.wsclient.pms.Pms pmsPort = pmsService.getPmsPort();
+        com.gisnet.cancelacion.wsclient.pms.InfoStatusCaso isc = new com.gisnet.cancelacion.wsclient.pms.InfoStatusCaso(); 
+        //return port.suma(sumador1, sumador2);
         
         try{
         	
@@ -129,6 +146,8 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 	        	
 	        	FindResponse<StatusCasoInfo> scresponse = statusService.find(clave);
 	        	casoresponse.getInfo().setStatusCaso(scresponse.getInfo());
+	        	
+	        	
 	        
 	        }
 	        casoresponse.getInfo().setFechaActualizacion(fecha);
@@ -154,6 +173,12 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 	        ida.setDescripcion("Se actualizó correctamente el caso.");
 	        ida.setNumeroDeCaso(casoresponse.getInfo().getNumeroCaso());
 	        ida.setNumeroDeCredito(casoresponse.getInfo().getNumeroCredito());
+	        
+	        isc = pmsPort.statusCaso(numeroDeCredito, numeroDeCaso, null, status, null, null, null, null, 4);
+	        
+	        System.out.println("Salida del WS PMS -> status : " + isc.getStatus());
+	        System.out.println("Salida del WS PMS -> descripción : " + isc.getDescripcion());
+	        System.out.println("Salida del WS PMS -> fechaActualización : " + isc.getFechaActualizacion());
 	        
         /**}else{
         	ida.setCodigo(4);

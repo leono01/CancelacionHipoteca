@@ -21,6 +21,7 @@
       <xs:element minOccurs="0" name="cartaDeCancelacion" type="xs:base64Binary"/>
       <xs:element minOccurs="0" name="fechaEmisionCarta" type="xs:dateTime"/>
       <xs:element minOccurs="0" name="nombreAcreditado" type="xs:string"/>
+      <xs:element name="tipoOperacion" type="xs:int"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -42,7 +43,7 @@
       <xs:element minOccurs="0" name="notaria" type="xs:string"/>
       <xs:element name="numeroDeCaso" type="xs:int"/>
       <xs:element name="numeroDeCredito" type="xs:int"/>
-      <xs:element name="procede" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="procede" type="xs:string"/>
       <xs:element name="status" type="xs:int"/>
       <xs:element minOccurs="0" name="telefono" type="xs:string"/>
     </xs:sequence>
@@ -50,7 +51,15 @@
 
   <xs:complexType name="statusCaso">
     <xs:sequence>
+      <xs:element name="numeroDeCredito" type="xs:int"/>
       <xs:element name="numeroDeCaso" type="xs:int"/>
+      <xs:element minOccurs="0" name="entidad" type="xs:string"/>
+      <xs:element name="status" type="xs:int"/>
+      <xs:element minOccurs="0" name="descripcion" type="xs:string"/>
+      <xs:element minOccurs="0" name="cartaDeCancelacion" type="xs:base64Binary"/>
+      <xs:element minOccurs="0" name="fechaEmisionCarta" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="nombreAcreditado" type="xs:string"/>
+      <xs:element name="tipoOperacion" type="xs:int"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -123,7 +132,7 @@
   </wsdl:binding>
   <wsdl:service name="Pms">
     <wsdl:port binding="tns:PmsSoapBinding" name="PmsPort">
-      <soap:address location="http://189.199.222.141:8080/WebServicePms/Pms"/>
+      <soap:address location="http://192.168.15.33:8080/WebServicePms/Pms"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

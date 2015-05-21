@@ -3,7 +3,7 @@
 //
 
 
-package com.infonavit.ws;
+package com.gisnet.cancelacion.wsclient.pms;
 
 import java.net.URL;
 import javax.xml.namespace.QName;
@@ -23,7 +23,7 @@ public class Pms_Service
     private final static QName PMS_QNAME = new QName("http://ws.infonavit.com/", "Pms");
 
     static {
-            PMS_WSDL_LOCATION = com.infonavit.ws.Pms_Service.class.getResource("/WEB-INF/wsdl/Pms.wsdl");
+            PMS_WSDL_LOCATION = com.gisnet.cancelacion.wsclient.pms.Pms_Service.class.getResource("/WEB-INF/wsdl/Pms.wsdl");
         WebServiceException e = null;
         if (PMS_WSDL_LOCATION == null) {
             e = new WebServiceException("Cannot find 'WEB-INF/wsdl/Pms.wsdl' wsdl. Place the resource correctly in the classpath.");
