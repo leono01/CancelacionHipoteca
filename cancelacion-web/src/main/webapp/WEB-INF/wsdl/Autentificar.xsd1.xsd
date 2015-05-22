@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://infonavit.ejemplo.com" xmlns:intf="http://infonavit.ejemplo.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsi="http://ws-i.org/profiles/basic/1.1/xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://infonavit.ejemplo.com">
+   
+<element name="loguearResponse">
+    
+<complexType>
+     
+<sequence>
+      
+<element name="loguearReturn" nillable="true" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   
+<element name="loguear">
+    
+<complexType>
+     
+<sequence>
+      
+<element name="usua" nillable="true" type="xsd:string"/>
+      
+<element name="pwd" nillable="true" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>

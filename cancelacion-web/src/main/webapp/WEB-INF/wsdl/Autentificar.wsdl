@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:ns0="http://infonavit.ejemplo.com" xmlns:ns1="http://infonavit.ejemplo.com/Binding2" xmlns:soap11="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsp200409="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsp200607="http://www.w3.org/2006/07/ws-policy" targetNamespace="http://infonavit.ejemplo.com">
+<wsdl:import location="Autentificar?ns1.wsdl" namespace="http://infonavit.ejemplo.com/Binding2"/>
+<wsdl:types xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<xsd:schema>
+<xsd:import namespace="http://infonavit.ejemplo.com" schemaLocation="Autentificar.xsd1.xsd"/>
+    </xsd:schema>
+  </wsdl:types>
+<wsdl:message name="loguearRequest">
+<wsdl:part xmlns:xsns="http://infonavit.ejemplo.com" element="xsns:loguear" name="parameters"/>
+  </wsdl:message>
+<wsdl:message name="loguearResponse">
+<wsdl:part xmlns:xsns="http://infonavit.ejemplo.com" element="xsns:loguearResponse" name="parameters"/>
+  </wsdl:message>
+<wsdl:portType name="LDAPConnectionJAAS">
+<wsdl:operation name="loguear">
+<wsdl:input message="ns0:loguearRequest" name="loguearRequest"/>
+<wsdl:output message="ns0:loguearResponse" name="loguearResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+<wsdl:binding name="LDAPConnectionJAASSoapBinding" type="ns0:LDAPConnectionJAAS">
+<soap11:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="loguear">
+<soap11:operation soapAction="" style="document"/>
+<wsdl:input name="loguearRequest">
+<soap11:body use="literal"/>
+      </wsdl:input>
+<wsdl:output name="loguearResponse">
+<soap11:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+<wsdl:service name="LDAPConnectionJAASService">
+<wsdl:port binding="ns0:LDAPConnectionJAASSoapBinding" name="LDAPConnectionJAAS">
+<soap11:address location="https://127.0.0.1:143/ServicioAutentificacionConLDAP/services/LDAPConnectionJAAS"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
