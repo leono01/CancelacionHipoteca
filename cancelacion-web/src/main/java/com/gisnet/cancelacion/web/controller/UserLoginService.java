@@ -14,24 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.gisnet.cancelacion.core.services;
+package com.gisnet.cancelacion.web.controller;
 
-import com.gisnet.cancelacion.events.FindByRequest;
-import com.gisnet.cancelacion.events.FindResponse;
-import com.gisnet.cancelacion.events.ListRequest;
-import com.gisnet.cancelacion.events.ListResponse;
-import com.gisnet.cancelacion.events.info.UsuarioInfo;
+import com.gisnet.cancelacion.core.services.UsuarioService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 /**
  *
  * @author marco-g8
  */
-public interface UsuarioService {
+public class UserLoginService implements UserDetailsService {
     
-    public FindResponse<UsuarioInfo> findByUsername(String username);
-    
-    public ListResponse<UsuarioInfo> list(ListRequest event);
-    
-    public boolean loguear(FindByRequest event);
+    @Autowired
+    private UsuarioService service;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     
 }

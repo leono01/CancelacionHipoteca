@@ -14,24 +14,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.gisnet.cancelacion.core.services;
+package com.gisnet.cancelacion.wsclient.autenticacion;
 
 import com.gisnet.cancelacion.events.FindByRequest;
-import com.gisnet.cancelacion.events.FindResponse;
-import com.gisnet.cancelacion.events.ListRequest;
-import com.gisnet.cancelacion.events.ListResponse;
-import com.gisnet.cancelacion.events.info.UsuarioInfo;
 
 /**
  *
  * @author marco-g8
  */
-public interface UsuarioService {
+public class ClienteAutenticacionServiceHandler implements ClienteAutenticacionService {
     
-    public FindResponse<UsuarioInfo> findByUsername(String username);
+    private final LDAPConnectionJAASService clientews;
+
+    public ClienteAutenticacionServiceHandler() {
+        this.clientews = new LDAPConnectionJAASService();
+    }
     
-    public ListResponse<UsuarioInfo> list(ListRequest event);
+    @Override
+    public boolean loguear(FindByRequest event) {
+        if (!(event.getValue() instanceof String)) {
+            return false;
+        }
+        
+        LDAPConnectionJAAS ldapConnectionJAAS = clientews.getLDAPConnectionJAAS();
+        String loguear = ldapConnectionJAAS.loguear(event.getKey(), (String) event.getValue());
+        
+        return loguear.equals("SI");
+    }
     
-    public boolean loguear(FindByRequest event);
     
 }

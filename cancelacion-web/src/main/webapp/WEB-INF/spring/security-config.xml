@@ -16,12 +16,11 @@
         </authentication-provider>
     </authentication-manager>
     
-    <beans:bean id="csrfTokenMatcher"
-            class="com.gisnet.cancelacion.config.CsrfUrlMatcher" />
+    <beans:bean id="csrfTokenMatcher" class="com.gisnet.cancelacion.config.CsrfUrlMatcher" />
     
     <http>
         <csrf request-matcher-ref="csrfTokenMatcher" />
-
+        <custom-filter position="PRE_AUTH_FILTER" ref="siteminderFilter" />
         <!-- webservices -->
         <intercept-url pattern="/ValidarCreditoService**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <intercept-url pattern="/ValidarCreditoService**/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
@@ -36,6 +35,7 @@
         <intercept-url pattern="/js/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <intercept-url pattern="/login" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <!-- webapp -->
+        <intercept-url pattern="/registrop/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <intercept-url pattern="/notario/**" access="ROLE_NOTARIO"/>
         <intercept-url pattern="/juridico/**" access="ROLE_JURIDICO"/>
         <intercept-url pattern="/cobranza/**" access="ROLE_JEFE_COBRANZA"/>
@@ -43,5 +43,25 @@
         <form-login login-page="/login"/>
         <logout logout-url="/logout"/>
     </http>
+    
+    <beans:bean id="siteminderFilter" class="org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter">
+        <beans:property name="principalRequestHeader" value="SM_USER"/>
+        <beans:property name="authenticationManager" ref="authenticationManager" />
+    </beans:bean>
+    
+    <beans:bean id="preauthAuthProvider" class="org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider">
+        <beans:property name="preAuthenticatedUserDetailsService">
+            <beans:bean id="userDetailsServiceWrapper"
+                    class="org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper">
+                <beans:property name="userDetailsService" ref="userDetailsService"/>
+            </beans:bean>
+        </beans:property>
+    </beans:bean>
+    
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider ref="preauthAuthProvider" />
+    </authentication-manager>
+    
+    <beans:bean id="userDetailsService" class="com.gisnet.cancelacion.web.controller.AutenticarUsuario"/>
     
 </beans:beans>

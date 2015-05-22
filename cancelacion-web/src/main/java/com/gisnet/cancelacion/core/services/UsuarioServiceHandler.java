@@ -19,6 +19,7 @@ package com.gisnet.cancelacion.core.services;
 import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.UsuarioInfo;
 import com.gisnet.cancelacion.persistance.services.UsuarioPersistanceService;
+import com.gisnet.cancelacion.wsclient.autenticacion.ClienteAutenticacionService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -29,6 +30,9 @@ public class UsuarioServiceHandler implements UsuarioService {
     
     @Autowired
     private UsuarioPersistanceService service;
+    
+    @Autowired
+    private ClienteAutenticacionService cliente;
 
     @Override
     public FindResponse<UsuarioInfo> findByUsername(String username) {
@@ -38,6 +42,11 @@ public class UsuarioServiceHandler implements UsuarioService {
     @Override
     public ListResponse<UsuarioInfo> list(ListRequest event) {
         return service.list(event);
+    }
+
+    @Override
+    public boolean loguear(FindByRequest event) {
+        return cliente.loguear(event);
     }
     
 }

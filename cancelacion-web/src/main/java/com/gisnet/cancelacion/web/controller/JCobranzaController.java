@@ -78,7 +78,7 @@ public class JCobranzaController {
                 // ERROR empleado no encontrado
                 model.addAttribute("casosrevizar", new ArrayList<>());
                 model.addAttribute("casosespera", new ArrayList<>());
-                return "/notario/index";
+                return "/jcobranza/index";
             }
             sesion.setEmpleado(empleado);
         }
