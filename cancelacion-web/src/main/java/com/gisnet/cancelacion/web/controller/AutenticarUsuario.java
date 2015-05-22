@@ -18,43 +18,62 @@ package com.gisnet.cancelacion.web.controller;
 
 import com.gisnet.cancelacion.core.services.UsuarioService;
 import com.gisnet.cancelacion.events.FindByRequest;
+import com.gisnet.cancelacion.events.FindResponse;
+import com.gisnet.cancelacion.events.info.RolInfo;
+import com.gisnet.cancelacion.events.info.UsuarioInfo;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 /**
  *
  * @author marco-g8
  */
-public class AutenticarUsuario implements AuthenticationUserDetailsService {
+public class AutenticarUsuario implements AuthenticationProvider {
     
     @Autowired
     private UsuarioService service;
 
-    @Override
-    public UserDetails loadUserDetails(Authentication token) throws UsernameNotFoundException {
-        System.err.println("user:" + token.getName() + " pass:" + (String) token.getCredentials());
-        if (token.getName().equals("notario")) {
-            Collection<GrantedAuthority> roles = new ArrayList<>();
-            roles.add(new SimpleGrantedAuthority("ROLE_NOTARIO"));
-            return new User(token.getName(), "", true, true, true, true, roles);
-        }
-        /*
-        if (service.loguear(new FindByRequest(token.getName(), (String) token.getCredentials()))) {
-            Collection<GrantedAuthority> roles = new ArrayList<>();
-            roles.add(new SimpleGrantedAuthority("ROLE_NOTARIO"));
-            return new User(token.getName(), "", true, true, true, true, roles);
-        }
-        */
-        throw new UsernameNotFoundException("No encontrado");
-    }
+	@Override
+	public Authentication authenticate(Authentication authentication)
+			throws AuthenticationException {
+		String username = authentication.getName();
+		String password = authentication.getCredentials().toString();
+		
+		FindResponse<UsuarioInfo> find = service.findByUsername(username);
+		UsuarioInfo usuario = find.getInfo();
+		
+		if (usuario != null) {
+			if (service.loguear(new FindByRequest(username, password))) {
+				List<GrantedAuthority> grants = new ArrayList<>();
+				for (String rol : usuario.getRoles()) {
+					grants.add(new SimpleGrantedAuthority(rol));
+				}
+				return new UsernamePasswordAuthenticationToken(username, password, grants);
+			}
+			throw new AuthenticationServiceException("WSloguear erroneo");
+		}
+		throw new UsernameNotFoundException("Usuario no encontrado.");
+	}
+
+	@Override
+	public boolean supports(Class<?> authentication) {
+		return authentication.equals(UsernamePasswordAuthenticationToken.class);
+	}
     
 }

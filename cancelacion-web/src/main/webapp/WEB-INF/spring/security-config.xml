@@ -7,6 +7,7 @@
                 http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
     
     <authentication-manager>
+    	<authentication-provider ref="authProvider"/>
         <authentication-provider>
             <user-service>
                 <user name="notario" password="notario" authorities="ROLE_NOTARIO"/>
@@ -20,7 +21,7 @@
     
     <http>
         <csrf request-matcher-ref="csrfTokenMatcher" />
-        <custom-filter position="PRE_AUTH_FILTER" ref="siteminderFilter" />
+        
         <!-- webservices -->
         <intercept-url pattern="/ValidarCreditoService**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <intercept-url pattern="/ValidarCreditoService**/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
@@ -44,24 +45,6 @@
         <logout logout-url="/logout"/>
     </http>
     
-    <beans:bean id="siteminderFilter" class="org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter">
-        <beans:property name="principalRequestHeader" value="SM_USER"/>
-        <beans:property name="authenticationManager" ref="authenticationManager" />
-    </beans:bean>
-    
-    <beans:bean id="preauthAuthProvider" class="org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider">
-        <beans:property name="preAuthenticatedUserDetailsService">
-            <beans:bean id="userDetailsServiceWrapper"
-                    class="org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper">
-                <beans:property name="userDetailsService" ref="userDetailsService"/>
-            </beans:bean>
-        </beans:property>
-    </beans:bean>
-    
-    <authentication-manager alias="authenticationManager">
-        <authentication-provider ref="preauthAuthProvider" />
-    </authentication-manager>
-    
-    <beans:bean id="userDetailsService" class="com.gisnet.cancelacion.web.controller.AutenticarUsuario"/>
+    <beans:bean id="authProvider" class="com.gisnet.cancelacion.web.controller.AutenticarUsuario"/>
     
 </beans:beans>

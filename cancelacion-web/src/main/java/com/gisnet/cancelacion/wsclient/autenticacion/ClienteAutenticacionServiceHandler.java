@@ -36,10 +36,14 @@ public class ClienteAutenticacionServiceHandler implements ClienteAutenticacionS
             return false;
         }
         
-        LDAPConnectionJAAS ldapConnectionJAAS = clientews.getLDAPConnectionJAAS();
-        String loguear = ldapConnectionJAAS.loguear(event.getKey(), (String) event.getValue());
-        
-        return loguear.equals("SI");
+        try {
+	        LDAPConnectionJAAS ldapConnectionJAAS = clientews.getLDAPConnectionJAAS();
+	        String loguear = ldapConnectionJAAS.loguear(event.getKey(), (String) event.getValue());
+	        return loguear.equals("SI");
+        } catch (Exception ex) {
+        	System.err.println("WSC Autentica Fallo, " + ex.getMessage());
+        	return false;
+        }
     }
     
     
