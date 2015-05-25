@@ -6,4 +6,7 @@
   <serviceRefs xmi:id="ServiceRef_1432315017042" serviceRefLink="service/LDAPConnectionJAASService">
     <portQnameBindings xmi:id="PortQnameBinding_1432315017042" portQnameNamespaceLink="http://infonavit.ejemplo.com" portQnameLocalNameLink="LDAPConnectionJAAS" overriddenEndpointURI="https://127.0.0.1:143/ServicioAutentificacionConLDAP/services/LDAPConnectionJAAS"/>
   </serviceRefs>
+  <serviceRefs xmi:id="ServiceRef_1432571341226" serviceRefLink="service/StartFlow">
+    <portQnameBindings xmi:id="PortQnameBinding_1432571341226" portQnameNamespaceLink="http://www.sap.com/caf/sap.com/home.infonavit_po_ch.bl.caf/modeled/StartFlow" portQnameLocalNameLink="StartFlowBindingPort" overriddenEndpointURI="http://10.90.8.163:50000/sap.com_home.infonavit_po_ch.bl.caf_StartFlow"/>
+  </serviceRefs>
 </com.ibm.etools.webservice.wscbnd:ClientBinding>

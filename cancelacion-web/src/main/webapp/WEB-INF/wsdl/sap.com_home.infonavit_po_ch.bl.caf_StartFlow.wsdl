@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:cafpref0="http://www.sap.com/caf/sap.com/home.infonavit_po_ch.bl.caf/modeled" xmlns:jaxws="http://java.sun.com/xml/ns/jaxws" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.sap.com/caf/sap.com/home.infonavit_po_ch.bl.caf/modeled/StartFlow" name="StartFlow" targetNamespace="http://www.sap.com/caf/sap.com/home.infonavit_po_ch.bl.caf/modeled/StartFlow">
+  <jaxws:bindings>
+    <jaxws:package name="com.sap.home.infonavit_po_ch.bl.caf.modeled.appsrv.startflow"/>
+  </jaxws:bindings>
+  <types>
+    <xsd:schema xmlns:Q1="http://www.sap.com/caf/sap.com/home.infonavit_po_ch.bl.caf/modeled" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="unqualified" jaxb:version="2.0" targetNamespace="http://www.sap.com/caf/sap.com/home.infonavit_po_ch.bl.caf/modeled/StartFlow">
+      <xsd:annotation>
+        <xsd:appinfo>
+          <jaxb:schemaBindings>
+            <jaxb:package name="com.sap.home.infonavit_po_ch.bl.caf.modeled.appsrv.startflow"/>
+          </jaxb:schemaBindings>
+        </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:import namespace="http://www.sap.com/caf/sap.com/home.infonavit_po_ch.bl.caf/modeled"/>
+      <xsd:element name="CambioEstatus">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="inputParameter1" nillable="false" type="Q1:Input"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="CambioEstatusResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="outputParameter1" nillable="false" type="Q1:Estatus"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ConsultaNotarios">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="inputParameter1" nillable="false" type="Q1:Input"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ConsultaNotariosResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="outputParameter1" nillable="false" type="Q1:DatosNotarios"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="RegistraCaso">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="inputParameter1" nillable="false" type="Q1:Input"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="RegistraCasoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="outputParameter1" nillable="false" type="Q1:Estatus"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="validarCredito">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="inputParameter1" nillable="false" type="Q1:Input"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="validarCreditoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="outputParameter1" nillable="false" type="Q1:DatosCredito"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="OperacionPrincipal">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="inputParameter1" nillable="false" type="Q1:Input"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="OperacionPrincipalResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="0" name="outputParameter1" nillable="false" type="Q1:Output"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://www.sap.com/caf/sap.com/home.infonavit_po_ch.bl.caf/modeled">
+      <xsd:complexType name="DatosNotarios">
+        <xsd:sequence>
+          <xsd:element maxOccurs="1" minOccurs="0" name="CodigoNotario" nillable="false" type="xsd:int"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="NombreNotario" nillable="false" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="Notaria" nillable="false" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="Entidad" nillable="false" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="ConvenioInfonavit" nillable="false" type="xsd:int"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="CorreoElectronico" nillable="false" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="Telefono" nillable="false" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Input">
+        <xsd:sequence>
+          <xsd:element maxOccurs="1" minOccurs="1" name="numeroCredito" nillable="false" type="xsd:int"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="numeroCaso" nillable="false" type="xsd:int"/>
+          <xsd:element maxOccurs="1" minOccurs="1" name="tipoOperacion" nillable="false" type="xsd:int"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="estatus" nillable="false" type="xsd:int"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="descripcion" nillable="false" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="entidad" nillable="false" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="Carta" nillable="false" type="xsd:base64Binary"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="nombreAcreditado" nillable="false" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="fechaEmision" nillable="false" type="xsd:date"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Output">
+        <xsd:sequence>
+          <xsd:element maxOccurs="1" minOccurs="0" name="DatosCredito" nillable="false" type="cafpref0:DatosCredito"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="DatosNotario" nillable="false" type="cafpref0:DatosNotarios"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Estatus">
+        <xsd:sequence>
+          <xsd:element maxOccurs="1" minOccurs="0" name="estatus" nillable="false" type="xsd:int"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="descripcion" nillable="false" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DatosCredito">
+        <xsd:sequence>
+          <xsd:element maxOccurs="1" minOccurs="0" name="procede" nillable="false" type="xsd:boolean"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="direccion" nillable="false" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="estatus" nillable="false" type="xsd:int"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="descripcion" nillable="false" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="numCredito" nillable="false" type="xsd:int"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="entidad" nillable="false" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </types>
+  <message name="CambioEstatus">
+    <part element="tns:CambioEstatus" name="CambioEstatus"/>
+  </message>
+  <message name="CambioEstatusResponse">
+    <part element="tns:CambioEstatusResponse" name="CambioEstatusResponse"/>
+  </message>
+  <message name="ConsultaNotarios">
+    <part element="tns:ConsultaNotarios" name="ConsultaNotarios"/>
+  </message>
+  <message name="ConsultaNotariosResponse">
+    <part element="tns:ConsultaNotariosResponse" name="ConsultaNotariosResponse"/>
+  </message>
+  <message name="RegistraCaso">
+    <part element="tns:RegistraCaso" name="RegistraCaso"/>
+  </message>
+  <message name="RegistraCasoResponse">
+    <part element="tns:RegistraCasoResponse" name="RegistraCasoResponse"/>
+  </message>
+  <message name="validarCredito">
+    <part element="tns:validarCredito" name="validarCredito"/>
+  </message>
+  <message name="validarCreditoResponse">
+    <part element="tns:validarCreditoResponse" name="validarCreditoResponse"/>
+  </message>
+  <message name="OperacionPrincipal">
+    <part element="tns:OperacionPrincipal" name="OperacionPrincipal"/>
+  </message>
+  <message name="OperacionPrincipalResponse">
+    <part element="tns:OperacionPrincipalResponse" name="OperacionPrincipalResponse"/>
+  </message>
+  <portType name="StartFlow">
+    <jaxws:bindings>
+      <jaxws:class name="StartFlowSEI"/>
+    </jaxws:bindings>
+    <operation name="CambioEstatus">
+      <input message="tns:CambioEstatus"/>
+      <output message="tns:CambioEstatusResponse"/>
+    </operation>
+    <operation name="ConsultaNotarios">
+      <input message="tns:ConsultaNotarios"/>
+      <output message="tns:ConsultaNotariosResponse"/>
+    </operation>
+    <operation name="RegistraCaso">
+      <input message="tns:RegistraCaso"/>
+      <output message="tns:RegistraCasoResponse"/>
+    </operation>
+    <operation name="validarCredito">
+      <input message="tns:validarCredito"/>
+      <output message="tns:validarCreditoResponse"/>
+    </operation>
+    <operation name="OperacionPrincipal">
+      <input message="tns:OperacionPrincipal"/>
+      <output message="tns:OperacionPrincipalResponse"/>
+    </operation>
+  </portType>
+  <binding name="StartFlowBinding" type="tns:StartFlow">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="CambioEstatus">
+      <soap:operation soapAction="http://www.sap.com/caf/sap.com/home.infonavit_po_ch.bl.caf/modeled/StartFlow/CambioEstatus"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="ConsultaNotarios">
+      <soap:operation soapAction="http://www.sap.com/caf/sap.com/home.infonavit_po_ch.bl.caf/modeled/StartFlow/ConsultaNotarios"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="RegistraCaso">
+      <soap:operation soapAction="http://www.sap.com/caf/sap.com/home.infonavit_po_ch.bl.caf/modeled/StartFlow/RegistraCaso"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="validarCredito">
+      <soap:operation soapAction="http://www.sap.com/caf/sap.com/home.infonavit_po_ch.bl.caf/modeled/StartFlow/validarCredito"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="OperacionPrincipal">
+      <soap:operation soapAction="http://www.sap.com/caf/sap.com/home.infonavit_po_ch.bl.caf/modeled/StartFlow/OperacionPrincipal"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+  <service name="StartFlow">
+    <jaxws:bindings>
+      <jaxws:class name="StartFlowClient"/>
+    </jaxws:bindings>
+    <port binding="tns:StartFlowBinding" name="StartFlowBindingPort">
+      <soap:address location="http://10.90.8.163:50000/sap.com_home.infonavit_po_ch.bl.caf_StartFlow"/>
+    </port>
+  </service>
+</definitions>
