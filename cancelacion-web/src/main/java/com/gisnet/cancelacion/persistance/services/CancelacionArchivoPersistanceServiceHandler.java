@@ -41,7 +41,8 @@ public class CancelacionArchivoPersistanceServiceHandler implements CancelacionA
                 if (!(event.getValue() instanceof Long)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                return new FindResponse<>(repository.findOne((long) event.getValue()).asInfoCompleto());
+                CancelacionArchivo id = repository.findOne((long) event.getValue());
+                return new FindResponse<>(id != null ? id.asInfoCompleto() : null);
         }
         throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
