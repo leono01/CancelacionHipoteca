@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.gisnet.cancelacion.wsclient.pms;
+package com.gisnet.cancelacion.wsclient.microflujo;
 
 import com.gisnet.cancelacion.events.SaveRequest;
 import com.gisnet.cancelacion.events.SaveResponse;

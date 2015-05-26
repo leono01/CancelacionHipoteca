@@ -20,7 +20,7 @@ package com.gisnet.cancelacion.core.services;
 import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.CasoInfo;
 import com.gisnet.cancelacion.persistance.services.CasoPersistanceService;
-import com.gisnet.cancelacion.wsclient.pms.ClienteMicroflujoService;
+import com.gisnet.cancelacion.wsclient.microflujo.ClienteMicroflujoService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

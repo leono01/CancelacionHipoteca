@@ -2,8 +2,8 @@ package com.gisnet.cancelacion.config;
 
 import com.gisnet.cancelacion.wsclient.autenticacion.ClienteAutenticacionService;
 import com.gisnet.cancelacion.wsclient.autenticacion.ClienteAutenticacionServiceHandler;
-import com.gisnet.cancelacion.wsclient.pms.ClienteMicroflujoService;
-import com.gisnet.cancelacion.wsclient.pms.ClienteMicroflujoServiceHandler;
+import com.gisnet.cancelacion.wsclient.microflujo.ClienteMicroflujoService;
+import com.gisnet.cancelacion.wsclient.microflujo.ClienteMicroflujoServiceHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
