@@ -41,14 +41,16 @@ public class RolPersistanceServiceHandler implements RolPersistanceService {
                 if (!(event.getValue() instanceof Long)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                return new FindResponse<>(repository.findOne((long) event.getValue()).asInfo());
+                Rol findOne = repository.findOne((long) event.getValue());
+                return new FindResponse<>(findOne != null ? findOne.asInfo() : null);
 
             case "nombre":
             case "rol":
                 if (!(event.getValue() instanceof String)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                return new FindResponse<>(repository.findByNombre((String) event.getValue()).asInfo());
+                Rol findByNombre = repository.findByNombre((String) event.getValue());
+                return new FindResponse<>(findByNombre != null ? findByNombre.asInfo() : null);
         }
         throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }

@@ -19,13 +19,9 @@ package com.gisnet.cancelacion.web.controller;
 import com.gisnet.cancelacion.core.services.UsuarioService;
 import com.gisnet.cancelacion.events.FindByRequest;
 import com.gisnet.cancelacion.events.FindResponse;
-import com.gisnet.cancelacion.events.info.RolInfo;
 import com.gisnet.cancelacion.events.info.UsuarioInfo;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -34,10 +30,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 /**
@@ -66,7 +58,7 @@ public class AutenticarUsuario implements AuthenticationProvider {
 				}
 				return new UsernamePasswordAuthenticationToken(username, password, grants);
 			}
-			throw new AuthenticationServiceException("WSloguear erroneo");
+			throw new AuthenticationServiceException("Autenticacion fallida");
 		}
 		throw new UsernameNotFoundException("Usuario no encontrado.");
 	}

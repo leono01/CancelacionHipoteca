@@ -41,7 +41,8 @@ public class MunicipioPersistanceServiceHandler implements MunicipioPersistanceS
                 if (!(event.getValue() instanceof Long)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                return new FindResponse<>(repository.findOne((long) event.getValue()).asInfo());
+                Municipio findOne = repository.findOne((long) event.getValue());
+                return new FindResponse<>(findOne != null ? findOne.asInfo() : null);
         }
         throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }

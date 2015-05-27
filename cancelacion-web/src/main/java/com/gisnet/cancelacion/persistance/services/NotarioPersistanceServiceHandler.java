@@ -45,32 +45,36 @@ public class NotarioPersistanceServiceHandler implements NotarioPersistanceServi
                 if (!(event.getValue() instanceof Long)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                return new FindResponse<>(repository.findOne((long) event.getValue()).asInfo());
+                Notario findOne = repository.findOne((long) event.getValue());
+                return new FindResponse<>(findOne != null ? findOne.asInfo() : null);
 
             case "numeroCaso":
                 if (!(event.getValue() instanceof String)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                return new FindResponse<>(casoRepository.findByNumeroCaso((int) event.getValue()).getNotario().asInfo());
+                Notario numeroCaso = casoRepository.findByNumeroCaso((int) event.getValue()).getNotario();
+                return new FindResponse<>(numeroCaso != null ? numeroCaso.asInfo() : null);
 
             case "numeroCredito":
                 if (!(event.getValue() instanceof String)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                return new FindResponse<>(casoRepository.findByNumeroCredito((int) event.getValue()).getNotario().asInfo());
+                Notario numeroCredito = casoRepository.findByNumeroCredito((int) event.getValue()).getNotario();
+                return new FindResponse<>(numeroCredito != null ? numeroCredito.asInfo() : null);
 
             case "nombreUsuario":
                 if (!(event.getValue() instanceof String)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                Notario notario = repository.findByNombreUsuario((String) event.getValue());
-                return new FindResponse<>(notario != null ? notario.asInfo() : null);
+                Notario nombreUsuario = repository.findByNombreUsuario((String) event.getValue());
+                return new FindResponse<>(nombreUsuario != null ? nombreUsuario.asInfo() : null);
                 
             case "usuarioId":
                 if (!(event.getValue() instanceof Long)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                return new FindResponse<>(repository.findByUsuarioId((long) event.getValue()).asInfo());
+                Notario usuarioId = repository.findByUsuarioId((long) event.getValue());
+                return new FindResponse<>(usuarioId != null ? usuarioId.asInfo() : null);
         }
         throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
