@@ -28,12 +28,15 @@ import com.gisnet.cancelacion.core.services.UsuarioService;
 import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.*;
 import com.gisnet.cancelacion.web.domain.SesionNotario;
+
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,6 +47,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.thymeleaf.exceptions.CacheConfigurationException;
 
 /**
  *
@@ -105,23 +109,41 @@ public class NotarioController {
         return "/notario/index";
     }
     
-    private CasoInfo getCaso(int numeroCaso) {
+    private CasoInfo getCaso(int numeroCaso) throws CancelacionWebException {
+    	if (sesion.getNotarioInfo() == null) { 
+    		throw new CancelacionWebException("Notario no encontrado");
+    	}
         if (sesion.getCasoInfo() != null) {
+        	if (sesion.getCasoInfo().getNotarioId() != sesion.getNotarioInfo().getId()) {
+        		throw new CancelacionWebException("Caso no correspondiente al notario activo");
+        	}
             if (sesion.getCasoInfo().getNumeroCaso() == numeroCaso) {
                 return sesion.getCasoInfo();
             }
         }
         sesion.getCancelacionArchivos().clear();
         FindResponse<CasoInfo> find = casoService.find(new FindByRequest("numeroCaso", numeroCaso));
+        if (find.getInfo() == null) {
+        	throw new CancelacionWebException("Caso no existe");
+        }
+        if (find.getInfo().getNotarioId() != sesion.getNotarioInfo().getId()) {
+    		throw new CancelacionWebException("Caso no correspondiente al notario activo");
+    	}
         sesion.setCasoInfo(find.getInfo());
         return sesion.getCasoInfo();
     }
     
     @RequestMapping(value = "/notario/caso/{numeroCaso}", method = RequestMethod.GET)
-    public String ver(@PathVariable int numeroCaso, Model model) {
-        CasoInfo caso = getCaso(numeroCaso);
-        model.addAttribute("caso", caso);
-        return "/notario/view";
+    public String ver(@PathVariable int numeroCaso, Model model, RedirectAttributes redirectAttributes) {
+    	try {
+    		CasoInfo caso = getCaso(numeroCaso);
+    		model.addAttribute("caso", caso);
+            return "/notario/view";
+    	} catch (CancelacionWebException ex) {
+    		List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
+    		mensajes.add("warning::El caso " + numeroCaso + " no existe.");
+    		return "redirect:/";
+    	}
     }
     
     @RequestMapping(value = "/archivos/{id}/carta_de_cancelacion.pdf", method = RequestMethod.GET, produces = "application/pdf")
@@ -129,14 +151,24 @@ public class NotarioController {
         FindResponse<CartaCancelacionInfo> findcarta = cartaCancelacionService.find(
                 new FindByRequest(id));
         CartaCancelacionInfo cartac = findcarta.getInfo();
+        if (cartac == null) {
+        	response.setContentType("text/plain");
+        	return "Archivo no encontrado.".getBytes();
+        }
         return cartac.getPdf();
     }
 
     @RequestMapping(value = "/notario/caso/{numeroCaso}/aceptar", method = RequestMethod.GET)
-    public String aceptar(@PathVariable int numeroCaso, Model model) {
-        CasoInfo caso = getCaso(numeroCaso);
-        model.addAttribute("caso", caso);
-        return "/notario/accept";
+    public String aceptar(@PathVariable int numeroCaso, Model model, RedirectAttributes redirectAttributes) {
+    	try {
+	        CasoInfo caso = getCaso(numeroCaso);
+	        model.addAttribute("caso", caso);
+	        return "/notario/accept";
+    	} catch (CancelacionWebException ex) {
+    		List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
+    		mensajes.add("warning::El caso " + numeroCaso + " no existe.");
+    		return "redirect:/";
+    	}
     }
     
     @RequestMapping(value = "/notario/caso/{numeroCaso}/aceptar", method = RequestMethod.POST)
@@ -149,160 +181,186 @@ public class NotarioController {
             @RequestParam("file3") MultipartFile file3,
             @RequestParam("file4") MultipartFile file4,
             @RequestParam("file5") MultipartFile file5) {
-        
-        List<String> messages = new ArrayList<>();
-        redirectAttributes.addFlashAttribute("messages", messages);
-        
-        CasoInfo caso = getCaso(numeroCaso);
-        model.addAttribute("caso", caso);
-        
-        // guarda archivos
-        sesion.getCancelacionArchivos().clear();
-        if (!file1.isEmpty()) {
-            try {
-                guardaCancelacionArchivo(file1);
-            } catch (IOException ex) {
-                return "redirect:/";
+    	try {
+    		CasoInfo caso = getCaso(numeroCaso);
+    		model.addAttribute("caso", caso);
+    		
+    		// guarda archivos
+            sesion.getCancelacionArchivos().clear();
+            if (!file1.isEmpty()) {
+                try {
+                    guardaCancelacionArchivo(file1);
+                } catch (IOException ex) {
+                    return "redirect:/";
+                }
             }
-        }
-        if (!file2.isEmpty()) {
-            try {
-                guardaCancelacionArchivo(file2);
-            } catch (IOException ex) {
-                return "redirect:/";
+            if (!file2.isEmpty()) {
+                try {
+                    guardaCancelacionArchivo(file2);
+                } catch (IOException ex) {
+                    return "redirect:/";
+                }
             }
-        }
-        if (!file3.isEmpty()) {
-            try {
-                guardaCancelacionArchivo(file3);
-            } catch (IOException ex) {
-                return "redirect:/";
+            if (!file3.isEmpty()) {
+                try {
+                    guardaCancelacionArchivo(file3);
+                } catch (IOException ex) {
+                    return "redirect:/";
+                }
             }
-        }
-        if (!file4.isEmpty()) {
-            try {
-                guardaCancelacionArchivo(file4);
-            } catch (IOException ex) {
-                return "redirect:/";
+            if (!file4.isEmpty()) {
+                try {
+                    guardaCancelacionArchivo(file4);
+                } catch (IOException ex) {
+                    return "redirect:/";
+                }
             }
-        }
-        if (!file5.isEmpty()) {
-            try {
-                guardaCancelacionArchivo(file5);
-            } catch (IOException ex) {
-                return "redirect:/";
+            if (!file5.isEmpty()) {
+                try {
+                    guardaCancelacionArchivo(file5);
+                } catch (IOException ex) {
+                    return "redirect:/";
+                }
             }
-        }
-        return "redirect:/notario/caso/" + numeroCaso + "/aceptar/jefecobranza";
+            return "redirect:/notario/caso/" + numeroCaso + "/aceptar/jefecobranza";
+    	} catch (CancelacionWebException ex) {
+    		List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
+    		mensajes.add("warning::El caso " + numeroCaso + " no existe.");
+    		return "redirect:/";
+    	}
     }
-    
+
     private void guardaCancelacionArchivo(MultipartFile file) throws IOException {
         CancelacionArchivoInfo archivo = new CancelacionArchivoInfo();
         archivo.setArchivo(file.getBytes());
         archivo.setNombre(file.getOriginalFilename());
         archivo.setMimetype(file.getContentType());
-        
         sesion.getCancelacionArchivos().add(archivo);
     }
     
     @RequestMapping(value = "/notario/caso/{numeroCaso}/aceptar/jefecobranza", method = RequestMethod.GET)
     public String seleccionaJefeCobranza(
             @PathVariable int numeroCaso,
-            Model model) {
-        
-        CasoInfo caso = getCaso(numeroCaso);
-        model.addAttribute("caso", caso);
+            Model model,
+            RedirectAttributes redirectAttributes) {
+    	try {
+    		CasoInfo caso = getCaso(numeroCaso);
+    		model.addAttribute("caso", caso);
+    		ListResponse<UsuarioInfo> list = usuarioService.list(
+                    new ListRequest("rol", "JEFE_COBRANZA"));
+            List<EmpleadoInfo> jefesc = new ArrayList<>();
+            for (UsuarioInfo ui : list.getList()) {
+                FindResponse<EmpleadoInfo> find = empleadoService.find(
+                        new FindByRequest("usuarioId", ui.getId()));
+                jefesc.add(find.getInfo());
+            }
+            model.addAttribute("jefesc", jefesc);
 
-        ListResponse<UsuarioInfo> list = usuarioService.list(
-                new ListRequest("rol", "JEFE_COBRANZA"));
-        List<EmpleadoInfo> jefesc = new ArrayList<>();
-        for (UsuarioInfo ui : list.getList()) {
-            FindResponse<EmpleadoInfo> find = empleadoService.find(
-                    new FindByRequest("usuarioId", ui.getId()));
-            jefesc.add(find.getInfo());
-        }
-        model.addAttribute("jefesc", jefesc);
-        
-        return "/notario/jefeCobranza";
+            return "/notario/jefeCobranza";
+    	} catch (CancelacionWebException ex) {
+    		List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
+    		mensajes.add("warning::El caso " + numeroCaso + " no existe.");
+    		return "redirect:/";
+    	}
     }
     
     @RequestMapping(value = "/notario/caso/{numeroCaso}/aceptar/jefecobranza", method = RequestMethod.POST)
     public String aceptaCasoYGuardaArchivos(
             @PathVariable int numeroCaso,
             @RequestParam("jefec") long jefec,
-            Model model) {
-        
-        CasoInfo caso = getCaso(numeroCaso);
-        model.addAttribute("caso", caso);
-        
-        // crea proyecto cancelacion
-        ProyectoCancelacionInfo proyecto = new ProyectoCancelacionInfo();
-        proyecto.setFechaCreacion(new Date());
-        proyecto.setEmpleadoId(jefec);
-        FindResponse<StatusProyectoInfo> find2 = statusProyectoService.find(
-                new FindByRequest("clave", 5));
-        proyecto.setStatusProyecto(find2.getInfo());
-        
-        SaveResponse<ProyectoCancelacionInfo> saved = proyectoCancelacionService.save(
-                new SaveRequest<>(proyecto));
-        proyecto = saved.getInfo();
-        
-        // guarda archivos
-        for (CancelacionArchivoInfo archivo : sesion.getCancelacionArchivos()) {
-            archivo.setProyectoCancelacionId(proyecto.getId());
-            cancelacionArchivoService.save(new SaveRequest<>(archivo));
-        }
-        sesion.getCancelacionArchivos().clear();
-        
-        // Actualiza caso
-        caso.setProyectoCancelacionId(proyecto.getId());
-        FindResponse<StatusCasoInfo> find = statusCasoService.find(new FindByRequest("clave", 4));
-        caso.setStatusCaso(find.getInfo());
-        UpdateResponse<CasoInfo> updated = casoService.update(new UpdateRequest<>(caso));
-        caso = updated.getInfo();
-        
-        return "redirect:/";
+            Model model,
+            RedirectAttributes redirectAttributes) {
+    	try {
+    		CasoInfo caso = getCaso(numeroCaso);
+    		model.addAttribute("caso", caso);
+
+    		// crea proyecto cancelacion
+            ProyectoCancelacionInfo proyecto = new ProyectoCancelacionInfo();
+            proyecto.setFechaCreacion(new Date());
+            proyecto.setEmpleadoId(jefec);
+            FindResponse<StatusProyectoInfo> find2 = statusProyectoService.find(
+                    new FindByRequest("clave", 5));
+            proyecto.setStatusProyecto(find2.getInfo());
+            
+            SaveResponse<ProyectoCancelacionInfo> saved = proyectoCancelacionService.save(
+                    new SaveRequest<>(proyecto));
+            proyecto = saved.getInfo();
+            
+            // guarda archivos
+            for (CancelacionArchivoInfo archivo : sesion.getCancelacionArchivos()) {
+                archivo.setProyectoCancelacionId(proyecto.getId());
+                cancelacionArchivoService.save(new SaveRequest<>(archivo));
+            }
+            sesion.getCancelacionArchivos().clear();
+            
+            // Actualiza caso
+            caso.setProyectoCancelacionId(proyecto.getId());
+            FindResponse<StatusCasoInfo> find = statusCasoService.find(new FindByRequest("clave", 4));
+            caso.setStatusCaso(find.getInfo());
+            UpdateResponse<CasoInfo> updated = casoService.update(new UpdateRequest<>(caso));
+            caso = updated.getInfo();
+            
+            return "redirect:/";
+    	} catch (CancelacionWebException ex) {
+    		List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
+    		mensajes.add("warning::El caso " + numeroCaso + " no existe.");
+    		return "redirect:/";
+    	}
     }
     
     
     @RequestMapping(value = "/notario/caso/{numeroCaso}/rechazar", method = RequestMethod.GET)
     public String rechazar(
             @PathVariable int numeroCaso,
-            Model model) {
-        CasoInfo caso = getCaso(numeroCaso);
-        model.addAttribute("caso", caso);
-        return "/notario/reject";
+            Model model,
+            RedirectAttributes redirectAttributes) {
+    	try {
+	        CasoInfo caso = getCaso(numeroCaso);
+	        model.addAttribute("caso", caso);
+	        return "/notario/reject";
+    	} catch (CancelacionWebException ex) {
+    		List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
+    		mensajes.add("warning::El caso " + numeroCaso + " no existe.");
+    		return "redirect:/";
+    	}
     }
     
     @RequestMapping(value = "/notario/caso/{numeroCaso}/rechazar", method = RequestMethod.POST)
     public String rechazaCaso(
             @PathVariable int numeroCaso,
             @RequestParam("motivo") String motivoRechazo,
-            Model model) {
-        CasoInfo caso = getCaso(numeroCaso);
-        model.addAttribute("caso", caso);
-        
-        // crea proyecto cancelacion
-        ProyectoCancelacionInfo proyecto = new ProyectoCancelacionInfo();
-        proyecto.setFechaCreacion(new Date());
-        
-        FindResponse<StatusProyectoInfo> findstatus = statusProyectoService.find(
-                new FindByRequest("clave", 11));
-        proyecto.setStatusProyecto(findstatus.getInfo());
-        proyecto.setMotivoRechazo(motivoRechazo);
-        
-        SaveResponse<ProyectoCancelacionInfo> saved = proyectoCancelacionService.save(
-                new SaveRequest<>(proyecto));
-        proyecto = saved.getInfo();
-        
-        caso.setProyectoCancelacionId(proyecto.getId());
-        // cambiar de notario
-        caso.setNotarioId(0l);
-        
-        UpdateResponse<CasoInfo> updated = casoService.update(new UpdateRequest<>(caso));
-        caso = updated.getInfo();
-        
-        return "redirect:/";
+            Model model,
+            RedirectAttributes redirectAttributes) {
+    	try {
+    		CasoInfo caso = getCaso(numeroCaso);
+    		model.addAttribute("caso", caso);
+    		
+    		// crea proyecto cancelacion
+            ProyectoCancelacionInfo proyecto = new ProyectoCancelacionInfo();
+            proyecto.setFechaCreacion(new Date());
+            
+            FindResponse<StatusProyectoInfo> findstatus = statusProyectoService.find(
+                    new FindByRequest("clave", 11));
+            proyecto.setStatusProyecto(findstatus.getInfo());
+            proyecto.setMotivoRechazo(motivoRechazo);
+            
+            SaveResponse<ProyectoCancelacionInfo> saved = proyectoCancelacionService.save(
+                    new SaveRequest<>(proyecto));
+            proyecto = saved.getInfo();
+            
+            caso.setProyectoCancelacionId(proyecto.getId());
+            // cambiar de notario
+            caso.setNotarioId(0l);
+            
+            UpdateResponse<CasoInfo> updated = casoService.update(new UpdateRequest<>(caso));
+            caso = updated.getInfo();
+            
+            return "redirect:/";
+    	} catch (CancelacionWebException ex) {
+    		List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
+    		mensajes.add("warning::El caso " + numeroCaso + " no existe.");
+    		return "redirect:/";
+    	}
     }
     
 }

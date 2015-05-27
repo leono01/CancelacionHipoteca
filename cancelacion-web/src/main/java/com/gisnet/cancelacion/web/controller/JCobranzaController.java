@@ -87,7 +87,6 @@ public class JCobranzaController {
             sesion.setEmpleado(empleado);
         }
         sesion.setCaso(null);
-        System.out.println(sesion.getEmpleado().getId());
         ListResponse<ProyectoCancelacionInfo> listresponse = proyectoCancelacionService.list(
                 new ListRequest("empleadoId", sesion.getEmpleado().getId()));
         List<CasoInfo> casosRevizar = new ArrayList<>();
