@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 GISNET
+ * Copyright (C) 2015 marco-g8
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,22 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.gisnet.cancelacion.wsclient.microflujo;
+package com.gisnet.cancelacion.core.services;
 
-import com.gisnet.cancelacion.events.SaveRequest;
-import com.gisnet.cancelacion.events.SaveResponse;
-import com.gisnet.cancelacion.events.UpdateRequest;
-import com.gisnet.cancelacion.events.UpdateResponse;
-import com.gisnet.cancelacion.events.info.CasoInfo;
+import com.gisnet.cancelacion.events.FindByRequest;
+import com.gisnet.cancelacion.events.FindResponse;
+import com.gisnet.cancelacion.events.ListRequest;
+import com.gisnet.cancelacion.events.ListResponse;
+import com.gisnet.cancelacion.events.info.EntidadInfo;
 
 /**
  *
  * @author marco-g8
  */
-public interface ClienteMicroflujoService {
+public interface EntidadService {
     
-    public SaveResponse<CasoInfo> validarCredito(SaveRequest<CasoInfo> event);
+    public FindResponse<EntidadInfo> find(FindByRequest event);
     
-    public UpdateResponse<CasoInfo> actualizarCaso(UpdateRequest<CasoInfo> event);
+    public ListResponse<EntidadInfo> list(ListRequest event);
     
 }

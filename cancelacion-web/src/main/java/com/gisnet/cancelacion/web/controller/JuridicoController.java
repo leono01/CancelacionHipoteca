@@ -16,14 +16,21 @@
  */
 package com.gisnet.cancelacion.web.controller;
 
+import com.gisnet.cancelacion.core.services.EntidadService;
 import com.gisnet.cancelacion.core.services.NotarioService;
+import com.gisnet.cancelacion.events.FindByRequest;
+import com.gisnet.cancelacion.events.FindResponse;
 import com.gisnet.cancelacion.events.ListRequest;
 import com.gisnet.cancelacion.events.ListResponse;
 import com.gisnet.cancelacion.events.SaveRequest;
 import com.gisnet.cancelacion.events.SaveResponse;
+import com.gisnet.cancelacion.events.info.EntidadInfo;
+import com.gisnet.cancelacion.events.info.MunicipioInfo;
 import com.gisnet.cancelacion.events.info.NotarioInfo;
 import com.gisnet.cancelacion.web.domain.NotarioForm;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,6 +39,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -43,6 +51,8 @@ public class JuridicoController {
 
     @Autowired
     private NotarioService service;
+    @Autowired
+    private EntidadService entidadservice;
 
     public String index(Model model, Principal principal) {
         ListRequest lr = new ListRequest();
@@ -52,8 +62,9 @@ public class JuridicoController {
     }
 
     @RequestMapping(value = "/juridico/registrar", method = RequestMethod.GET)
-    public String ver(Model model, Principal principal) {
-
+    public String verRegistrar(Model model, Principal principal) {
+        ListResponse<EntidadInfo> list = entidadservice.list(new ListRequest());
+        model.addAttribute("entidades", list.getList());
         return "/juridico/registrar";
     }
 
@@ -73,7 +84,6 @@ public class JuridicoController {
 
         NotarioInfo info = new NotarioInfo();
         info.setNombre(form.getNombre());
-        info.setCodigo(form.getCodigo());
         info.setNotariaNumero(form.getNotariaNumero());
         info.setConvenio(form.isConvenioInfonavit() ? "SI" : "NO");
         info.setEmail(form.getEmail());
@@ -81,16 +91,14 @@ public class JuridicoController {
         info.setCalleNotaria(form.getCalleNotaria());
         info.setNumeroCalle(form.getNumeroCalle());
         info.setColoniaNotaria(form.getColoniaNotaria());
-        info.setCodigoPostalNotaria(form.getCodigoPostalNotaria());
-
-        info.setUsuarioId(0l);
+        info.setHabilitado(form.isActivo());
+        
         info.setMunicipioId(0l);
-        info.setEntidadId(0l);
-
-        info.setRfc("rfc");
-        info.setCurp("curp");
-        info.setHabilitado(true);
-        info.setEntidad2("entidad2");
+        info.setEntidadId(form.getEntidadId());
+        FindResponse<EntidadInfo> find = entidadservice.find(new FindByRequest(form.getEntidadId()));
+        if (find.getInfo() != null) {
+            info.setEntidad2(find.getInfo().getClave());
+        }
 
         SaveRequest<NotarioInfo> saveRequest = new SaveRequest<>();
         saveRequest.setInfo(info);
@@ -103,5 +111,18 @@ public class JuridicoController {
     public NotarioForm notarioForm() {
         return new NotarioForm();
     }
+    
+    @RequestMapping(value = "/juridico/municipios", method = RequestMethod.GET)
+    public @ResponseBody List<MunicipioInfo> jsonmunicipios() {
+        List<MunicipioInfo> list = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            MunicipioInfo info = new MunicipioInfo();
+            info.setId(i);
+            info.setNombre("mpio " + i);
+            list.add(info);
+        }
+        return list;
+    }
+    
 
 }

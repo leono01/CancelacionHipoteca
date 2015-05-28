@@ -102,8 +102,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     	</div>
                                     </form>
                                 </header>
-                                <div role="content" class="widget-body" >
-                                    <span th:text="${caso.procedeCredito}"></span>
+                                <div role="content" class="widget-body" th:switch="${caso.procedeCredito}">
+                                    <span th:case="'PROCEDE'">Credito procede</span>
+                                    <span th:case="'NO PROCEDE'">El credito NO PROCEDE</span>
+                                    <span th:case="*">Estado del credito desconocido</span>
                                 </div><!-- fin jarviswidget content -->
                             </div><!-- fin jarviswidget -->
                             <div class="jarviswidget" id="wid-id-1" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">

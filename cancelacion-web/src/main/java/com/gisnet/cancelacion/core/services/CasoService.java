@@ -52,5 +52,5 @@ public interface CasoService {
 
     public SaveResponse<CasoInfo> validarCredito(SaveRequest<CasoInfo> event);
     
-    public UpdateRequest<CasoInfo> actualizarCaso(UpdateRequest<CasoInfo> event);
+    public UpdateResponse<CasoInfo> actualizarCaso(UpdateRequest<CasoInfo> event);
 }

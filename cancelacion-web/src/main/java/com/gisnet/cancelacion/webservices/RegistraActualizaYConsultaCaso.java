@@ -75,8 +75,8 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
         CasoInfo caso = new CasoInfo();
 
         caso.setNombreAcreditado(nombreAcreditado);
-        caso.setNumeroCaso(numeroDeCaso);
-        caso.setNumeroCredito(numeroDeCredito);
+        //caso.setNumeroCaso(numeroDeCaso);
+        //caso.setNumeroCredito(numeroDeCredito);
         caso.setFechaCreacion(fechaDeCreacion);
         
         int s = 1;
@@ -171,8 +171,8 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 	        
 	        ida.setCodigo(0);
 	        ida.setDescripcion("Se actualizó correctamente el caso.");
-	        ida.setNumeroDeCaso(casoresponse.getInfo().getNumeroCaso());
-	        ida.setNumeroDeCredito(casoresponse.getInfo().getNumeroCredito());
+	        //ida.setNumeroDeCaso(casoresponse.getInfo().getNumeroCaso());
+	        //ida.setNumeroDeCredito(casoresponse.getInfo().getNumeroCredito());
 	        
 	        isc = pmsPort.statusCaso(numeroDeCredito, numeroDeCaso, null, status, null, null, null, null, 4);
 	        
@@ -231,8 +231,8 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 	            idc.setFecha(casoresponse.getInfo().getFechaCreacion());            
 	            idc.setNombreAcreditado(casoresponse.getInfo().getNombreAcreditado());
 	            idc.setEntidad(casoresponse.getInfo().getEntidad());
-	            idc.setNumeroDeCaso(casoresponse.getInfo().getNumeroCaso());
-	            idc.setNumeroDeCredito(casoresponse.getInfo().getNumeroCredito());
+	            //idc.setNumeroDeCaso(casoresponse.getInfo().getNumeroCaso());
+	            //idc.setNumeroDeCredito(casoresponse.getInfo().getNumeroCredito());
 	    
 	            if (casoresponse.getInfo().getStatusCaso() != null){
 	            	idc.setStatus(casoresponse.getInfo().getStatusCaso().getClave());

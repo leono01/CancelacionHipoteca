@@ -75,7 +75,7 @@ public class CasoServiceHandler implements CasoService {
     }
 
     @Override
-    public UpdateRequest<CasoInfo> actualizarCaso(UpdateRequest<CasoInfo> event) {
+    public UpdateResponse<CasoInfo> actualizarCaso(UpdateRequest<CasoInfo> event) {
         return microflujo.actualizarCaso(event);
     }
     

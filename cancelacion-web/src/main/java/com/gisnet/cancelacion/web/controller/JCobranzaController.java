@@ -27,14 +27,11 @@ import com.gisnet.cancelacion.core.services.UsuarioService;
 import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.*;
 import com.gisnet.cancelacion.web.domain.SesionJCobranza;
-
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -108,9 +105,9 @@ public class JCobranzaController {
         return "/jcobranza/index";
     }
 
-    private CasoInfo getCaso(int numeroCaso) {
+    private CasoInfo getCaso(String numeroCaso) {
     	if (sesion.getCaso() != null) {
-            if (sesion.getCaso().getNumeroCaso() == numeroCaso) {
+            if (sesion.getCaso().getNumeroCaso().equals(numeroCaso)) {
                 return sesion.getCaso();
             }
         }
@@ -120,7 +117,7 @@ public class JCobranzaController {
     }
 
     @RequestMapping(value = "/cobranza/caso/{numeroCaso}", method = RequestMethod.GET)
-    public String ver(@PathVariable int numeroCaso, Model model, RedirectAttributes redirectAttributes) {
+    public String ver(@PathVariable String numeroCaso, Model model, RedirectAttributes redirectAttributes) {
     	List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
         CasoInfo caso = getCaso(numeroCaso);
         if (caso == null) {
@@ -142,7 +139,7 @@ public class JCobranzaController {
     }
 
     @RequestMapping(value = "/cobranza/caso/{numeroCaso}/validaCredito", method = RequestMethod.POST)
-    public String actualizaProcedeCredito(@PathVariable int numeroCaso, Model model, RedirectAttributes redirectAttributes) {
+    public String actualizaProcedeCredito(@PathVariable String numeroCaso, Model model, RedirectAttributes redirectAttributes) {
     	List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
     	CasoInfo caso = getCaso(numeroCaso);
         if (caso == null) {
@@ -175,7 +172,7 @@ public class JCobranzaController {
     }
 
     @RequestMapping(value = "/cobranza/caso/{numeroCaso}/fechafirma", method = RequestMethod.GET)
-    public String asignarFechaFirmaNotario(@PathVariable int numeroCaso, Model model, RedirectAttributes redirectAttributes) {
+    public String asignarFechaFirmaNotario(@PathVariable String numeroCaso, Model model, RedirectAttributes redirectAttributes) {
     	List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
     	CasoInfo caso = getCaso(numeroCaso);
         if (caso == null) {
@@ -193,7 +190,7 @@ public class JCobranzaController {
 
     @RequestMapping(value = "/cobranza/caso/{numeroCaso}/fechafirma", method = RequestMethod.POST)
     public String guardaFechaFirmaNotario(
-            @PathVariable int numeroCaso,
+            @PathVariable String numeroCaso,
             @RequestParam("fechaFirma") Date fechaAsignada,
             Model model,
             RedirectAttributes redirectAttributes) {
@@ -219,7 +216,7 @@ public class JCobranzaController {
 
     @RequestMapping(value = "/cobranza/caso/{numeroCaso}/registrarfirma", method = RequestMethod.POST)
     public String guardaRegistrarFechaFirmaNotario(
-            @PathVariable int numeroCaso,
+            @PathVariable String numeroCaso,
             @RequestParam("fechaFirma") Date fechaAsignada,
             Model model,
             RedirectAttributes redirectAttributes) {

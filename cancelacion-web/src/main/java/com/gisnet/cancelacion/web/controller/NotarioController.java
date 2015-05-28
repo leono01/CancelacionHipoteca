@@ -28,15 +28,12 @@ import com.gisnet.cancelacion.core.services.UsuarioService;
 import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.*;
 import com.gisnet.cancelacion.web.domain.SesionNotario;
-
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,7 +44,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.thymeleaf.exceptions.CacheConfigurationException;
 
 /**
  *
@@ -109,7 +105,7 @@ public class NotarioController {
         return "/notario/index";
     }
     
-    private CasoInfo getCaso(int numeroCaso) throws CancelacionWebException {
+    private CasoInfo getCaso(String numeroCaso) throws CancelacionWebException {
     	if (sesion.getNotarioInfo() == null) { 
     		throw new CancelacionWebException("Notario no encontrado");
     	}
@@ -117,7 +113,7 @@ public class NotarioController {
         	if (sesion.getCasoInfo().getNotarioId() != sesion.getNotarioInfo().getId()) {
         		throw new CancelacionWebException("Caso no correspondiente al notario activo");
         	}
-            if (sesion.getCasoInfo().getNumeroCaso() == numeroCaso) {
+            if (sesion.getCasoInfo().getNumeroCaso().equals(numeroCaso)) {
                 return sesion.getCasoInfo();
             }
         }
@@ -134,7 +130,7 @@ public class NotarioController {
     }
     
     @RequestMapping(value = "/notario/caso/{numeroCaso}", method = RequestMethod.GET)
-    public String ver(@PathVariable int numeroCaso, Model model, RedirectAttributes redirectAttributes) {
+    public String ver(@PathVariable String numeroCaso, Model model, RedirectAttributes redirectAttributes) {
     	try {
     		CasoInfo caso = getCaso(numeroCaso);
     		model.addAttribute("caso", caso);
@@ -159,7 +155,7 @@ public class NotarioController {
     }
 
     @RequestMapping(value = "/notario/caso/{numeroCaso}/aceptar", method = RequestMethod.GET)
-    public String aceptar(@PathVariable int numeroCaso, Model model, RedirectAttributes redirectAttributes) {
+    public String aceptar(@PathVariable String numeroCaso, Model model, RedirectAttributes redirectAttributes) {
     	try {
 	        CasoInfo caso = getCaso(numeroCaso);
 	        model.addAttribute("caso", caso);
@@ -173,7 +169,7 @@ public class NotarioController {
     
     @RequestMapping(value = "/notario/caso/{numeroCaso}/aceptar", method = RequestMethod.POST)
     public String agregaArchivos(
-            @PathVariable int numeroCaso,
+            @PathVariable String numeroCaso,
             Model model,
             RedirectAttributes redirectAttributes,
             @RequestParam("file1") MultipartFile file1,
@@ -240,7 +236,7 @@ public class NotarioController {
     
     @RequestMapping(value = "/notario/caso/{numeroCaso}/aceptar/jefecobranza", method = RequestMethod.GET)
     public String seleccionaJefeCobranza(
-            @PathVariable int numeroCaso,
+            @PathVariable String numeroCaso,
             Model model,
             RedirectAttributes redirectAttributes) {
     	try {
@@ -266,7 +262,7 @@ public class NotarioController {
     
     @RequestMapping(value = "/notario/caso/{numeroCaso}/aceptar/jefecobranza", method = RequestMethod.POST)
     public String aceptaCasoYGuardaArchivos(
-            @PathVariable int numeroCaso,
+            @PathVariable String numeroCaso,
             @RequestParam("jefec") long jefec,
             Model model,
             RedirectAttributes redirectAttributes) {
@@ -311,7 +307,7 @@ public class NotarioController {
     
     @RequestMapping(value = "/notario/caso/{numeroCaso}/rechazar", method = RequestMethod.GET)
     public String rechazar(
-            @PathVariable int numeroCaso,
+            @PathVariable String numeroCaso,
             Model model,
             RedirectAttributes redirectAttributes) {
     	try {
@@ -327,7 +323,7 @@ public class NotarioController {
     
     @RequestMapping(value = "/notario/caso/{numeroCaso}/rechazar", method = RequestMethod.POST)
     public String rechazaCaso(
-            @PathVariable int numeroCaso,
+            @PathVariable String numeroCaso,
             @RequestParam("motivo") String motivoRechazo,
             Model model,
             RedirectAttributes redirectAttributes) {

@@ -46,6 +46,10 @@ class CoreConfig {
     EmpleadoService empleadoService() {
         return new EmpleadoServiceHandler();
     }
+    
+    @Bean EntidadService entidadService() {
+        return new EntidadServiceHandler();
+    }
 
     @Bean
     NotarioService notarioService() {
