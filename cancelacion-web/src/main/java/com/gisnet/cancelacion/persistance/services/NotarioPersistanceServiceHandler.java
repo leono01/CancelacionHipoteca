@@ -52,14 +52,14 @@ public class NotarioPersistanceServiceHandler implements NotarioPersistanceServi
                 if (!(event.getValue() instanceof String)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                Notario numeroCaso = casoRepository.findByNumeroCaso((int) event.getValue()).getNotario();
+                Notario numeroCaso = casoRepository.findByNumeroCaso((String) event.getValue()).getNotario();
                 return new FindResponse<>(numeroCaso != null ? numeroCaso.asInfo() : null);
 
             case "numeroCredito":
                 if (!(event.getValue() instanceof String)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                Notario numeroCredito = casoRepository.findByNumeroCredito((int) event.getValue()).getNotario();
+                Notario numeroCredito = casoRepository.findByNumeroCredito((String) event.getValue()).getNotario();
                 return new FindResponse<>(numeroCredito != null ? numeroCredito.asInfo() : null);
 
             case "nombreUsuario":
