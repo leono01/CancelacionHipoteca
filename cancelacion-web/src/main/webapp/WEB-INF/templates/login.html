@@ -121,9 +121,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </footer>
                                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                             </form>
-
                         </div>
-
+                        <div th:if="${param.error}">
+		                    Nombre de usuario o contrase&ntilde;a incorrecta.
+		                </div>
+		                <div th:if="${param.logout}">
+		                    Has cerrado sesi&oacute;n
+		                </div>
                     </div>
                 </div>
             </div>

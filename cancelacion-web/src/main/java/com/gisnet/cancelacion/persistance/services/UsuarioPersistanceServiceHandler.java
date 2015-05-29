@@ -41,13 +41,15 @@ public class UsuarioPersistanceServiceHandler implements UsuarioPersistanceServi
                 if (!(event.getValue() instanceof Long)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                return new FindResponse<>(repository.findOne((long) event.getValue()).asInfo());
+                Usuario findOne = repository.findOne((long) event.getValue());
+                return new FindResponse<>(findOne != null ? findOne.asInfo() : null);
 
             case "nombreUsuario":
                 if (!(event.getValue() instanceof String)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                return new FindResponse<>(repository.findByNombreUsuario((String) event.getValue()).asInfo());
+                Usuario findByNombreUsuario = repository.findByNombreUsuario((String) event.getValue());
+                return new FindResponse<>(findByNombreUsuario != null ? findByNombreUsuario.asInfo() : null);
         }
         throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }

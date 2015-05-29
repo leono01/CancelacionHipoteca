@@ -14,16 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package com.gisnet.cancelacion.wsclient.microflujo;
 
-package com.gisnet.cancelacion.core.services;
-
-import com.gisnet.cancelacion.events.DeleteRequest;
-import com.gisnet.cancelacion.events.DeleteResponse;
-import com.gisnet.cancelacion.events.FindByIdRequest;
-import com.gisnet.cancelacion.events.FindByRequest;
-import com.gisnet.cancelacion.events.FindResponse;
-import com.gisnet.cancelacion.events.ListRequest;
-import com.gisnet.cancelacion.events.ListResponse;
 import com.gisnet.cancelacion.events.SaveRequest;
 import com.gisnet.cancelacion.events.SaveResponse;
 import com.gisnet.cancelacion.events.UpdateRequest;
@@ -32,25 +24,12 @@ import com.gisnet.cancelacion.events.info.CasoInfo;
 
 /**
  *
- * @author leonel
+ * @author marco-g8
  */
-
-public interface CasoService {
-	
-    public FindResponse<CasoInfo> find(FindByIdRequest event);
+public interface ClienteMicroflujoService {
     
-    public FindResponse<CasoInfo> find(FindByRequest event);
-    
-    public ListResponse<CasoInfo> list(ListRequest event);
-    
-    public SaveResponse<CasoInfo> save(SaveRequest<CasoInfo> event);
-    
-    public UpdateResponse<CasoInfo> update(UpdateRequest<CasoInfo> event);
-    
-    public DeleteResponse<CasoInfo> delete(DeleteRequest event);
-
-
     public SaveResponse<CasoInfo> validarCredito(SaveRequest<CasoInfo> event);
     
     public UpdateResponse<CasoInfo> actualizarCaso(UpdateRequest<CasoInfo> event);
+    
 }

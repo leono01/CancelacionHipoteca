@@ -41,6 +41,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -75,14 +76,14 @@ public class JCobranzaController {
                 new FindByRequest("nombreUsuario", principal.getName()));
             EmpleadoInfo empleado = findresponse.getInfo();
             if (empleado == null) {
-                // ERROR empleado no encontrado
+                System.err.println("Datos del empleado no encontrados.");
                 model.addAttribute("casosrevizar", new ArrayList<>());
                 model.addAttribute("casosespera", new ArrayList<>());
                 return "/jcobranza/index";
             }
             sesion.setEmpleado(empleado);
         }
-        System.out.println(sesion.getEmpleado().getId());
+        sesion.setCaso(null);
         ListResponse<ProyectoCancelacionInfo> listresponse = proyectoCancelacionService.list(
                 new ListRequest("empleadoId", sesion.getEmpleado().getId()));
         List<CasoInfo> casosRevizar = new ArrayList<>();
@@ -104,21 +105,31 @@ public class JCobranzaController {
         return "/jcobranza/index";
     }
 
-    @RequestMapping(value = "/cobranza/caso/{numeroCaso}", method = RequestMethod.GET)
-    public String ver(@PathVariable int numeroCaso, Model model) {
+    private CasoInfo getCaso(String numeroCaso) {
+    	if (sesion.getCaso() != null) {
+            if (sesion.getCaso().getNumeroCaso().equals(numeroCaso)) {
+                return sesion.getCaso();
+            }
+        }
         FindResponse<CasoInfo> find = casoService.find(new FindByRequest("numeroCaso", numeroCaso));
-        CasoInfo caso = find.getInfo();
+        sesion.setCaso(find.getInfo());
+        return sesion.getCaso();
+    }
+
+    @RequestMapping(value = "/cobranza/caso/{numeroCaso}", method = RequestMethod.GET)
+    public String ver(@PathVariable String numeroCaso, Model model, RedirectAttributes redirectAttributes) {
+    	List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
+        CasoInfo caso = getCaso(numeroCaso);
+        if (caso == null) {
+        	mensajes.add("warning::El caso " + numeroCaso + " no existe.");
+        	return "redirect:/";
+        }
         model.addAttribute("caso", caso);
         
         FindResponse<ProyectoCancelacionInfo> find1 = proyectoCancelacionService.find(
                 new FindByRequest(caso.getProyectoCancelacionId()));
         ProyectoCancelacionInfo proyecto = find1.getInfo();
         model.addAttribute("proyecto", proyecto);
-
-        
-        SaveResponse<CasoInfo> validarCredito = casoService.validarCredito(new SaveRequest<>(caso));
-        caso = validarCredito.getInfo();
-        model.addAttribute("validaCredito", caso.getProcedeCredito());
 
         ListResponse<CancelacionArchivoInfo> listresp = cancelacionArchivoService.list(
                 new ListRequest("proyectoCancelacionId", proyecto.getId()));
@@ -127,21 +138,47 @@ public class JCobranzaController {
         return "/jcobranza/ver";
     }
 
+    @RequestMapping(value = "/cobranza/caso/{numeroCaso}/validaCredito", method = RequestMethod.POST)
+    public String actualizaProcedeCredito(@PathVariable String numeroCaso, Model model, RedirectAttributes redirectAttributes) {
+    	List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
+    	CasoInfo caso = getCaso(numeroCaso);
+        if (caso == null) {
+        	mensajes.add("warning::El caso " + numeroCaso + " no existe.");
+        	return "redirect:/";
+        }
+    	String antes = caso.getProcedeCredito();
+    	SaveResponse<CasoInfo> validarCredito = casoService.validarCredito(new SaveRequest<>(caso));
+        caso = validarCredito.getInfo();
+        if (!antes.equals(caso.getProcedeCredito())) {
+        	casoService.update(new UpdateRequest<>(caso));
+        }
+        sesion.setCaso(caso);
+    	return "redirect:/cobranza/caso/" + numeroCaso;
+    }
+
     @RequestMapping(value = "/archivoss/{id}/{filename}", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
     public @ResponseBody byte[] descargar(
             @PathVariable long id,
             @PathVariable String filename,
             HttpServletResponse response) {
         FindResponse<CancelacionArchivoInfo> file = cancelacionArchivoService.findBy(new FindByRequest(id));
+        if (file.getInfo() == null) {
+        	response.setContentType("text/plain");
+        	return "Archivo no encontrado.".getBytes();
+        }
         CancelacionArchivoInfo info = file.getInfo();
         response.setContentType(info.getMimetype());
         return info.getArchivo();
     }
 
     @RequestMapping(value = "/cobranza/caso/{numeroCaso}/fechafirma", method = RequestMethod.GET)
-    public String asignarFechaFirmaNotario(@PathVariable int numeroCaso, Model model) {
-        FindResponse<CasoInfo> find = casoService.find(new FindByRequest("numeroCaso", numeroCaso));
-        CasoInfo caso = find.getInfo();
+    public String asignarFechaFirmaNotario(@PathVariable String numeroCaso, Model model, RedirectAttributes redirectAttributes) {
+    	List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
+    	CasoInfo caso = getCaso(numeroCaso);
+        if (caso == null) {
+        	mensajes.add("warning::El caso " + numeroCaso + " no existe.");
+        	return "redirect:/";
+        }
         model.addAttribute("caso", caso);
         
         FindResponse<ProyectoCancelacionInfo> find1 = proyectoCancelacionService.find(
@@ -153,11 +190,16 @@ public class JCobranzaController {
 
     @RequestMapping(value = "/cobranza/caso/{numeroCaso}/fechafirma", method = RequestMethod.POST)
     public String guardaFechaFirmaNotario(
-            @PathVariable int numeroCaso,
+            @PathVariable String numeroCaso,
             @RequestParam("fechaFirma") Date fechaAsignada,
-            Model model) {
-        FindResponse<CasoInfo> find = casoService.find(new FindByRequest("numeroCaso", numeroCaso));
-        CasoInfo caso = find.getInfo();
+            Model model,
+            RedirectAttributes redirectAttributes) {
+    	List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
+    	CasoInfo caso = getCaso(numeroCaso);
+        if (caso == null) {
+        	mensajes.add("warning::El caso " + numeroCaso + " no existe.");
+        	return "redirect:/";
+        }
         model.addAttribute("caso", caso);
 
         // TODO guarda fecha firma con notario / actualizacion de estados
@@ -174,11 +216,16 @@ public class JCobranzaController {
 
     @RequestMapping(value = "/cobranza/caso/{numeroCaso}/registrarfirma", method = RequestMethod.POST)
     public String guardaRegistrarFechaFirmaNotario(
-            @PathVariable int numeroCaso,
+            @PathVariable String numeroCaso,
             @RequestParam("fechaFirma") Date fechaAsignada,
-            Model model) {
-        FindResponse<CasoInfo> find = casoService.find(new FindByRequest("numeroCaso", numeroCaso));
-        CasoInfo caso = find.getInfo();
+            Model model,
+            RedirectAttributes redirectAttributes) {
+    	List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
+    	CasoInfo caso = getCaso(numeroCaso);
+        if (caso == null) {
+        	mensajes.add("warning::El caso " + numeroCaso + " no existe.");
+        	return "redirect:/";
+        }
         model.addAttribute("caso", caso);
 
         // TODO guarda fecha firma con notario / actualizacion de estados

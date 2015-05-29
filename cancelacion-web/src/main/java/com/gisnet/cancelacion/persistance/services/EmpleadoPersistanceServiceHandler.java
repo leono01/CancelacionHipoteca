@@ -41,7 +41,8 @@ public class EmpleadoPersistanceServiceHandler implements EmpleadoPersistanceSer
                 if (!(event.getValue() instanceof Long)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                return new FindResponse<>(repository.findOne((long) event.getValue()).asInfo());
+                Empleado findOne = repository.findOne((long) event.getValue());
+                return new FindResponse<>(findOne != null ? findOne.asInfo() : null);
             case "nombreUsuario": {
                 if (!(event.getValue() instanceof String)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");

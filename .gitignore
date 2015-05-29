@@ -84,3 +84,4 @@ excellon.txt
 
 # Maven compiled
 */target
+cancelacion-web/src/main/java/com/gisnet/cancelacion/webservices/RegistraActualizaYConsultaCaso.java

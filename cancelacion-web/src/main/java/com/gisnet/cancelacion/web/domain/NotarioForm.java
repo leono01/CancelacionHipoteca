@@ -22,9 +22,7 @@ package com.gisnet.cancelacion.web.domain;
  */
 public class NotarioForm {
     
-    private long id;
     private String nombre;
-    private int codigo;
     private String notariaNumero;
     private boolean convenioInfonavit;
     private String email;
@@ -33,20 +31,11 @@ public class NotarioForm {
     private String numeroCalle;
     private String coloniaNotaria;
     private String codigoPostalNotaria;
-
-    private long usuarioId;
+    private boolean activo;
     private long municipioId;
     private long entidadId;
 
     public NotarioForm() {
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getNombre() {
@@ -55,14 +44,6 @@ public class NotarioForm {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public int getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
     }
 
     public String getNotariaNumero() {
@@ -129,12 +110,12 @@ public class NotarioForm {
         this.codigoPostalNotaria = codigoPostalNotaria;
     }
 
-    public long getUsuarioId() {
-        return usuarioId;
+    public boolean isActivo() {
+        return activo;
     }
 
-    public void setUsuarioId(long usuarioId) {
-        this.usuarioId = usuarioId;
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 
     public long getMunicipioId() {
@@ -153,6 +134,5 @@ public class NotarioForm {
         this.entidadId = entidadId;
     }
 
-    
 }
 

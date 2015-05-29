@@ -37,14 +37,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <span th:replace="layout/smartadmin::fr-resetwidgets"></span>
                 <ol class="breadcrumb">
                     <li>Inicio</li>
-                    <li>En blanco</li>
+                    <li>Buscar</li>
                 </ol>
             </div>
             
             <div id="content">
                 <div class="row">
                     <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-                        <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Inicio</h1>
+                        <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Buscar carta de cancelacion</h1>
                     </div>
                 </div>
                 
@@ -52,43 +52,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <div th:replace="layout/smartadmin::fr-notificaciones"></div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <div class="jarviswidget" id="wid-id-j0" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+                            <div class="jarviswidget" id="wid-id-0" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
                                 <header>
                                     <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
-                                    <h2>Notarios</h2>
+                                    <h2>Buscar carta de cancelacion</h2>
                                 </header>
-                                <div role="content" class="no-padding">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>numero de notaria</th>
-                                                <th>nombre notario</th>
-                                                <th>codigo notario</th>
-                                                <th>convenio infonavit</th>
-                                                <th>correo electronico</th>
-                                                <th>telefono</th>
-                                                <th>calle</th>
-                                                <th>numero</th>
-                                                <th>colonia</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr th:each="row : ${list}" th:object="${row}">
-                                                <td th:text="*{notariaNumero}"></td>
-                                                <td th:text="*{nombre}"></td>
-                                                <td th:text="*{codigo}"></td>
-                                                <td th:text="*{convenio}"></td>
-                                                <td th:text="*{email}"></td>
-                                                <td th:text="*{telefono}"></td>
-                                                <td th:text="*{calleNotaria}"></td>
-                                                <td th:text="*{numeroCalle}"></td>
-                                                <td th:text="*{coloniaNotaria}"></td>
-                                            </tr>
-                                            <tr th:if="${list.isEmpty()}">
-                                                <td colspan="10">Ningun notario registrado</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <div role="content" class="widget-body">
+
+                                    <span>numero de caso</span>
+                                    <span>y???</span>
+                                    <span>numero de credito</span>
+                                    <span>buscar</span>
+
                                 </div><!-- fin jarviswidget content -->
                             </div><!-- fin jarviswidget -->
                         </div><!-- fin col -->

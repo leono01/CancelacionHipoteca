@@ -37,9 +37,13 @@ public class ClienteAutenticacionServiceHandler implements ClienteAutenticacionS
         }
         
         try {
-	        LDAPConnectionJAAS ldapConnectionJAAS = clientews.getLDAPConnectionJAAS();
-	        String loguear = ldapConnectionJAAS.loguear(event.getKey(), (String) event.getValue());
-	        return loguear.equals("SI");
+	        LDAPConnectionJAAS puerto = clientews.getLDAPConnectionJAAS();
+	        String loguear = puerto.loguear(event.getKey(), (String) event.getValue());
+            // Código: 1 Descripción: Password verificado
+            // Código: 2 Descripción: Password incorrecto
+		    // Código: 3 Descripción: No se a podido contactar al servidor ldap
+		    // Código: 4 Descripción: Usuario inexistente
+	        return loguear.contains("1");
         } catch (Exception ex) {
         	System.err.println("WSC Autentica Fallo, " + ex.getMessage());
         	return false;

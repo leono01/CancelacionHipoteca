@@ -1,0 +1,72 @@
+﻿Merge remote-tracking branch 'origin/master'
+
+Conflicts:
+	cancelacion-web/src/main/java/com/gisnet/cancelacion/webservices/RegistraActualizaYConsultaCaso.java
+#
+# It looks like you may be committing a merge.
+# If this is not correct, please remove the file
+#	.git/MERGE_HEAD
+# and try again.
+
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch and 'origin/master' have diverged,
+# and have 1 and 5 different commits each, respectively.
+#   (use "git pull" to merge the remote branch into yours)
+#
+# All conflicts fixed but you are still merging.
+#
+# Changes to be committed:
+#	modified:   .gitignore
+#	modified:   cancelacion-web/pom.xml
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/config/CoreConfig.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/config/WebServicesConfig.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/core/services/CasoService.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/core/services/CasoServiceHandler.java
+#	new file:   cancelacion-web/src/main/java/com/gisnet/cancelacion/core/services/EntidadService.java
+#	new file:   cancelacion-web/src/main/java/com/gisnet/cancelacion/core/services/EntidadServiceHandler.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/events/info/CasoInfo.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/persistance/domain/Caso.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/persistance/services/BitacoraCasoPersistanceServiceHandler.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/persistance/services/BitacoraProyectoPersistanceServiceHandler.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/persistance/services/BitacoraRPPPersistanceServiceHandler.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/persistance/services/CancelacionArchivoPersistanceServiceHandler.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/persistance/services/CartaCancelacionPersistanceServiceHandler.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/persistance/services/EmpleadoPersistanceServiceHandler.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/persistance/services/EntidadPersistanceServiceHandler.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/persistance/services/MunicipioPersistanceServiceHandler.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/persistance/services/NotarioPersistanceServiceHandler.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/persistance/services/ProyectoCancelacionPersistanceServiceHandler.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/persistance/services/ProyectoRPPPersistanceServiceHandler.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/persistance/services/RolPersistanceServiceHandler.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/persistance/services/StatusCasoPersistanceServiceHandler.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/persistance/services/StatusNotarioPersistanceServiceHandler.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/persistance/services/StatusProyectoPersistanceServiceHandler.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/persistance/services/StatusRPPPersistanceServiceHandler.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/persistance/services/UsuarioPersistanceServiceHandler.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/web/controller/AutenticarUsuario.java
+#	new file:   cancelacion-web/src/main/java/com/gisnet/cancelacion/web/controller/CancelacionWebException.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/web/controller/HomeController.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/web/controller/JCobranzaController.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/web/controller/JuridicoController.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/web/controller/NotarioController.java
+#	deleted:    cancelacion-web/src/main/java/com/gisnet/cancelacion/web/domain/CasoCompleto.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/web/domain/NotarioForm.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/webservices/RegistraActualizaYConsultaCaso.java
+#	modified:   cancelacion-web/src/main/java/com/gisnet/cancelacion/wsclient/autenticacion/ClienteAutenticacionServiceHandler.java
+#	renamed:    cancelacion-web/src/main/java/com/gisnet/cancelacion/wsclient/pms/ClienteMicroflujoService.java -> cancelacion-web/src/main/java/com/gisnet/cancelacion/wsclient/microflujo/ClienteMicroflujoService.java
+#	new file:   cancelacion-web/src/main/java/com/gisnet/cancelacion/wsclient/microflujo/ClienteMicroflujoServiceHandler.java
+#	deleted:    cancelacion-web/src/main/java/com/gisnet/cancelacion/wsclient/pms/ClienteMicroflujoServiceHandler.java
+#	modified:   cancelacion-web/src/main/webapp/WEB-INF/spring/security-config.xml
+#	new file:   cancelacion-web/src/main/webapp/WEB-INF/templates/jcobranza/buscarcarta.html
+#	modified:   cancelacion-web/src/main/webapp/WEB-INF/templates/jcobranza/index.html
+#	modified:   cancelacion-web/src/main/webapp/WEB-INF/templates/jcobranza/ver.html
+#	modified:   cancelacion-web/src/main/webapp/WEB-INF/templates/juridico/index.html
+#	modified:   cancelacion-web/src/main/webapp/WEB-INF/templates/juridico/registrar.html
+#	modified:   cancelacion-web/src/main/webapp/WEB-INF/templates/login.html
+#	modified:   cancelacion-web/src/main/webapp/WEB-INF/templates/notario/index.html
+#	new file:   ztfgfisc.1wr.txt
+#
+
