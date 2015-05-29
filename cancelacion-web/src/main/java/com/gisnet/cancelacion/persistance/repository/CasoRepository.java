@@ -32,9 +32,9 @@ public interface CasoRepository extends CrudRepository<Caso, Long> {
     @Query("select c from Caso c where c.notario.id = :notarioId")
     Iterable<Caso> findAllByNotarioId(@Param("notarioId") long notarioId);
 
-    Caso findByNumeroCaso(int caso);
+    Caso findByNumeroCaso(String numeroCaso);
 
-    Caso findByNumeroCredito(int numeroCredito);
+    Caso findByNumeroCredito(String numeroCredito);
     
     @Query("select c from Caso c where c.proyectoCancelacion.id = :proyectoCancelacionId")
     Caso findByProyectoCancelacionId(@Param("proyectoCancelacionId") long proyectoCancelacionId);

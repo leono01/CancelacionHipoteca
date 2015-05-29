@@ -21,20 +21,16 @@ import com.gisnet.cancelacion.core.services.CasoService;
 import com.gisnet.cancelacion.events.FindByRequest;
 import com.gisnet.cancelacion.events.info.CartaCancelacionInfo;
 import com.gisnet.cancelacion.events.info.CasoInfo;
-import com.gisnet.cancelacion.web.domain.BuscarForm;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -55,24 +51,12 @@ public class RegistroPublicoController {
     
     @RequestMapping(value = "/registrop/buscar", method = RequestMethod.POST)
     public String registroPublico(
-            @Valid @ModelAttribute("buscarForm") BuscarForm form,
-            BindingResult result,
-            RedirectAttributes redirect,
-            Model model) {
-        if (result.hasErrors()) {
-            Utils.getFlashMensajes(model, redirect).add("warning::Numero de caso invalido.");
-            return "redirect:/registrop/";
-        }
-        return "redirect:/registrop/caso/" + form.getNumeroCaso();
-    }
-    
-    @ModelAttribute("buscarForm")
-    public BuscarForm buscarForm() {
-        return new BuscarForm();
+            @RequestParam("numeroCaso") String numeroCaso) {
+        return "redirect:/registrop/caso/" + numeroCaso;
     }
     
     @RequestMapping(value = "/registrop/caso/{numeroCaso}", method = RequestMethod.GET)
-    public String verCartaCancelacion(@PathVariable int numeroCaso, Model model) {
+    public String verCartaCancelacion(@PathVariable String numeroCaso, Model model) {
         List<String> mensajes = Utils.getMensajes(model);
         CasoInfo caso = casoService.find(new FindByRequest("numeroCaso", numeroCaso)).getInfo();
         model.addAttribute("caso", caso);

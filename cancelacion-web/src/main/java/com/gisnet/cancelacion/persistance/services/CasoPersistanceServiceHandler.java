@@ -45,17 +45,17 @@ public class CasoPersistanceServiceHandler implements CasoPersistanceService {
                 return new FindResponse<>(findOne != null ? findOne.asInfo() : null);
 
             case "numeroCaso":
-                if (!(event.getValue() instanceof Integer)) {
+                if (!(event.getValue() instanceof String)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                Caso findByNumeroCaso = repository.findByNumeroCaso((int) event.getValue());
+                Caso findByNumeroCaso = repository.findByNumeroCaso((String) event.getValue());
                 return new FindResponse<>(findByNumeroCaso != null ? findByNumeroCaso.asInfo() : null);
 
             case "numeroCredito":
-                if (!(event.getValue() instanceof Integer)) {
+                if (!(event.getValue() instanceof String)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
-                Caso findByNumeroCredito = repository.findByNumeroCredito((int) event.getValue());
+                Caso findByNumeroCredito = repository.findByNumeroCredito((String) event.getValue());
                 return new FindResponse<>(findByNumeroCredito != null ? findByNumeroCredito.asInfo() : null);
                 
             case "proyectoCancelacionId": {
