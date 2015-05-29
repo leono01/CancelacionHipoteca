@@ -24,18 +24,30 @@ import com.gisnet.cancelacion.core.services.CasoService;
 import com.gisnet.cancelacion.events.FindByRequest;
 import com.gisnet.cancelacion.events.FindResponse;
 import com.gisnet.cancelacion.events.info.CasoInfo;
+import com.gisnet.cancelacion.webservices.dto.StatusOperacion;
 
 public class ValidarCredito extends SpringBeanAutowiringSupport{
 	
 	@Autowired
     private CasoService service;
 	
-	public String validaCredito(int numeroDeCaso){
+	public StatusOperacion validaCredito(String numeroDeCredito){
 		
-		FindByRequest fbr = new FindByRequest("numeroCaso",numeroDeCaso);
+		StatusOperacion so = new StatusOperacion();
+		
+		FindByRequest fbr = new FindByRequest("numeroCredito",numeroDeCredito);
         FindResponse<CasoInfo> casoresponse = service.find(fbr);
         
-		return casoresponse.getInfo().getProcedeCredito();
+        if(casoresponse != null){
+        	so.setCodigo(0);;
+        	so.setDescripcion("El número de crédito tiene asociado un caso");
+        }
+        else{
+        	so.setCodigo(1);;
+        	so.setDescripcion("El número de crédito no tiene asociado un caso");
+        }
+        
+		return so;
 	}
 	
 

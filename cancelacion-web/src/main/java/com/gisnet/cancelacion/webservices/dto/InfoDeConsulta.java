@@ -24,8 +24,8 @@ import java.util.Date;
  */
 public class InfoDeConsulta {
     
-    int 	numeroDeCredito;
-    int 	numeroDeCaso;
+    String 	numeroDeCredito;
+    String 	numeroDeCaso;
     Date 	fecha;
     int 	status;
     byte[] 	cartaDeCancelacion;
@@ -52,7 +52,7 @@ public class InfoDeConsulta {
 		this.descripcionConsulta = descripcionConsulta;
 	}
 
-    public int getNumeroDeCredito() {
+    public String getNumeroDeCredito() {
         return numeroDeCredito;
     }
 
@@ -88,15 +88,15 @@ public class InfoDeConsulta {
 		this.entidad = entidad;
 	}
 
-	public void setNumeroDeCredito(int numeroDeCredito) {
+	public void setNumeroDeCredito(String numeroDeCredito) {
         this.numeroDeCredito = numeroDeCredito;
     }
 
-    public int getNumeroDeCaso() {
+    public String getNumeroDeCaso() {
         return numeroDeCaso;
     }
 
-    public void setNumeroDeCaso(int numeroDeCaso) {
+    public void setNumeroDeCaso(String numeroDeCaso) {
         this.numeroDeCaso = numeroDeCaso;
     }
 

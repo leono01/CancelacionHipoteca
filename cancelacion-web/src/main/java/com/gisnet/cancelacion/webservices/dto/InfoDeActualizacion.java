@@ -22,24 +22,24 @@ package com.gisnet.cancelacion.webservices.dto;
  */
 public class InfoDeActualizacion {
 
-    int     numeroDeCredito;
-    int     numeroDeCaso;
-    int     codigo;
-    String  descripcion; 
+    String     	numeroDeCredito;
+    String     	numeroDeCaso;
+    int     	codigo;
+    String  	descripcion; 
     
-    public int getNumeroDeCredito() {
+    public String getNumeroDeCredito() {
         return numeroDeCredito;
     }
 
-    public void setNumeroDeCredito(int numeroDeCredito) {
+    public void setNumeroDeCredito(String numeroDeCredito) {
         this.numeroDeCredito = numeroDeCredito;
     }
 
-    public int getNumeroDeCaso() {
+    public String getNumeroDeCaso() {
         return numeroDeCaso;
     }
 
-    public void setNumeroDeCaso(int numeroDeCaso) {
+    public void setNumeroDeCaso(String numeroDeCaso) {
         this.numeroDeCaso = numeroDeCaso;
     }
 

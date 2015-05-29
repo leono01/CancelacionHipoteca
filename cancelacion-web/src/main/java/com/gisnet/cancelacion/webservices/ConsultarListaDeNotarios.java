@@ -71,13 +71,10 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
     public List<CNotario> consultarListaDeNotarios(int     numeroDeCredito,
                                                    String  entidad
     ) {       
-    
+    	// Operación que regresa una lista del total de notarios
     	List<CNotario> notarios = new ArrayList<CNotario>();
     	
-        //ListRequest lr = new ListRequest();
-        //ListResponse<NotarioInfo> list = service.list(lr);
-        
-        ListRequest lr = new ListRequest("entidad",entidad);
+        ListRequest lr = new ListRequest();
         ListResponse<NotarioInfo> list = service.list(lr);
         
         for(NotarioInfo ni : list.getList()){
@@ -114,12 +111,10 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
 
     public List<CNotario> consultarListaDeNotariosAdai(String entidad) {
         
-List<CNotario> notarios = new ArrayList<CNotario>();
+    	List<CNotario> notarios = new ArrayList<CNotario>();
     	
-        //ListRequest lr = new ListRequest();
-        //ListResponse<NotarioInfo> list = service.list(lr);
-        
-        ListRequest lr = new ListRequest("entidad",entidad);
+        // Operación que regresa una lista de los notarios de la determinada entidad.
+    	ListRequest lr = new ListRequest("entidad",entidad);
         ListResponse<NotarioInfo> list = service.list(lr);
        
         for(NotarioInfo ni : list.getList()){

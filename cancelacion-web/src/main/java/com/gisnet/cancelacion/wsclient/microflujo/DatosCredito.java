@@ -7,7 +7,9 @@ package com.gisnet.cancelacion.wsclient.microflujo;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
@@ -24,8 +26,10 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="direccion" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="estatus" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
  *         &lt;element name="descripcion" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="numCredito" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
+ *         &lt;element name="numCredito" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="entidad" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="nombreEstatus" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="fechaLiquidacion" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -41,7 +45,9 @@ import javax.xml.bind.annotation.XmlType;
     "estatus",
     "descripcion",
     "numCredito",
-    "entidad"
+    "entidad",
+    "nombreEstatus",
+    "fechaLiquidacion"
 })
 public class DatosCredito {
 
@@ -49,8 +55,11 @@ public class DatosCredito {
     protected String direccion;
     protected Integer estatus;
     protected String descripcion;
-    protected Integer numCredito;
+    protected String numCredito;
     protected String entidad;
+    protected String nombreEstatus;
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar fechaLiquidacion;
 
     /**
      * Gets the value of the procede property.
@@ -153,10 +162,10 @@ public class DatosCredito {
      * 
      * @return
      *     possible object is
-     *     {@link Integer }
+     *     {@link String }
      *     
      */
-    public Integer getNumCredito() {
+    public String getNumCredito() {
         return numCredito;
     }
 
@@ -165,10 +174,10 @@ public class DatosCredito {
      * 
      * @param value
      *     allowed object is
-     *     {@link Integer }
+     *     {@link String }
      *     
      */
-    public void setNumCredito(Integer value) {
+    public void setNumCredito(String value) {
         this.numCredito = value;
     }
 
@@ -194,6 +203,54 @@ public class DatosCredito {
      */
     public void setEntidad(String value) {
         this.entidad = value;
+    }
+
+    /**
+     * Gets the value of the nombreEstatus property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getNombreEstatus() {
+        return nombreEstatus;
+    }
+
+    /**
+     * Sets the value of the nombreEstatus property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setNombreEstatus(String value) {
+        this.nombreEstatus = value;
+    }
+
+    /**
+     * Gets the value of the fechaLiquidacion property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public XMLGregorianCalendar getFechaLiquidacion() {
+        return fechaLiquidacion;
+    }
+
+    /**
+     * Sets the value of the fechaLiquidacion property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public void setFechaLiquidacion(XMLGregorianCalendar value) {
+        this.fechaLiquidacion = value;
     }
 
 }

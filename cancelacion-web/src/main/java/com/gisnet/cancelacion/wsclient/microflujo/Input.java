@@ -23,8 +23,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="numeroCredito" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="numeroCaso" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
+ *         &lt;element name="numeroCredito" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="numeroCaso" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="tipoOperacion" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="estatus" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
  *         &lt;element name="descripcion" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
@@ -32,6 +32,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="Carta" type="{http://www.w3.org/2001/XMLSchema}base64Binary" minOccurs="0"/>
  *         &lt;element name="nombreAcreditado" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="fechaEmision" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
+ *         &lt;element name="md5" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -50,12 +51,14 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "entidad",
     "carta",
     "nombreAcreditado",
-    "fechaEmision"
+    "fechaEmision",
+    "md5"
 })
 public class Input {
 
-    protected int numeroCredito;
-    protected Integer numeroCaso;
+    @XmlElement(required = true)
+    protected String numeroCredito;
+    protected String numeroCaso;
     protected int tipoOperacion;
     protected Integer estatus;
     protected String descripcion;
@@ -65,20 +68,29 @@ public class Input {
     protected String nombreAcreditado;
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar fechaEmision;
+    protected String md5;
 
     /**
      * Gets the value of the numeroCredito property.
      * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public int getNumeroCredito() {
+    public String getNumeroCredito() {
         return numeroCredito;
     }
 
     /**
      * Sets the value of the numeroCredito property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
      */
-    public void setNumeroCredito(int value) {
+    public void setNumeroCredito(String value) {
         this.numeroCredito = value;
     }
 
@@ -87,10 +99,10 @@ public class Input {
      * 
      * @return
      *     possible object is
-     *     {@link Integer }
+     *     {@link String }
      *     
      */
-    public Integer getNumeroCaso() {
+    public String getNumeroCaso() {
         return numeroCaso;
     }
 
@@ -99,10 +111,10 @@ public class Input {
      * 
      * @param value
      *     allowed object is
-     *     {@link Integer }
+     *     {@link String }
      *     
      */
-    public void setNumeroCaso(Integer value) {
+    public void setNumeroCaso(String value) {
         this.numeroCaso = value;
     }
 
@@ -262,6 +274,30 @@ public class Input {
      */
     public void setFechaEmision(XMLGregorianCalendar value) {
         this.fechaEmision = value;
+    }
+
+    /**
+     * Gets the value of the md5 property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getMd5() {
+        return md5;
+    }
+
+    /**
+     * Sets the value of the md5 property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setMd5(String value) {
+        this.md5 = value;
     }
 
 }

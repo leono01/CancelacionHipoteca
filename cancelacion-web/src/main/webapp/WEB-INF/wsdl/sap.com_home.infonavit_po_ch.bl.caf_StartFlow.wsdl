@@ -85,6 +85,28 @@
       </xsd:element>
     </xsd:schema>
     <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://www.sap.com/caf/sap.com/home.infonavit_po_ch.bl.caf/modeled">
+      <xsd:complexType name="Input">
+        <xsd:sequence>
+          <xsd:element maxOccurs="1" minOccurs="1" name="numeroCredito" nillable="false" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="numeroCaso" nillable="false" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="1" name="tipoOperacion" nillable="false" type="xsd:int"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="estatus" nillable="false" type="xsd:int"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="descripcion" nillable="false" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="entidad" nillable="false" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="Carta" nillable="false" type="xsd:base64Binary"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="nombreAcreditado" nillable="false" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="fechaEmision" nillable="false" type="xsd:date"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="md5" nillable="false" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Estatus">
+        <xsd:sequence>
+          <xsd:element maxOccurs="1" minOccurs="0" name="estatus" nillable="false" type="xsd:int"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="descripcion" nillable="false" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="numeroCredito" nillable="false" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="numeroCaso" nillable="false" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="DatosNotarios">
         <xsd:sequence>
           <xsd:element maxOccurs="1" minOccurs="0" name="CodigoNotario" nillable="false" type="xsd:int"/>
@@ -96,29 +118,10 @@
           <xsd:element maxOccurs="1" minOccurs="0" name="Telefono" nillable="false" type="xsd:string"/>
         </xsd:sequence>
       </xsd:complexType>
-      <xsd:complexType name="Input">
-        <xsd:sequence>
-          <xsd:element maxOccurs="1" minOccurs="1" name="numeroCredito" nillable="false" type="xsd:int"/>
-          <xsd:element maxOccurs="1" minOccurs="0" name="numeroCaso" nillable="false" type="xsd:int"/>
-          <xsd:element maxOccurs="1" minOccurs="1" name="tipoOperacion" nillable="false" type="xsd:int"/>
-          <xsd:element maxOccurs="1" minOccurs="0" name="estatus" nillable="false" type="xsd:int"/>
-          <xsd:element maxOccurs="1" minOccurs="0" name="descripcion" nillable="false" type="xsd:string"/>
-          <xsd:element maxOccurs="1" minOccurs="0" name="entidad" nillable="false" type="xsd:string"/>
-          <xsd:element maxOccurs="1" minOccurs="0" name="Carta" nillable="false" type="xsd:base64Binary"/>
-          <xsd:element maxOccurs="1" minOccurs="0" name="nombreAcreditado" nillable="false" type="xsd:string"/>
-          <xsd:element maxOccurs="1" minOccurs="0" name="fechaEmision" nillable="false" type="xsd:date"/>
-        </xsd:sequence>
-      </xsd:complexType>
       <xsd:complexType name="Output">
         <xsd:sequence>
           <xsd:element maxOccurs="1" minOccurs="0" name="DatosCredito" nillable="false" type="cafpref0:DatosCredito"/>
           <xsd:element maxOccurs="1" minOccurs="0" name="DatosNotario" nillable="false" type="cafpref0:DatosNotarios"/>
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="Estatus">
-        <xsd:sequence>
-          <xsd:element maxOccurs="1" minOccurs="0" name="estatus" nillable="false" type="xsd:int"/>
-          <xsd:element maxOccurs="1" minOccurs="0" name="descripcion" nillable="false" type="xsd:string"/>
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="DatosCredito">
@@ -127,8 +130,10 @@
           <xsd:element maxOccurs="1" minOccurs="0" name="direccion" nillable="false" type="xsd:string"/>
           <xsd:element maxOccurs="1" minOccurs="0" name="estatus" nillable="false" type="xsd:int"/>
           <xsd:element maxOccurs="1" minOccurs="0" name="descripcion" nillable="false" type="xsd:string"/>
-          <xsd:element maxOccurs="1" minOccurs="0" name="numCredito" nillable="false" type="xsd:int"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="numCredito" nillable="false" type="xsd:string"/>
           <xsd:element maxOccurs="1" minOccurs="0" name="entidad" nillable="false" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="nombreEstatus" nillable="false" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="fechaLiquidacion" nillable="false" type="xsd:date"/>
         </xsd:sequence>
       </xsd:complexType>
     </xsd:schema>

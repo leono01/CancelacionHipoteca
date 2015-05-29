@@ -22,6 +22,8 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence>
  *         &lt;element name="estatus" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
  *         &lt;element name="descripcion" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="numeroCredito" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="numeroCaso" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -33,12 +35,16 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Estatus", namespace = "http://www.sap.com/caf/sap.com/home.infonavit_po_ch.bl.caf/modeled", propOrder = {
     "estatus",
-    "descripcion"
+    "descripcion",
+    "numeroCredito",
+    "numeroCaso"
 })
 public class Estatus {
 
     protected Integer estatus;
     protected String descripcion;
+    protected String numeroCredito;
+    protected String numeroCaso;
 
     /**
      * Gets the value of the estatus property.
@@ -86,6 +92,54 @@ public class Estatus {
      */
     public void setDescripcion(String value) {
         this.descripcion = value;
+    }
+
+    /**
+     * Gets the value of the numeroCredito property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getNumeroCredito() {
+        return numeroCredito;
+    }
+
+    /**
+     * Sets the value of the numeroCredito property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setNumeroCredito(String value) {
+        this.numeroCredito = value;
+    }
+
+    /**
+     * Gets the value of the numeroCaso property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getNumeroCaso() {
+        return numeroCaso;
+    }
+
+    /**
+     * Sets the value of the numeroCaso property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setNumeroCaso(String value) {
+        this.numeroCaso = value;
     }
 
 }

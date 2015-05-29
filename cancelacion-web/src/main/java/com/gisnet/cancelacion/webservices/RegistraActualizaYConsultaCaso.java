@@ -58,9 +58,10 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 	@Autowired
 	private CartaCancelacionService ccService;
 	
-    public StatusOperacion registraCaso(int numeroDeCredito,
-                                        int numeroDeCaso,
-                                        String nombreAcreditado
+    public StatusOperacion registraCaso(String numeroDeCredito,
+                                        String numeroDeCaso,
+                                        String nombreAcreditado,
+                                        String entidad
     ) {
 
         StatusOperacion so = new StatusOperacion();
@@ -81,12 +82,12 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
         
         
         caso.setNombreAcreditado(nombreAcreditado);
-        //caso.setNumeroCaso(numeroDeCaso);
-        //caso.setNumeroCredito(numeroDeCredito);
+        caso.setNumeroCaso(numeroDeCaso);
+        caso.setNumeroCredito(numeroDeCredito);
         caso.setFechaCreacion(fechaDeCreacion);
         caso.setFechaActualizacion(fechaDeCreacion);
         caso.setProcedeCredito("NO");
-        caso.setEntidad("");
+        caso.setEntidad(entidad);
         
         int s = 1;
         
@@ -135,13 +136,14 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
     }
 
 
-    public InfoDeActualizacion actualizaCaso(	int     numeroDeCredito,
-                                            	int     numeroDeCaso,                                            
+    public InfoDeActualizacion actualizaCaso(	String  numeroDeCredito,
+                                            	String  numeroDeCaso,                                            
                                             	Date    fecha,
                                             	int     status,
                                             	byte[]  cartaDeCancelacionPdf,
                                             	Date    fechaEmisionCarta,
-                                            	String  numeroDeFolio   
+                                            	String  numeroDeFolio,
+                                            	String	md5
                                         ) {
 
         InfoDeActualizacion ida = new InfoDeActualizacion();
@@ -227,21 +229,7 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 	        	entradas.setEstatus(scresponse.getInfo().getClave());
 	        	entradas.setDescripcion(scresponse.getInfo().getDescripcion());
 	        }
-        	entradas.setNumeroCredito(numeroDeCredito);
-        	entradas.setNumeroCaso(numeroDeCaso);
-        	entradas.setTipoOperacion(4);
-        	//entradas.setEstatus(status);
-        	//entradas.setDescripcion("");
-        	entradas.setCarta(null);
-        	entradas.setFechaEmision(null);
-        	entradas.setNombreAcreditado("");
-        	entradas.setEntidad(null);
         	
-        	salidas = microService.cambioEstatus(entradas);
-        	//isc = pmsPort.statusCaso(numeroDeCredito, numeroDeCaso, null, status, null, null, null, null, 4);
-	        
-	        System.out.println("Salida del WS PMS -> status : " + salidas.getEstatus());
-	        System.out.println("Salida del WS PMS -> descripción : " + salidas.getDescripcion());
 	        
 	        
 	        ida.setCodigo(0);
@@ -268,6 +256,8 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 			        	entradas.setEstatus(scresponse.getInfo().getClave());
 			        	entradas.setDescripcion(scresponse.getInfo().getDescripcion());
 			        }
+		        	//entradas.setNumeroCredito(numeroDeCredito);
+		        	//entradas.setNumeroCaso(numeroDeCaso);
 		        	entradas.setNumeroCredito(numeroDeCredito);
 		        	entradas.setNumeroCaso(numeroDeCaso);
 		        	entradas.setTipoOperacion(4);
@@ -325,8 +315,8 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
     
     
     
-    public InfoDeConsulta consultaCaso(	int numeroDeCredito,
-                                       	int numeroDeCaso
+    public InfoDeConsulta consultaCaso(	String	numeroDeCredito,
+                                       	String 	numeroDeCaso
     ) {
         InfoDeConsulta idc = new InfoDeConsulta();
 
@@ -450,7 +440,7 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
     public StatusCarta registrarCarta(	int 	numeroDeCaso,
             							String 	codigoCarta,
             							byte[] 	base64,
-            							//String 	md5,
+            							String 	md5,
             							String 	folio,
             							String 	entidad,
             							Date 	fechaEmision,
