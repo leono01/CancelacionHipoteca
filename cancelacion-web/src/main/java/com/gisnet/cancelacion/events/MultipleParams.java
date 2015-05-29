@@ -14,23 +14,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.gisnet.cancelacion.persistance.repository;
+package com.gisnet.cancelacion.events;
 
-import com.gisnet.cancelacion.persistance.domain.Municipio;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
  * @author marco-g8
  */
-public interface MunicipioRepository extends CrudRepository<Municipio, Long> {
+public class MultipleParams {
+    
+    private final Map<String, Object> params;
 
-    @Query("select m from Municipio m where m.entidad.id = :id")
-    Iterable<Municipio> findAllByEntidadId(@Param("id") long id);
-
-    @Query("select m from Municipio m where m.entidad.clave = :clave")
-    Iterable<Municipio> findAllByEntidadClave(@Param("clave") String clave);
-
+    public MultipleParams() {
+        this.params = new HashMap<>();
+    }
+    
+    public void add(String key, Object value) {
+        this.params.put(key, value);
+    }
+    
+    public Object get(String key) {
+        return this.params.get(key);
+    }
+    
+    public boolean containsKey(String key) {
+        return this.params.containsKey(key);
+    }
+    
 }

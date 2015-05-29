@@ -22,6 +22,7 @@ package com.gisnet.cancelacion.web.domain;
  */
 public class NotarioForm {
     
+    private long id;
     private String nombre;
     private String notariaNumero;
     private boolean convenioInfonavit;
@@ -36,6 +37,14 @@ public class NotarioForm {
     private long entidadId;
 
     public NotarioForm() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getNombre() {

@@ -37,6 +37,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <span th:replace="layout/smartadmin::fr-resetwidgets"></span>
                 <ol class="breadcrumb">
                     <li>Inicio</li>
+                    <li>Buscar Notario</li>
                 </ol>
             </div>
             
@@ -50,8 +51,39 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <section id="widget-grid" class="">
                     <div th:replace="layout/smartadmin::fr-notificaciones"></div>
                     <div class="row">
+                        <div class="col-md-6">
+                            <div class="well">
+                                <form class="form-inline" action="#" th:action="@{/juridico/buscar}" method="post">
+                                    <div class="input-group" style="width: 30%;">
+                                        <input class="form-control" type="text" placeholder="Buscar numero de notaria y estado" name="nombre"/>
+                                    </div>
+                                    <div class="input-group" style="width: 50%;">
+                                        <select class="form-control" name="entidad">
+                                            <option th:each="entidad:${entidades}" th:value="${entidad.id}" th:text="${entidad.nombre}"></option>
+                                        </select>
+                                    </div>
+                                    <button class="btn btn-default btn-primary" style="width: 75px;"><i class="fa fa-search"></i>Buscar</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="well">
+                                <form action="#" th:action="@{/juridico/buscar}" method="post">
+                                    <div class="input-group">
+                                        <input class="form-control" type="text" placeholder="Buscar nombre notario" name="nombre"/>
+                                        <div class="input-group-btn">
+                                            <input type="hidden" name="entidad" value="-1"/>
+                                            <button class="btn btn-default btn-primary"><i class="fa fa-search"></i>Buscar</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
                         <div class="col-sm-12">
-                            <div class="jarviswidget" id="wid-id-j0" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+                            <div th:if="${list}!=null" class="jarviswidget" id="wid-id-j2" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
                                 <header>
                                     <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
                                     <h2>Notarios</h2>
@@ -101,3 +133,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <th:block th:replace="layout/smartadmin::fr-scripts"></th:block>
     </body>
 </html>
+

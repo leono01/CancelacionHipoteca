@@ -102,6 +102,12 @@
                             <span class="menu-item-parent">Registrar Notario</span>
                         </a>
                     </li>
+                    <li th:if="${#httpServletRequest.isUserInRole('ROLE_JURIDICO')}">
+                        <a th:href="@{/juridico/buscar}">
+                            <i class="fa fa-lg fa-fw fa-home"></i>
+                            <span class="menu-item-parent">Buscar Notario</span>
+                        </a>
+                    </li>
                 </ul>
             </nav>
             <span class="minifyme" data-action="minifyMenu"> 

@@ -14,23 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.gisnet.cancelacion.persistance.repository;
+package com.gisnet.cancelacion.core.services;
 
-import com.gisnet.cancelacion.persistance.domain.Municipio;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
+import com.gisnet.cancelacion.events.FindByRequest;
+import com.gisnet.cancelacion.events.FindResponse;
+import com.gisnet.cancelacion.events.ListRequest;
+import com.gisnet.cancelacion.events.ListResponse;
+import com.gisnet.cancelacion.events.info.MunicipioInfo;
 
 /**
  *
  * @author marco-g8
  */
-public interface MunicipioRepository extends CrudRepository<Municipio, Long> {
-
-    @Query("select m from Municipio m where m.entidad.id = :id")
-    Iterable<Municipio> findAllByEntidadId(@Param("id") long id);
-
-    @Query("select m from Municipio m where m.entidad.clave = :clave")
-    Iterable<Municipio> findAllByEntidadClave(@Param("clave") String clave);
-
+public interface MunicipioService {
+    
+    public FindResponse<MunicipioInfo> find(FindByRequest event);
+    
+    public ListResponse<MunicipioInfo> list(ListRequest event);
+    
 }

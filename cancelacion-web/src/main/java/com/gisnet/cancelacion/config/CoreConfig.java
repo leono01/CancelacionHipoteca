@@ -50,6 +50,10 @@ class CoreConfig {
     @Bean EntidadService entidadService() {
         return new EntidadServiceHandler();
     }
+    
+    @Bean MunicipioService municipioService() {
+        return new MunicipioServiceHandler();
+    }
 
     @Bean
     NotarioService notarioService() {
