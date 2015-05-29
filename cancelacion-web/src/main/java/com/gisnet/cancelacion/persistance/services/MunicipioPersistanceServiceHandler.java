@@ -49,7 +49,23 @@ public class MunicipioPersistanceServiceHandler implements MunicipioPersistanceS
 
     @Override
     public ListResponse<MunicipioInfo> list(ListRequest event) {
-        return Query.list(repository.findAll());
+        switch (event.getKey()) {
+            case "ALL":
+                return Query.list(repository.findAll());
+
+            case "entidadId":
+                if (!(event.getValue() instanceof Long)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return Query.list(repository.findAllByEntidadId((long) event.getValue()));
+
+            case "entidadClave":
+                if (!(event.getValue() instanceof String)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return Query.list(repository.findAllByEntidadClave((String) event.getValue()));
+        }
+        throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
 
     @Override

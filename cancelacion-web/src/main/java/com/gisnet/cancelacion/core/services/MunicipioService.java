@@ -14,25 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.gisnet.cancelacion.web.domain;
+package com.gisnet.cancelacion.core.services;
+
+import com.gisnet.cancelacion.events.FindByRequest;
+import com.gisnet.cancelacion.events.FindResponse;
+import com.gisnet.cancelacion.events.ListRequest;
+import com.gisnet.cancelacion.events.ListResponse;
+import com.gisnet.cancelacion.events.info.MunicipioInfo;
 
 /**
  *
  * @author marco-g8
  */
-public class BuscarForm {
-
-    private int numeroCaso;
-
-    public BuscarForm() {
-    }
-
-    public int getNumeroCaso() {
-        return numeroCaso;
-    }
-
-    public void setNumeroCaso(int numeroCaso) {
-        this.numeroCaso = numeroCaso;
-    }
-
+public interface MunicipioService {
+    
+    public FindResponse<MunicipioInfo> find(FindByRequest event);
+    
+    public ListResponse<MunicipioInfo> list(ListRequest event);
+    
 }

@@ -75,6 +75,31 @@ public class NotarioPersistanceServiceHandler implements NotarioPersistanceServi
                 }
                 Notario usuarioId = repository.findByUsuarioId((long) event.getValue());
                 return new FindResponse<>(usuarioId != null ? usuarioId.asInfo() : null);
+                
+            case "notariaNumeroYentidadId":
+                if (!(event.getValue() instanceof MultipleParams)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                MultipleParams params = (MultipleParams) event.getValue();
+                if (params.containsKey("notariaNumero")) {
+                    if (!(params.get("notariaNumero") instanceof String)) {
+                        throw new IllegalArgumentException("Valor de llave incorrecto");
+                    }
+                }
+                else {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                if (params.containsKey("entidadId")) {
+                    if (!(params.get("entidadId") instanceof Long)) {
+                        throw new IllegalArgumentException("Valor de llave incorrecto");
+                    }
+                }
+                else {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                Notario notariaNoEntidad = repository.findByUsuarioId((String) params.get("notariaNumero"), (long) params.get("entidadId"));
+                return new FindResponse<>(notariaNoEntidad != null ? notariaNoEntidad.asInfo() : null);
+                
         }
         throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }
@@ -90,6 +115,12 @@ public class NotarioPersistanceServiceHandler implements NotarioPersistanceServi
                     throw new IllegalArgumentException("Valor de llave incorrecto");
                 }
                 return Query.list(repository.findAllByEntidad2((String) event.getValue()));
+                
+            case "likeNombre":
+                if (!(event.getValue() instanceof String)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                return Query.list(repository.findLikeNombre((String) event.getValue()));
         }
         throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }

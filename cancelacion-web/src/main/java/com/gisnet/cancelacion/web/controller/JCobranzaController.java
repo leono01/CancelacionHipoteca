@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -49,6 +50,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 @Controller
 public class JCobranzaController {
+    
+    private static final Logger logger = Logger.getLogger(JCobranzaController.class);
 
     @Autowired
     private CancelacionArchivoService cancelacionArchivoService;
@@ -102,6 +105,7 @@ public class JCobranzaController {
         }
         model.addAttribute("casosrevizar", casosRevizar);
         model.addAttribute("casosespera", casosEspera);
+        logger.error("casosrevizar " + casosRevizar);
         return "/jcobranza/index";
     }
 

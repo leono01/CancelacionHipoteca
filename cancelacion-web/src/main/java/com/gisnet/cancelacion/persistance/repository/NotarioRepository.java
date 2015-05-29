@@ -35,4 +35,10 @@ public interface NotarioRepository extends CrudRepository<Notario, Long> {
     @Query("select n from Notario n where n.usuario.id = :usuarioid")
     Notario findByUsuarioId(@Param("usuarioid") long usuarioid);
 
+    @Query("select n from Notario n where n.notariaNumero = :notariaNumero and n.entidad.id = :entidadId")
+    Notario findByUsuarioId(@Param("notariaNumero") String notariaNumero, @Param("entidadId") long entidadId);
+    
+    @Query("select n from Notario n where n.nombre like %:nombre%")
+    Iterable<Notario> findLikeNombre(@Param("nombre") String nombre);
+
 }

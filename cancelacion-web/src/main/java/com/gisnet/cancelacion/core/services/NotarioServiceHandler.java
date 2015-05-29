@@ -45,7 +45,19 @@ public class NotarioServiceHandler implements NotarioService {
 
     @Override
     public SaveResponse<NotarioInfo> save(SaveRequest<NotarioInfo> event) {
-        return service.save(event);
+        // revisa numero de notarioa unico por entidad
+        NotarioInfo info = event.getInfo();
+        
+        MultipleParams params = new MultipleParams();
+        params.add("notariaNumero", info.getNotariaNumero());
+        params.add("entidadId", info.getEntidadId());
+        FindResponse<NotarioInfo> find = service.find(new FindByRequest("notariaNumeroYentidadId", params));
+        if (find.getInfo() == null) {
+            return service.save(event);
+        }
+        else {
+            throw new IllegalArgumentException("Notaria repetida");
+        }
     }
 
     @Override

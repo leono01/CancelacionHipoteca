@@ -1,4 +1,4 @@
-/*
+/* 
  * Copyright (C) 2015 GISNET
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,23 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.gisnet.cancelacion.persistance.repository;
 
-import com.gisnet.cancelacion.persistance.domain.Municipio;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
+$(document).ready(function () {
+    pageSetUp();
 
-/**
- *
- * @author marco-g8
- */
-public interface MunicipioRepository extends CrudRepository<Municipio, Long> {
+    /*
+     * ALL PAGE RELATED SCRIPTS CAN GO BELOW HERE
+     */
+     $('#entidadId').change(function() {
+        $.getJSON(
+            "municipios",
+            {clave: $('#entidadId').val()},
+            function (data) {
+                var html='';
+                var len=data.length;
+                for(var i=0;i<len;i++) {
+                    html+='<option value="'+data[i].id+'">'+data[i].nombre+'</option>';
+                }
+                $('#municipioId').html(html);
+            }
+        );
+     });
 
-    @Query("select m from Municipio m where m.entidad.id = :id")
-    Iterable<Municipio> findAllByEntidadId(@Param("id") long id);
-
-    @Query("select m from Municipio m where m.entidad.clave = :clave")
-    Iterable<Municipio> findAllByEntidadClave(@Param("clave") String clave);
-
-}
+});
