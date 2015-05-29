@@ -2,9 +2,9 @@
 
   <xs:element name="consultarListaDeNotarios" type="tns:consultarListaDeNotarios"/>
 
-  <xs:element name="consultarListaDeNotariosAdai" type="tns:consultarListaDeNotariosAdai"/>
+  <xs:element name="consultarListaDeNotariosPorEntidad" type="tns:consultarListaDeNotariosPorEntidad"/>
 
-  <xs:element name="consultarListaDeNotariosAdaiResponse" type="tns:consultarListaDeNotariosAdaiResponse"/>
+  <xs:element name="consultarListaDeNotariosPorEntidadResponse" type="tns:consultarListaDeNotariosPorEntidadResponse"/>
 
   <xs:element name="consultarListaDeNotariosResponse" type="tns:consultarListaDeNotariosResponse"/>
 
@@ -12,23 +12,13 @@
 
   <xs:element name="entidadResponse" type="tns:entidadResponse"/>
 
-  <xs:complexType name="entidad">
+  <xs:complexType name="consultarListaDeNotariosPorEntidad">
     <xs:sequence>
-      <xs:element name="numeroDeCredito" type="xs:int"/>
+      <xs:element minOccurs="0" name="entidad" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="entidadResponse">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="return" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="consultarListaDeNotarios">
-    <xs:sequence/>
-  </xs:complexType>
-
-  <xs:complexType name="consultarListaDeNotariosResponse">
+  <xs:complexType name="consultarListaDeNotariosPorEntidadResponse">
     <xs:sequence>
       <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:cNotario"/>
     </xs:sequence>
@@ -47,13 +37,23 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="consultarListaDeNotariosAdai">
+  <xs:complexType name="entidad">
     <xs:sequence>
-      <xs:element minOccurs="0" name="entidad" type="xs:string"/>
+      <xs:element name="numeroDeCredito" type="xs:int"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="consultarListaDeNotariosAdaiResponse">
+  <xs:complexType name="entidadResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="consultarListaDeNotarios">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="consultarListaDeNotariosResponse">
     <xs:sequence>
       <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:cNotario"/>
     </xs:sequence>

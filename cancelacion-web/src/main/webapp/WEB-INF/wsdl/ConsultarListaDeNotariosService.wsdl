@@ -16,11 +16,11 @@
   <message name="entidadResponse">
     <part element="tns:entidadResponse" name="parameters"/>
   </message>
-  <message name="consultarListaDeNotariosAdai">
-    <part element="tns:consultarListaDeNotariosAdai" name="parameters"/>
+  <message name="consultarListaDeNotariosPorEntidad">
+    <part element="tns:consultarListaDeNotariosPorEntidad" name="parameters"/>
   </message>
-  <message name="consultarListaDeNotariosAdaiResponse">
-    <part element="tns:consultarListaDeNotariosAdaiResponse" name="parameters"/>
+  <message name="consultarListaDeNotariosPorEntidadResponse">
+    <part element="tns:consultarListaDeNotariosPorEntidadResponse" name="parameters"/>
   </message>
   <portType name="ConsultarListaDeNotariosDelegate">
     <operation name="consultarListaDeNotarios">
@@ -31,9 +31,9 @@
       <input message="tns:entidad" wsam:Action="http://webservices.cancelacion.gisnet.com/ConsultarListaDeNotariosDelegate/entidadRequest"/>
       <output message="tns:entidadResponse" wsam:Action="http://webservices.cancelacion.gisnet.com/ConsultarListaDeNotariosDelegate/entidadResponse"/>
     </operation>
-    <operation name="consultarListaDeNotariosAdai">
-      <input message="tns:consultarListaDeNotariosAdai" wsam:Action="http://webservices.cancelacion.gisnet.com/ConsultarListaDeNotariosDelegate/consultarListaDeNotariosAdaiRequest"/>
-      <output message="tns:consultarListaDeNotariosAdaiResponse" wsam:Action="http://webservices.cancelacion.gisnet.com/ConsultarListaDeNotariosDelegate/consultarListaDeNotariosAdaiResponse"/>
+    <operation name="consultarListaDeNotariosPorEntidad">
+      <input message="tns:consultarListaDeNotariosPorEntidad" wsam:Action="http://webservices.cancelacion.gisnet.com/ConsultarListaDeNotariosDelegate/consultarListaDeNotariosPorEntidadRequest"/>
+      <output message="tns:consultarListaDeNotariosPorEntidadResponse" wsam:Action="http://webservices.cancelacion.gisnet.com/ConsultarListaDeNotariosDelegate/consultarListaDeNotariosPorEntidadResponse"/>
     </operation>
   </portType>
   <binding name="ConsultarListaDeNotariosPortBinding" type="tns:ConsultarListaDeNotariosDelegate">
@@ -56,7 +56,7 @@
         <soap:body use="literal"/>
       </output>
     </operation>
-    <operation name="consultarListaDeNotariosAdai">
+    <operation name="consultarListaDeNotariosPorEntidad">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>

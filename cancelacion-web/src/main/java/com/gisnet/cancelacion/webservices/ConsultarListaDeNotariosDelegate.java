@@ -46,8 +46,8 @@ public class ConsultarListaDeNotariosDelegate{
         return _consultarListaDeNotarios.entidad(numeroDeCredito);
     }
 
-    public List<CNotario> consultarListaDeNotariosAdai (@WebParam(name="entidad") String entidad) {
-        return _consultarListaDeNotarios.consultarListaDeNotariosAdai(entidad);
+    public List<CNotario> consultarListaDeNotariosPorEntidad (@WebParam(name="entidad") String entidad) {
+        return _consultarListaDeNotarios.consultarListaDeNotariosPorEntidad(entidad);
     }
 
     public ConsultarListaDeNotariosDelegate() {

@@ -107,7 +107,7 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
         return entidad;
     }
 
-    public List<CNotario> consultarListaDeNotariosAdai(String entidad) {
+    public List<CNotario> consultarListaDeNotariosPorEntidad(String entidad) {
         
     	List<CNotario> notarios = new ArrayList<CNotario>();
     	
