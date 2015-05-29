@@ -39,11 +39,11 @@ public class ValidarCredito extends SpringBeanAutowiringSupport{
         FindResponse<CasoInfo> casoresponse = service.find(fbr);
         
         if(casoresponse != null){
-        	so.setCodigo(0);;
+        	so.setCodigo(0);
         	so.setDescripcion("El número de crédito tiene asociado un caso");
         }
         else{
-        	so.setCodigo(1);;
+        	so.setCodigo(1);
         	so.setDescripcion("El número de crédito no tiene asociado un caso");
         }
         
