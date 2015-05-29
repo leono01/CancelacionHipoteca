@@ -25,10 +25,7 @@
   </xs:complexType>
 
   <xs:complexType name="consultarListaDeNotarios">
-    <xs:sequence>
-      <xs:element name="numeroDeCredito" type="xs:int"/>
-      <xs:element minOccurs="0" name="entidad" type="xs:string"/>
-    </xs:sequence>
+    <xs:sequence/>
   </xs:complexType>
 
   <xs:complexType name="consultarListaDeNotariosResponse">

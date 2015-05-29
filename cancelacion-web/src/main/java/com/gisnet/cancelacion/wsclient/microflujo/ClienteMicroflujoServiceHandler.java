@@ -36,8 +36,8 @@ public class ClienteMicroflujoServiceHandler implements ClienteMicroflujoService
         CasoInfo caso = event.getInfo();
         
         Input input = new Input();
-        //input.setNumeroCredito(caso.getNumeroCredito());
-        //input.setNumeroCaso(caso.getNumeroCaso());
+        input.setNumeroCredito(caso.getNumeroCredito());
+        input.setNumeroCaso(caso.getNumeroCaso());
         input.setEntidad(caso.getEntidad());
         input.setEstatus(caso.getStatusCaso().getClave());
         input.setNombreAcreditado(caso.getNombreAcreditado());
@@ -45,8 +45,8 @@ public class ClienteMicroflujoServiceHandler implements ClienteMicroflujoService
         
         try {
             StartFlowSEI puerto = clientews.getStartFlowBindingPort();
-            DatosCredito credito = puerto.validarCredito(input);
-            caso.setProcedeCredito(credito.isProcede() ? "PROCEDE" : "NO PROCEDE");
+            Output credito = puerto.operacionPrincipal(input);
+            caso.setProcedeCredito(credito.getDatosCredito().isProcede() ? "PROCEDE" : "NO PROCEDE");
         } catch (Exception ex) {
             System.err.println("Excepcion ClienteMicroflujoService validarCredito, " + ex.getMessage());
             caso.setProcedeCredito("DESCONOCIDO");
@@ -59,8 +59,8 @@ public class ClienteMicroflujoServiceHandler implements ClienteMicroflujoService
         CasoInfo caso = event.getInfo();
         
         Input input = new Input();
-        //input.setNumeroCredito(caso.getNumeroCredito());
-        //input.setNumeroCaso(caso.getNumeroCaso());
+        input.setNumeroCredito(caso.getNumeroCredito());
+        input.setNumeroCaso(caso.getNumeroCaso());
         input.setEntidad(caso.getEntidad());
         input.setEstatus(caso.getStatusCaso().getClave());
         input.setNombreAcreditado(caso.getNombreAcreditado());
@@ -68,7 +68,7 @@ public class ClienteMicroflujoServiceHandler implements ClienteMicroflujoService
         
         try {
             StartFlowSEI puerto = clientews.getStartFlowBindingPort();
-            puerto.cambioEstatus(input);
+            puerto.operacionPrincipal(input);
         } catch (Exception ex) {
             System.err.println("Excepcion ClienteMicroflujoService actualizarCaso, " + ex.getMessage());
         }

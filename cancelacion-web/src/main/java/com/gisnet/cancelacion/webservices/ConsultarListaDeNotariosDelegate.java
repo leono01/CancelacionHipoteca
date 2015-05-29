@@ -38,8 +38,8 @@ public class ConsultarListaDeNotariosDelegate{
 
     com.gisnet.cancelacion.webservices.ConsultarListaDeNotarios _consultarListaDeNotarios = null;
 
-    public List<CNotario> consultarListaDeNotarios (@WebParam(name="numeroDeCredito") int numeroDeCredito, @WebParam(name="entidad") String entidad) {
-        return _consultarListaDeNotarios.consultarListaDeNotarios(numeroDeCredito,entidad);
+    public List<CNotario> consultarListaDeNotarios () {
+        return _consultarListaDeNotarios.consultarListaDeNotarios();
     }
 
     public String entidad (@WebParam(name="numeroDeCredito") int numeroDeCredito) {

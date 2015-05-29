@@ -114,9 +114,10 @@
 
   <xs:complexType name="registraCaso">
     <xs:sequence>
-      <xs:element name="numeroDeCredito" type="xs:int"/>
-      <xs:element name="numeroDeCaso" type="xs:int"/>
+      <xs:element minOccurs="0" name="numeroDeCredito" type="xs:string"/>
+      <xs:element minOccurs="0" name="numeroDeCaso" type="xs:string"/>
       <xs:element minOccurs="0" name="nombreAcreditado" type="xs:string"/>
+      <xs:element minOccurs="0" name="entidad" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -138,6 +139,7 @@
       <xs:element name="numeroDeCaso" type="xs:int"/>
       <xs:element minOccurs="0" name="codigoCarta" type="xs:string"/>
       <xs:element minOccurs="0" name="base64" nillable="true" type="xs:base64Binary"/>
+      <xs:element minOccurs="0" name="md5" type="xs:string"/>
       <xs:element minOccurs="0" name="folio" type="xs:string"/>
       <xs:element minOccurs="0" name="entidad" type="xs:string"/>
       <xs:element minOccurs="0" name="fechaEmision" type="xs:dateTime"/>
@@ -159,13 +161,14 @@
 
   <xs:complexType name="actualizaCaso">
     <xs:sequence>
-      <xs:element name="numeroDeCredito" type="xs:int"/>
-      <xs:element name="numeroDeCaso" type="xs:int"/>
+      <xs:element minOccurs="0" name="numeroDeCredito" type="xs:string"/>
+      <xs:element minOccurs="0" name="numeroDeCaso" type="xs:string"/>
       <xs:element minOccurs="0" name="fecha" type="xs:dateTime"/>
       <xs:element name="status" type="xs:int"/>
       <xs:element minOccurs="0" name="cartaDeCancelacionPdf" nillable="true" type="xs:base64Binary"/>
       <xs:element minOccurs="0" name="fechaEmisionCarta" type="xs:dateTime"/>
       <xs:element minOccurs="0" name="numeroDeFolio" type="xs:string"/>
+      <xs:element minOccurs="0" name="md5" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -179,15 +182,15 @@
     <xs:sequence>
       <xs:element name="codigo" type="xs:int"/>
       <xs:element minOccurs="0" name="descripcion" type="xs:string"/>
-      <xs:element name="numeroDeCaso" type="xs:int"/>
-      <xs:element name="numeroDeCredito" type="xs:int"/>
+      <xs:element minOccurs="0" name="numeroDeCaso" type="xs:string"/>
+      <xs:element minOccurs="0" name="numeroDeCredito" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="consultaCaso">
     <xs:sequence>
-      <xs:element name="numeroDeCredito" type="xs:int"/>
-      <xs:element name="numeroDeCaso" type="xs:int"/>
+      <xs:element minOccurs="0" name="numeroDeCredito" type="xs:string"/>
+      <xs:element minOccurs="0" name="numeroDeCaso" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -208,8 +211,8 @@
       <xs:element minOccurs="0" name="fechaEmisionCarta" type="xs:dateTime"/>
       <xs:element name="infoConsulta" type="xs:int"/>
       <xs:element minOccurs="0" name="nombreAcreditado" type="xs:string"/>
-      <xs:element name="numeroDeCaso" type="xs:int"/>
-      <xs:element name="numeroDeCredito" type="xs:int"/>
+      <xs:element minOccurs="0" name="numeroDeCaso" type="xs:string"/>
+      <xs:element minOccurs="0" name="numeroDeCredito" type="xs:string"/>
       <xs:element minOccurs="0" name="numeroDeFolio" type="xs:string"/>
       <xs:element name="status" type="xs:int"/>
     </xs:sequence>

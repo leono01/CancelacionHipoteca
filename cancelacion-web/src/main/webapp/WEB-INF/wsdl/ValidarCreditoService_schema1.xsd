@@ -6,13 +6,20 @@
 
   <xs:complexType name="validaCredito">
     <xs:sequence>
-      <xs:element name="numeroDeCaso" type="xs:int"/>
+      <xs:element minOccurs="0" name="numeroDeCredito" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="validaCreditoResponse">
     <xs:sequence>
-      <xs:element minOccurs="0" name="return" type="xs:string"/>
+      <xs:element minOccurs="0" name="return" type="tns:statusOperacion"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="statusOperacion">
+    <xs:sequence>
+      <xs:element name="codigo" type="xs:int"/>
+      <xs:element minOccurs="0" name="descripcion" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 </xs:schema>

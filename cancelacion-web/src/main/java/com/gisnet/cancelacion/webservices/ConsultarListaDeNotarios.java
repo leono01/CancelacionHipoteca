@@ -68,9 +68,7 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
      * @param entidad
      * @return Una lista en donde se encuentran los datos del notario consultado
      */
-    public List<CNotario> consultarListaDeNotarios(int     numeroDeCredito,
-                                                   String  entidad
-    ) {       
+    public List<CNotario> consultarListaDeNotarios() {       
     	// Operación que regresa una lista del total de notarios
     	List<CNotario> notarios = new ArrayList<CNotario>();
     	
