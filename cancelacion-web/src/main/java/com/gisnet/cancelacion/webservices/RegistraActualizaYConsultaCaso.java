@@ -23,25 +23,21 @@ import com.gisnet.cancelacion.events.FindByRequest;
 import com.gisnet.cancelacion.events.FindResponse;
 import com.gisnet.cancelacion.events.SaveRequest;
 import com.gisnet.cancelacion.events.SaveResponse;
+import com.gisnet.cancelacion.events.UpdateRequest;
 import com.gisnet.cancelacion.events.info.CasoInfo;
 import com.gisnet.cancelacion.events.info.CartaCancelacionInfo;
 import com.gisnet.cancelacion.events.info.StatusCasoInfo;
-import com.gisnet.cancelacion.webservices.dto.CCarta;
-import com.gisnet.cancelacion.webservices.dto.CCaso;
 import com.gisnet.cancelacion.webservices.dto.InfoDeActualizacion;
 import com.gisnet.cancelacion.webservices.dto.InfoDeConsulta;
 import com.gisnet.cancelacion.webservices.dto.StatusCarta;
 import com.gisnet.cancelacion.webservices.dto.StatusCaso;
 import com.gisnet.cancelacion.webservices.dto.StatusOperacion;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
+
+
 import java.util.Date;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -72,18 +68,31 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 
         Date fechaDeCreacion = new Date();
 
-        CasoInfo caso = new CasoInfo();
-
+        CasoInfo caso = new CasoInfo();        
+        
+        try{
+        	
+        }catch(Exception e){
+		
+        	so.setCodigo(1);
+        	so.setDescripcion("No se hizo registro del caso");
+        	System.out.println(e);
+        }
+        
+        
         caso.setNombreAcreditado(nombreAcreditado);
         caso.setNumeroCaso(numeroDeCaso);
         caso.setNumeroCredito(numeroDeCredito);
         caso.setFechaCreacion(fechaDeCreacion);
+        caso.setFechaActualizacion(fechaDeCreacion);
+        caso.setProcedeCredito("NO");
+        caso.setEntidad("");
         
         int s = 1;
         
         FindByRequest clave = new FindByRequest("clave",s);
         
-        System.out.println("Clave " + clave);
+        //System.out.println("Clave " + clave);
         
         
         if(clave != null){
@@ -97,6 +106,8 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
         
         try{
         	
+        	
+        	
         	SaveRequest<CasoInfo> saveRequest = new SaveRequest<>();
         	saveRequest.setInfo(caso);
         	SaveResponse<CasoInfo> save = service.save(saveRequest);
@@ -105,10 +116,17 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
         	so.setDescripcion("Caso registrado con éxito");
         
     	}catch(Exception e){
-    			
-    		so.setCodigo(1);
-    		so.setDescripcion("No se hizo registro del caso");
-    		System.out.println(e);
+    		
+    		Pattern p = Pattern.compile("\\*com.ibm.websphere.ce.cm.StaleConnectionException: No se pudo realizar la conexión TCP/IP al host\\*");
+    		Matcher m = p.matcher(e.toString());
+    		
+    		if(m.matches()){
+    			so.setCodigo(2);
+        		so.setDescripcion("No hay conexión con la base de datos.");
+    		}else{
+    			so.setCodigo(1);
+        		so.setDescripcion("No se hizo registro del caso");
+    		}
     	}
         
         
@@ -127,10 +145,18 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
                                         ) {
 
         InfoDeActualizacion ida = new InfoDeActualizacion();
-        com.gisnet.cancelacion.wsclient.pms.Pms_Service pmsService = new com.gisnet.cancelacion.wsclient.pms.Pms_Service();
+        
+        /**com.gisnet.cancelacion.wsclient.pms.Pms_Service pmsService = new com.gisnet.cancelacion.wsclient.pms.Pms_Service();
         com.gisnet.cancelacion.wsclient.pms.Pms pmsPort = pmsService.getPmsPort();
         com.gisnet.cancelacion.wsclient.pms.InfoStatusCaso isc = new com.gisnet.cancelacion.wsclient.pms.InfoStatusCaso(); 
-        //return port.suma(sumador1, sumador2);
+        return port.suma(sumador1, sumador2);
+         * **/
+        
+        com.gisnet.cancelacion.wsclient.microflujo.StartFlowBindingPortProxy microService = new com.gisnet.cancelacion.wsclient.microflujo.StartFlowBindingPortProxy();
+        com.gisnet.cancelacion.wsclient.microflujo.Input entradas = new com.gisnet.cancelacion.wsclient.microflujo.Input();
+        com.gisnet.cancelacion.wsclient.microflujo.Estatus salidas = new com.gisnet.cancelacion.wsclient.microflujo.Estatus();
+        
+        
         
         try{
         	
@@ -146,7 +172,7 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 	        	
 	        	FindResponse<StatusCasoInfo> scresponse = statusService.find(clave);
 	        	casoresponse.getInfo().setStatusCaso(scresponse.getInfo());
-	        	
+	        	//System.out.println(".-.-.-.-.-.-.-.-.-.-.-.-.-.-..-.-.-.-.. CLAVE:" + casoresponse.getInfo().getStatusCaso());
 	        	
 	        
 	        }
@@ -156,7 +182,7 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 	        
 	        long idCarta = casoresponse.getInfo().getCartaCancelacionId();
 	        
-	        System.out.println(".-.-.-.-.-.-.-.-.-.-.-.-.-.-..-.-.-.-.. " + idCarta);
+	        //System.out.println(".-.-.-.-.-.-.-.-.-.-.-.-.-.-..-.-.-.-.. " + idCarta);
 	        
 	        if(idCarta != 0){
 	        	
@@ -166,34 +192,133 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 		        response2.getInfo().setCodigoCarta(numeroDeFolio);
 		        response2.getInfo().setPdf(cartaDeCancelacionPdf);
 		        response2.getInfo().setFechaEmisionCarta(fechaEmisionCarta);
-	        
+		        
+		        UpdateRequest<CartaCancelacionInfo> updateCarta = new UpdateRequest();
+		        updateCarta.setInfo(response2.getInfo());
+		        ccService.update(updateCarta);
 	        }
+	        else{
+	        	
+	        	CartaCancelacionInfo cci = new CartaCancelacionInfo();
+	        	SaveRequest<CartaCancelacionInfo> saveRequest = new SaveRequest<>();
+	        	cci.setCodigoCarta(numeroDeFolio);
+	        	cci.setPdf(cartaDeCancelacionPdf);
+	        	cci.setFechaEmisionCarta(fechaEmisionCarta);
+	        	saveRequest.setInfo(cci);
+	        	SaveResponse<CartaCancelacionInfo> save = ccService.save(saveRequest);
+	        	
+	        	casoresponse.getInfo().setCartaCancelacionId(save.getInfo().getId());
+	        	System.out.println("Carta de cancelación creada y asociada.");
+        		/**ida.setCodigo(4);
+        		ida.setDescripcion("No se actualizó la información del caso");
+        		ida.setNumeroDeCaso(numeroDeCaso);
+            	ida.setNumeroDeCredito(numeroDeCredito);**/        	
+        	}
+	        
+	        UpdateRequest<CasoInfo> update = new UpdateRequest();
+	        update.setInfo(casoresponse.getInfo());
+	        service.update(update);
+	        
+	        
+	        //FindByRequest clave = new FindByRequest("clave",status);
+	        
+	        if(clave != null){	        
+	        	FindResponse<StatusCasoInfo> scresponse = statusService.find(clave);
+	        	entradas.setEstatus(scresponse.getInfo().getClave());
+	        	entradas.setDescripcion(scresponse.getInfo().getDescripcion());
+	        }
+        	entradas.setNumeroCredito(numeroDeCredito);
+        	entradas.setNumeroCaso(numeroDeCaso);
+        	entradas.setTipoOperacion(4);
+        	//entradas.setEstatus(status);
+        	//entradas.setDescripcion("");
+        	entradas.setCarta(null);
+        	entradas.setFechaEmision(null);
+        	entradas.setNombreAcreditado("");
+        	entradas.setEntidad(null);
+        	
+        	salidas = microService.cambioEstatus(entradas);
+        	//isc = pmsPort.statusCaso(numeroDeCredito, numeroDeCaso, null, status, null, null, null, null, 4);
+	        
+	        System.out.println("Salida del WS PMS -> status : " + salidas.getEstatus());
+	        System.out.println("Salida del WS PMS -> descripción : " + salidas.getDescripcion());
+	        
 	        
 	        ida.setCodigo(0);
 	        ida.setDescripcion("Se actualizó correctamente el caso.");
 	        ida.setNumeroDeCaso(casoresponse.getInfo().getNumeroCaso());
 	        ida.setNumeroDeCredito(casoresponse.getInfo().getNumeroCredito());
+	        	        
 	        
-	        isc = pmsPort.statusCaso(numeroDeCredito, numeroDeCaso, null, status, null, null, null, null, 4);
+	        /**isc = pmsPort.statusCaso(numeroDeCredito, numeroDeCaso, null, status, null, null, null, null, 4);
 	        
 	        System.out.println("Salida del WS PMS -> status : " + isc.getStatus());
 	        System.out.println("Salida del WS PMS -> descripción : " + isc.getDescripcion());
 	        System.out.println("Salida del WS PMS -> fechaActualización : " + isc.getFechaActualizacion());
+	        **/
 	        
-        /**}else{
-        	ida.setCodigo(4);
-        	ida.setDescripcion("No se actualizó la información del caso");
-        	ida.setNumeroDeCaso(numeroDeCaso);
-            ida.setNumeroDeCredito(numeroDeCredito);        	
-        }**/
+	        System.out.println(ida.getCodigo());
+	        if(ida.getCodigo() == 0){
+	        	
+	        	try{
+	            	
+		        	if(clave != null){	        
+			        	FindResponse<StatusCasoInfo> scresponse = statusService.find(clave);
+			        	entradas.setEstatus(scresponse.getInfo().getClave());
+			        	entradas.setDescripcion(scresponse.getInfo().getDescripcion());
+			        }
+		        	entradas.setNumeroCredito(numeroDeCredito);
+		        	entradas.setNumeroCaso(numeroDeCaso);
+		        	entradas.setTipoOperacion(4);
+		        	//entradas.setEstatus(status);
+		        	//entradas.setDescripcion("");
+		        	entradas.setCarta(null);
+		        	entradas.setFechaEmision(null);
+		        	entradas.setNombreAcreditado("");
+		        	entradas.setEntidad(null);
+		        	
+		        	salidas = microService.cambioEstatus(entradas);
+		        	//isc = pmsPort.statusCaso(numeroDeCredito, numeroDeCaso, null, status, null, null, null, null, 4);
+			        
+			        System.out.println("Salida del WS PMS -> status : " + salidas.getEstatus());
+			        System.out.println("Salida del WS PMS -> descripción : " + salidas.getDescripcion());
+	        	}
+	        	catch(Exception e){
+	        		
+        			ida.setCodigo(2);
+            		ida.setDescripcion("Error conexión con web service actualizar status del caso.");
+            		ida.setNumeroDeCaso(numeroDeCaso);
+                	ida.setNumeroDeCredito(numeroDeCredito);
+            		System.out.println(e);
+	        		
+		        }
+	        }
+	        
         
         }catch(Exception e){
-        	ida.setCodigo(4);
-        	ida.setDescripcion("No se actualizó la información del caso");
-        	ida.setNumeroDeCaso(numeroDeCaso);
-            ida.setNumeroDeCredito(numeroDeCredito);
-        	System.out.println(e);
+        	
+    		Pattern p = Pattern.compile("\\*com.ibm.websphere.ce.cm.StaleConnectionException: No se pudo realizar la conexión TCP/IP al host\\*");
+    		Matcher m = p.matcher(e.toString());
+    		
+    		if(m.matches()){
+    			ida.setCodigo(2);
+        		ida.setDescripcion("No hay conexión con la base de datos.");
+        		ida.setNumeroDeCaso(numeroDeCaso);
+                ida.setNumeroDeCredito(numeroDeCredito);
+                System.out.println(e.toString());
+    		}
+    		else{
+    			
+    			ida.setCodigo(4);
+            	ida.setDescripcion("No se actualizó la información del caso");
+            	ida.setNumeroDeCaso(numeroDeCaso);
+                ida.setNumeroDeCredito(numeroDeCredito);
+            	System.out.println(e);
+    		}
+        	
         }
+       
+        
         return ida;
     }
     
@@ -209,13 +334,13 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
         	FindByRequest fbr = new FindByRequest("numeroCaso",numeroDeCaso);        	
             FindResponse<CasoInfo> casoresponse = service.find(fbr);
             
-            System.out.println(".-.-.-.-.-.-.-.-.-.-.-.-.-.-..-.-.-.-.. " + casoresponse.getInfo().getId());
+            //System.out.println(".-.-.-.-.-.-.-.-.-.-.-.-.-.-..-.-.-.-.. " + casoresponse.getInfo().getId());
             
             if(casoresponse.getInfo().getId() != 0){  
             	
 	            long idCarta = casoresponse.getInfo().getCartaCancelacionId();
 	            
-	            System.out.println(".-.-.-.-.-.-.-.-.-.-.-.-.-.-..-.-.-.-.. " + idCarta);
+	            //System.out.println(".-.-.-.-.-.-.-.-.-.-.-.-.-.-..-.-.-.-.. " + idCarta);
 	            
 	            if(idCarta != 0){
 	            	
@@ -246,9 +371,22 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
             }
             
         }catch(Exception e){
-        	idc.setInfoConsulta(5);
-            idc.setDescripcionConsulta("Caso no consultado.");
-        	System.out.println(e);
+        	
+    		Pattern p = Pattern.compile("\\*com.ibm.websphere.ce.cm.StaleConnectionException: No se pudo realizar la conexión TCP/IP al host\\*");
+    		Matcher m = p.matcher(e.toString());
+    		
+    		if(m.matches()){
+    			
+    			idc.setInfoConsulta(2);
+        		idc.setDescripcionConsulta("No hay conexión con la base de datos.");
+                System.out.println(e.toString());
+    		}
+    		else{
+    			
+    			idc.setInfoConsulta(5);
+            	idc.setDescripcionConsulta("Caso no consultado.");
+        		System.out.println(e.toString());
+    		}
     	}
         return idc;
     }
@@ -273,7 +411,7 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 					sc.setFechaActualizacion(response.getInfo().getFechaActualizacion());
     			}
     		}else{
-    			sc.setClave(1);
+    			sc.setClave(6);
     			sc.setNombre("Error en la consulta del status del caso.");
     			sc.setDescripcion("El número de caso no existe en el sistema.");
     			sc.setFechaActualizacion(new Date());
@@ -282,6 +420,27 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
     	}catch(Exception e){
     		
     		System.out.println(e);
+    		//(\W|^)consejos\s{0,3}mercados(\W|$)
+    		Pattern p = Pattern.compile("(\\W|\\^)No\\s{0,3}se\\s{0,3}pudo\\s{0,3}realizar\\s{0,3}la\\s{0,3}conexión\\s{0,3}TCP/IP\\s{0,3}al\\s{0,3}host(\\W|\\$)");
+    		//Pattern p = Pattern.compile("\\*Could not open connection\\*");
+    		//Could not open connection
+    		Matcher m = p.matcher(e.toString());
+    		
+    		if(m.matches()){
+    			
+    			sc.setClave(2);
+    			sc.setNombre("No hay conexión con la base de datos.");
+    			sc.setDescripcion("El tiempo de conexión se ha agotado, verifique la conexión de la base de datos o que el servicio se encuentre iniciado.");
+    			sc.setFechaActualizacion(new Date());    			
+                System.out.println(e.toString());
+    		}
+    		else{
+    			sc.setClave(5);
+    			sc.setNombre("Caso no consultado.");
+    			sc.setDescripcion("El número de caso no se logró consultar en la base de datos.");
+    			sc.setFechaActualizacion(new Date());
+    		}
+    		
     	}
     	return sc;
     }
@@ -414,6 +573,9 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 	            cartaresponse.getInfo().setFojaEscritura(fojaEscritura);
 	            cartaresponse.getInfo().setLibroEscritura(libroEscritura);
 	            
+	            UpdateRequest<CartaCancelacionInfo> updateCarta = new UpdateRequest();
+		        updateCarta.setInfo(cartaresponse.getInfo());
+		        ccService.update(updateCarta);
 	            
 	            
 	            sc.setClave(5);
