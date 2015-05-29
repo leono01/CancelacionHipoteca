@@ -19,6 +19,7 @@ package com.gisnet.cancelacion.wsclient.microflujo;
 import com.gisnet.cancelacion.events.SaveRequest;
 import com.gisnet.cancelacion.events.SaveResponse;
 import com.gisnet.cancelacion.events.UpdateRequest;
+import com.gisnet.cancelacion.events.UpdateResponse;
 import com.gisnet.cancelacion.events.info.CasoInfo;
 
 
@@ -35,8 +36,8 @@ public class ClienteMicroflujoServiceHandler implements ClienteMicroflujoService
         CasoInfo caso = event.getInfo();
         
         Input input = new Input();
-        input.setNumeroCredito(caso.getNumeroCredito());
-        input.setNumeroCaso(caso.getNumeroCaso());
+        //input.setNumeroCredito(caso.getNumeroCredito());
+        //input.setNumeroCaso(caso.getNumeroCaso());
         input.setEntidad(caso.getEntidad());
         input.setEstatus(caso.getStatusCaso().getClave());
         input.setNombreAcreditado(caso.getNombreAcreditado());
@@ -54,12 +55,12 @@ public class ClienteMicroflujoServiceHandler implements ClienteMicroflujoService
     }
 
     @Override
-    public UpdateRequest<CasoInfo> actualizarCaso(UpdateRequest<CasoInfo> event) {
+    public UpdateResponse<CasoInfo> actualizarCaso(UpdateRequest<CasoInfo> event) {
         CasoInfo caso = event.getInfo();
         
         Input input = new Input();
-        input.setNumeroCredito(caso.getNumeroCredito());
-        input.setNumeroCaso(caso.getNumeroCaso());
+        //input.setNumeroCredito(caso.getNumeroCredito());
+        //input.setNumeroCaso(caso.getNumeroCaso());
         input.setEntidad(caso.getEntidad());
         input.setEstatus(caso.getStatusCaso().getClave());
         input.setNombreAcreditado(caso.getNombreAcreditado());
@@ -71,7 +72,7 @@ public class ClienteMicroflujoServiceHandler implements ClienteMicroflujoService
         } catch (Exception ex) {
             System.err.println("Excepcion ClienteMicroflujoService actualizarCaso, " + ex.getMessage());
         }
-        return new UpdateRequest<>(caso);
+        return new UpdateResponse<>(caso);
     }
     
 }

@@ -19,6 +19,7 @@ package com.gisnet.cancelacion.wsclient.microflujo;
 import com.gisnet.cancelacion.events.SaveRequest;
 import com.gisnet.cancelacion.events.SaveResponse;
 import com.gisnet.cancelacion.events.UpdateRequest;
+import com.gisnet.cancelacion.events.UpdateResponse;
 import com.gisnet.cancelacion.events.info.CasoInfo;
 
 /**
@@ -29,6 +30,6 @@ public interface ClienteMicroflujoService {
     
     public SaveResponse<CasoInfo> validarCredito(SaveRequest<CasoInfo> event);
     
-    public UpdateRequest<CasoInfo> actualizarCaso(UpdateRequest<CasoInfo> event);
+    public UpdateResponse<CasoInfo> actualizarCaso(UpdateRequest<CasoInfo> event);
     
 }
