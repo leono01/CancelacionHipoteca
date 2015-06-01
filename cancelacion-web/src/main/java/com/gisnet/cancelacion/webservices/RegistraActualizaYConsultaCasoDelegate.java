@@ -38,8 +38,8 @@ public class RegistraActualizaYConsultaCasoDelegate{
         return _registraActualizaYConsultaCaso.actualizaCaso(numeroDeCredito,numeroDeCaso,fecha,status,cartaDeCancelacionPdf,fechaEmisionCarta,numeroDeFolio,md5);
     }
 
-    public InfoDeConsulta consultaCaso (@WebParam(name="numeroDeCredito") String numeroDeCredito, @WebParam(name="numeroDeCaso") String numeroDeCaso) {
-        return _registraActualizaYConsultaCaso.consultaCaso(numeroDeCredito,numeroDeCaso);
+    public InfoDeConsulta consultaCaso (@WebParam(name="numeroDeCaso") String numeroDeCaso) {
+        return _registraActualizaYConsultaCaso.consultaCaso(numeroDeCaso);
     }
 
     public StatusCaso estadoDelCaso (@WebParam(name="numeroDeCaso") int numeroDeCaso) {

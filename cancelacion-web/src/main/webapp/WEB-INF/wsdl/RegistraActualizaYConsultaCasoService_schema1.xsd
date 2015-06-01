@@ -189,7 +189,6 @@
 
   <xs:complexType name="consultaCaso">
     <xs:sequence>
-      <xs:element minOccurs="0" name="numeroDeCredito" type="xs:string"/>
       <xs:element minOccurs="0" name="numeroDeCaso" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
