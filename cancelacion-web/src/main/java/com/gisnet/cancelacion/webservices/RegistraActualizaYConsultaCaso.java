@@ -315,7 +315,7 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
     
     
     
-    public InfoDeConsulta consultaCaso(	String	numeroDeCredito,
+    public InfoDeConsulta consultaCaso(
                                        	String 	numeroDeCaso
     ) {
         InfoDeConsulta idc = new InfoDeConsulta();
