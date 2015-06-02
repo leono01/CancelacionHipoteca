@@ -223,11 +223,28 @@ public class JuridicoController {
     public NotarioForm notarioForm() {
         return new NotarioForm();
     }
-    
-    @RequestMapping(value = "/juridico/municipios", method = RequestMethod.GET)
-    public @ResponseBody List<MunicipioInfo> municipiosjson(@RequestParam(required = true) long clave) {
+
+    @RequestMapping(value = "/juridico/municipios", headers="Accept=application/json", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody String municipiosjson2(@RequestParam(required = true) long clave) {
         ListResponse<MunicipioInfo> list1 = municipioservice.list(new ListRequest("entidadId", clave));
-        return list1.getList() != null ? list1.getList() : new ArrayList<MunicipioInfo>();
+        if (list1.getList() == null) { return "[]"; }
+        StringBuilder json = new StringBuilder();
+        json.append("[");
+        boolean first = true;
+        for (MunicipioInfo m : list1.getList()) {
+            if (first) {
+                first = !first;
+            } else {
+                json.append(",");
+            }
+            json.append("{\"id\":");
+            json.append(m.getId());
+            json.append(",\"nombre\":\"");
+            json.append(m.getNombre());
+            json.append("\"}");
+        }
+        json.append("]");
+        return json.toString();
     }
     
 
