@@ -27,8 +27,10 @@
   <xs:complexType name="cNotario">
     <xs:sequence>
       <xs:element minOccurs="0" name="CEntidad" type="xs:string"/>
+      <xs:element name="codigo" type="xs:int"/>
       <xs:element name="codigoNotario" type="xs:int"/>
       <xs:element minOccurs="0" name="convenioInfonavit" type="xs:string"/>
+      <xs:element minOccurs="0" name="descripcion" type="xs:string"/>
       <xs:element minOccurs="0" name="email" type="xs:string"/>
       <xs:element minOccurs="0" name="entidad" type="xs:string"/>
       <xs:element minOccurs="0" name="nombreNotario" type="xs:string"/>

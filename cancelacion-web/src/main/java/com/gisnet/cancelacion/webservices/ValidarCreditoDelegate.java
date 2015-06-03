@@ -1,5 +1,6 @@
 package com.gisnet.cancelacion.webservices;
 
+import java.sql.SQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import com.gisnet.cancelacion.core.services.CasoService;
