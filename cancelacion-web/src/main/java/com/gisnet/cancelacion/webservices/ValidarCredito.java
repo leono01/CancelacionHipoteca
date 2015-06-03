@@ -17,6 +17,8 @@
 
 package com.gisnet.cancelacion.webservices;
 
+import java.sql.SQLException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -25,6 +27,7 @@ import com.gisnet.cancelacion.events.FindByRequest;
 import com.gisnet.cancelacion.events.FindResponse;
 import com.gisnet.cancelacion.events.info.CasoInfo;
 import com.gisnet.cancelacion.webservices.dto.StatusOperacion;
+
 
 public class ValidarCredito extends SpringBeanAutowiringSupport{
 	
@@ -35,17 +38,30 @@ public class ValidarCredito extends SpringBeanAutowiringSupport{
 		
 		StatusOperacion so = new StatusOperacion();
 		
-		FindByRequest fbr = new FindByRequest("numeroCredito",numeroDeCredito);
-        FindResponse<CasoInfo> casoresponse = service.find(fbr);
-        
-        if(casoresponse != null){
-        	so.setCodigo(0);
-        	so.setDescripcion("El número de crédito tiene asociado un caso");
+		
+		try{
+			
+			FindByRequest fbr = new FindByRequest("numeroCredito",numeroDeCredito);
+	        FindResponse<CasoInfo> casoresponse = service.find(fbr);
+	        
+		        if(casoresponse.getInfo().getId() != 0){
+		        	so.setCodigo(0);
+		        	so.setDescripcion("El número de crédito tiene asociado un caso");
+		        }
+	        
+        }catch(Exception e){
+        	System.out.println("ERROR VALIDACIÖN     "+ e.getMessage());
+        	if (e.getMessage().equals("Could not open connection; nested exception is org.hibernate.exception.JDBCConnectionException: Could not open connection")){
+    			so.setCodigo(2);
+				so.setDescripcion("No hay conexión con la base de datos.");
+        	}
+        	else{
+        		so.setCodigo(1);
+        		so.setDescripcion("El número de crédito no tiene asociado un caso");
+        	}
+        	
         }
-        else{
-        	so.setCodigo(1);
-        	so.setDescripcion("El número de crédito no tiene asociado un caso");
-        }
+        	
         
 		return so;
 	}

@@ -28,6 +28,7 @@ import com.gisnet.cancelacion.events.info.NotarioInfo;
 import com.gisnet.cancelacion.web.domain.NotarioForm;
 import com.gisnet.cancelacion.webservices.dto.CNotario;
 
+
 import java.security.Principal;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -58,8 +59,8 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
 
 	@Autowired
     private NotarioService service;
-	
-    
+
+	//NoHayConexionBD nobd = new NoHayConexionBD();
     
     /**
      * Es el Servicio Web que permite consultar la lista de notarios
@@ -69,25 +70,40 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
      * @return Una lista en donde se encuentran los datos del notario consultado
      */
     public List<CNotario> consultarListaDeNotarios() {       
+    	
     	// Operación que regresa una lista del total de notarios
     	List<CNotario> notarios = new ArrayList<CNotario>();
-    	
-        ListRequest lr = new ListRequest();
-        ListResponse<NotarioInfo> list = service.list(lr);
-        
-        for(NotarioInfo ni : list.getList()){
-        	CNotario cn = new CNotario();
-        	cn.setEntidad(ni.getEntidad2());
-        	cn.setNombreNotario(ni.getNombre());
-        	cn.setCodigoNotario(ni.getCodigo());
-        	cn.setNotariaNumero(ni.getNotariaNumero());
-        	cn.setConvenioInfonavit(ni.getConvenio());
-        	cn.setEmail(ni.getEmail());
-        	cn.setTelefono(ni.getTelefono());
-        	
-        	notarios.add(cn);
-        }
-        
+    	CNotario cn = new CNotario();
+    	try{
+    		
+    		
+	        ListRequest lr = new ListRequest();
+	        ListResponse<NotarioInfo> list = service.list(lr);
+	        
+	        for(NotarioInfo ni : list.getList()){
+	        	
+	        	cn.setEntidad(ni.getEntidad2());
+	        	cn.setNombreNotario(ni.getNombre());
+	        	cn.setCodigoNotario(ni.getCodigo());
+	        	cn.setNotariaNumero(ni.getNotariaNumero());
+	        	cn.setConvenioInfonavit(ni.getConvenio());
+	        	cn.setEmail(ni.getEmail());
+	        	cn.setTelefono(ni.getTelefono());
+	        	
+	        	notarios.add(cn);
+	        }
+	        
+	    	}
+	    	catch(Exception e){
+	    		
+	    		cn.setCodigo(2);
+	    		cn.setDescripcion("No hay conexión con la base de datos.");
+	    		notarios.add(cn);
+	    		System.out.println(2);
+				System.out.println("No hay conexión con la base de datos.");
+	    		
+	    		
+	    	}
        
         return notarios;
     }
@@ -110,24 +126,40 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
     public List<CNotario> consultarListaDeNotariosPorEntidad(String entidad) {
         
     	List<CNotario> notarios = new ArrayList<CNotario>();
+    	CNotario cn = new CNotario();
     	
-        // Operación que regresa una lista de los notarios de la determinada entidad.
-    	ListRequest lr = new ListRequest("entidad",entidad);
-        ListResponse<NotarioInfo> list = service.list(lr);
-       
-        for(NotarioInfo ni : list.getList()){
-        	CNotario cn = new CNotario();
-        	cn.setEntidad(ni.getEntidad2());
-        	cn.setNombreNotario(ni.getNombre());
-        	cn.setCodigoNotario(ni.getCodigo());
-        	cn.setNotariaNumero(ni.getNotariaNumero());
-        	cn.setConvenioInfonavit(ni.getConvenio());
-        	cn.setEmail(ni.getEmail());
-        	cn.setTelefono(ni.getTelefono());
-        	
-        	notarios.add(cn);
-        }
-        
+    	try{
+    		
+    		
+	        // Operación que regresa una lista de los notarios de la determinada entidad.
+	    	ListRequest lr = new ListRequest("entidad",entidad);
+	        ListResponse<NotarioInfo> list = service.list(lr);
+	        if(list.getList() != null){
+		        for(NotarioInfo ni : list.getList()){
+		        	
+		        	cn.setEntidad(ni.getEntidad2());
+		        	cn.setNombreNotario(ni.getNombre());
+		        	cn.setCodigoNotario(ni.getCodigo());
+		        	cn.setNotariaNumero(ni.getNotariaNumero());
+		        	cn.setConvenioInfonavit(ni.getConvenio());
+		        	cn.setEmail(ni.getEmail());
+		        	cn.setTelefono(ni.getTelefono());
+		        	
+		        	notarios.add(cn);
+		        }
+	        }
+	        else{
+	        	
+	        }
+    	}catch(Exception e){
+    	
+			cn.setCodigo(2);
+			cn.setDescripcion("No hay conexión con la base de datos.");
+			notarios.add(cn);
+			System.out.println(2);
+			System.out.println("No hay conexión con la base de datos.");
+    		
+    	}
        
         return notarios;
     }
