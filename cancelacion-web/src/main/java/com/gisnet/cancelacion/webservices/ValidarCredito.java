@@ -44,21 +44,23 @@ public class ValidarCredito extends SpringBeanAutowiringSupport{
 			FindByRequest fbr = new FindByRequest("numeroCredito",numeroDeCredito);
 	        FindResponse<CasoInfo> casoresponse = service.find(fbr);
 	        
-		        if(casoresponse.getInfo().getId() != 0){
+		        if(casoresponse.getInfo() != null){
 		        	so.setCodigo(0);
 		        	so.setDescripcion("El número de crédito tiene asociado un caso");
 		        }
+		        else{
+	        		so.setCodigo(1);
+	        		so.setDescripcion("El número de crédito no tiene asociado un caso");
+	        	}
 	        
         }catch(Exception e){
         	System.out.println("ERROR VALIDACIÖN     "+ e.getMessage());
-        	if (e.getMessage().equals("Could not open connection; nested exception is org.hibernate.exception.JDBCConnectionException: Could not open connection")){
+        	if (e.getMessage().equals("Could not open connection; nested exception is org.hibernate.exception.JDBCConnectionException: Could not open connection") || 
+        		e.getMessage().equals("could not inspect JDBC autocommit mode; nested exception is org.hibernate.exception.GenericJDBCException: could not inspect JDBC autocommit mode")){
     			so.setCodigo(2);
 				so.setDescripcion("No hay conexión con la base de datos.");
         	}
-        	else{
-        		so.setCodigo(1);
-        		so.setDescripcion("El número de crédito no tiene asociado un caso");
-        	}
+        	
         	
         }
         	
