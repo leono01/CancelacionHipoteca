@@ -72,42 +72,28 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
         CasoInfo caso = new CasoInfo();        
         
         try{
-        	
-        }catch(Exception e){
-		
-        	so.setCodigo(1);
-        	so.setDescripcion("No se hizo registro del caso");
-        	System.out.println(e);
-        }
+	        caso.setNombreAcreditado(nombreAcreditado);
+	        caso.setNumeroCaso(numeroDeCaso);
+	        caso.setNumeroCredito(numeroDeCredito);
+	        caso.setFechaCreacion(fechaDeCreacion);
+	        caso.setFechaActualizacion(fechaDeCreacion);
+	        caso.setProcedeCredito("NO");
+	        caso.setEntidad(entidad);
+	        
+	        int s = 1;
+	        
+	        FindByRequest clave = new FindByRequest("clave",s);
+	        
+	        //System.out.println("Clave " + clave);
+	        
+	        
+	        if(clave != null){
+	        	
+	        	FindResponse<StatusCasoInfo> scresponse = statusService.find(clave);
+	        	caso.setStatusCaso(scresponse.getInfo());
+	        
+	        }
         
-        
-        caso.setNombreAcreditado(nombreAcreditado);
-        caso.setNumeroCaso(numeroDeCaso);
-        caso.setNumeroCredito(numeroDeCredito);
-        caso.setFechaCreacion(fechaDeCreacion);
-        caso.setFechaActualizacion(fechaDeCreacion);
-        caso.setProcedeCredito("NO");
-        caso.setEntidad(entidad);
-        
-        int s = 1;
-        
-        FindByRequest clave = new FindByRequest("clave",s);
-        
-        //System.out.println("Clave " + clave);
-        
-        
-        if(clave != null){
-        	
-        	FindResponse<StatusCasoInfo> scresponse = statusService.find(clave);
-        	caso.setStatusCaso(scresponse.getInfo());
-        
-        }
-        
-        //caso.setStatusCaso(statusCaso);
-        
-        try{
-        	
-        	
         	
         	SaveRequest<CasoInfo> saveRequest = new SaveRequest<>();
         	saveRequest.setInfo(caso);
@@ -118,14 +104,20 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
         
     	}catch(Exception e){
     		
-    		System.out.println("ERRORRRRRRRRRRR    "+e.getMessage());
+    		//System.out.println("ERRORRRRRRRRRRR    "+e.getMessage());
     		
-    		if (e.getMessage().equals("Could not open connection; nested exception is org.hibernate.exception.JDBCConnectionException: Could not open connection")){
+    		if(e.getMessage() != null){
+	    		if (e.getMessage().equals("Could not open connection; nested exception is org.hibernate.exception.JDBCConnectionException: Could not open connection")){
+	    			so.setCodigo(2);
+	        		so.setDescripcion("No hay conexión con la base de datos.");
+	    		}else{
+	    			so.setCodigo(1);
+	        		so.setDescripcion("No se hizo registro del caso");
+	    		}
+    		}
+    		else{
     			so.setCodigo(2);
         		so.setDescripcion("No hay conexión con la base de datos.");
-    		}else{
-    			so.setCodigo(1);
-        		so.setDescripcion("No se hizo registro del caso");
     		}
     	}
         
@@ -160,121 +152,135 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
         
         
 	    try{
-	    	
+	    //Busca número de caso a actualizar	
 	    FindByRequest fbr = new FindByRequest("numeroCaso",numeroDeCaso);
 	    FindResponse<CasoInfo> casoresponse = service.find(fbr);
 	    
 	    //System.out.println("CASO ID:      "+ casoresponse.getInfo().getId());
 	    
-        FindByRequest clave = new FindByRequest("clave",status);
-        FindResponse<StatusCasoInfo> sciResponse = statusService.find(clave);
-        
-        //System.out.println("CLAVE 1:    "+ sciResponse.getInfo().getId());
-        
-        if(sciResponse.getInfo().getId() != 0){
-        	
-        	casoresponse.getInfo().setStatusCaso(sciResponse.getInfo());
-        
-        }
-        
-        casoresponse.getInfo().setFechaActualizacion(fecha);
-        
-        long idCarta = casoresponse.getInfo().getCartaCancelacionId();
-                
-        //System.out.println("CARTA ID:      "+idCarta);
-        
-        if(idCarta != 0){
-        	
-	        FindByRequest fbr2 = new FindByRequest(idCarta);
-	        FindResponse<CartaCancelacionInfo> response2 = ccService.find(fbr2);
+	    // si existe el caso
+	    if(casoresponse.getInfo() != null){
+	    	
+	    	// busca la clave del status de caso a actualizar
+	        FindByRequest clave = new FindByRequest("clave",status);
+	        FindResponse<StatusCasoInfo> sciResponse = statusService.find(clave);
 	        
-	        response2.getInfo().setCodigoCarta(numeroDeFolio);
-	        response2.getInfo().setPdf(cartaDeCancelacionPdf);
-	        response2.getInfo().setFechaEmisionCarta(fechaEmisionCarta);
+	        //System.out.println("CLAVE 1:    "+ sciResponse.getInfo().getId());
 	        
-	        UpdateRequest<CartaCancelacionInfo> updateCarta = new UpdateRequest();
-	        updateCarta.setInfo(response2.getInfo());
-	        ccService.update(updateCarta);
-        }
-        else{
-        	
-        	CartaCancelacionInfo cci = new CartaCancelacionInfo();
-        	SaveRequest<CartaCancelacionInfo> saveRequest = new SaveRequest<>();
-        	cci.setCodigoCarta(numeroDeFolio);
-        	cci.setPdf(cartaDeCancelacionPdf);
-        	cci.setFechaEmisionCarta(fechaEmisionCarta);
-        	saveRequest.setInfo(cci);
-        	SaveResponse<CartaCancelacionInfo> save = ccService.save(saveRequest);
-        	
-        	casoresponse.getInfo().setCartaCancelacionId(save.getInfo().getId());
-        	
-        	System.out.println("Carta de cancelación creada y asociada.");
-    		
-        	/**ida.setCodigo(4);
-    		ida.setDescripcion("No se actualizó la información del caso");
-    		ida.setNumeroDeCaso(numeroDeCaso);
-        	ida.setNumeroDeCredito(numeroDeCredito);**/        	
-    	}
-        
-        UpdateRequest<CasoInfo> update = new UpdateRequest();
-        update.setInfo(casoresponse.getInfo());
-        service.actualizarCaso(update);
-        
-        ida.setCodigo(0);
-        ida.setDescripcion("Se actualizó correctamente el caso.");
-        
-        
-        //System.out.println("IDA CODIGO:   "+ ida.getCodigo());
-        
-        if(ida.getCodigo() == 0){
-        	
-        	try{
-        		
-        		//System.out.println("CLAVE 2:    "+ sciResponse.getInfo().getId());
-        		
-	        	if(sciResponse.getInfo().getId() != 0){	        
-		        	
-		        	entradas.setEstatus(sciResponse.getInfo().getClave());
-		        	entradas.setDescripcion(sciResponse.getInfo().getDescripcion());
-		        }
-	        	
-	        	entradas.setNumeroCredito(numeroDeCredito);
-	        	entradas.setNumeroCaso(numeroDeCaso);
-	        	entradas.setTipoOperacion(4);
-	        	
-	        	entradas.setCarta(null);
-	        	entradas.setFechaEmision(null);
-	        	entradas.setNombreAcreditado("");
-	        	entradas.setEntidad(null);
-	        	
-	        	salidas = microService.cambioEstatus(entradas);
-	        	//isc = pmsPort.statusCaso(numeroDeCredito, numeroDeCaso, null, status, null, null, null, null, 4);
-		        
-		        System.out.println("Salida del WS PMS -> status : " + salidas.getEstatus());
-		        System.out.println("Salida del WS PMS -> descripción : " + salidas.getDescripcion());
-        	}
-        	catch(Exception e){
-        		
-    			ida.setCodigo(2);
-        		ida.setDescripcion("Error conexión con web service actualizar status del caso.");
-        		ida.setNumeroDeCaso(numeroDeCaso);
-            	ida.setNumeroDeCredito(numeroDeCredito);
-        		
-        		
+	        if(sciResponse.getInfo() != null){
+	        	//System.out.println("sci Response"+sciResponse.getInfo());
+	        	casoresponse.getInfo().setStatusCaso(sciResponse.getInfo());
+	        
 	        }
-        }
+	        
+	        casoresponse.getInfo().setFechaActualizacion(fecha);
+	        
+	        long idCarta = casoresponse.getInfo().getCartaCancelacionId();
+	                
+	        //System.out.println("CARTA ID:      "+idCarta);
+	        
+	        if(idCarta != 0){
+	        	
+		        FindByRequest fbr2 = new FindByRequest(idCarta);
+		        FindResponse<CartaCancelacionInfo> response2 = ccService.find(fbr2);
+		        
+		        response2.getInfo().setCodigoCarta(numeroDeFolio);
+		        response2.getInfo().setPdf(cartaDeCancelacionPdf);
+		        response2.getInfo().setFechaEmisionCarta(fechaEmisionCarta);
+		        
+		        UpdateRequest<CartaCancelacionInfo> updateCarta = new UpdateRequest();
+		        updateCarta.setInfo(response2.getInfo());
+		        ccService.update(updateCarta);
+		        //System.out.println("Carta de cancelación actualizada");
+	        }
+	        else{
+	        	
+	        	CartaCancelacionInfo cci = new CartaCancelacionInfo();
+	        	SaveRequest<CartaCancelacionInfo> saveRequest = new SaveRequest<>();
+	        	cci.setCodigoCarta(numeroDeFolio);
+	        	cci.setPdf(cartaDeCancelacionPdf);
+	        	cci.setFechaEmisionCarta(fechaEmisionCarta);
+	        	saveRequest.setInfo(cci);
+	        	SaveResponse<CartaCancelacionInfo> save = ccService.save(saveRequest);
+	        	
+	        	casoresponse.getInfo().setCartaCancelacionId(save.getInfo().getId());
+	        	
+	        	//System.out.println("Carta de cancelación creada y asociada.");
+	    		
+	        	/**ida.setCodigo(4);
+	    		ida.setDescripcion("No se actualizó la información del caso");
+	    		ida.setNumeroDeCaso(numeroDeCaso);
+	        	ida.setNumeroDeCredito(numeroDeCredito);**/        	
+	    	}
+	        
+	        UpdateRequest<CasoInfo> update = new UpdateRequest();
+	        update.setInfo(casoresponse.getInfo());
+	        service.update(update);
+	        
+	        ida.setCodigo(0);
+	        ida.setDescripcion("Se actualizó correctamente el caso.");
+	        
+	        
+	        //System.out.println("IDA CODIGO:   "+ ida.getCodigo());
+	        
+	        if(ida.getCodigo() == 0){
+	        	
+	        	try{
+	        		
+	        		//System.out.println("CLAVE 2:    "+ sciResponse.getInfo().getId());
+	        		
+		        	if(sciResponse.getInfo().getId() != 0){	        
+			        	
+			        	entradas.setEstatus(sciResponse.getInfo().getClave());
+			        	entradas.setDescripcion(sciResponse.getInfo().getDescripcion());
+			        }
+		        	
+		        	entradas.setNumeroCredito(numeroDeCredito);
+		        	entradas.setNumeroCaso(numeroDeCaso);
+		        	entradas.setTipoOperacion(4);
+		        	
+		        	entradas.setCarta(null);
+		        	entradas.setFechaEmision(null);
+		        	entradas.setNombreAcreditado("");
+		        	entradas.setEntidad(null);
+		        	
+		        	salidas = microService.cambioEstatus(entradas);
+		        	//isc = pmsPort.statusCaso(numeroDeCredito, numeroDeCaso, null, status, null, null, null, null, 4);
+			        
+			        System.out.println("Salida del WS PMS -> status : " + salidas.getEstatus());
+			        System.out.println("Salida del WS PMS -> descripción : " + salidas.getDescripcion());
+	        	}
+	        	
+	        	catch(Exception e){
+	        		
+	    			ida.setCodigo(2);
+	        		ida.setDescripcion("Error conexión con web service actualizar status del caso.");
+	        		ida.setNumeroDeCaso(numeroDeCaso);
+	            	ida.setNumeroDeCredito(numeroDeCredito);
+	        		
+	        		
+		        }
+	        }
+        
+	    }else{
+	    	ida.setCodigo(3);
+        	ida.setDescripcion("No se existe el caso");
+        	ida.setNumeroDeCaso(numeroDeCaso);
+            ida.setNumeroDeCredito(numeroDeCredito);
+	    }
+        
         
     
     	}catch(Exception e){
     		
-    		System.out.println("ACTUALIZA ERROR:               "+e.getMessage());
+    		//System.out.println("ACTUALIZA ERROR:               "+e.getMessage());
     		
         	if (e.getMessage().equals("Could not open connection; nested exception is org.hibernate.exception.JDBCConnectionException: Could not open connection")){
     			ida.setCodigo(2);
         		ida.setDescripcion("No hay conexión con la base de datos.");
         		ida.setNumeroDeCaso(numeroDeCaso);
                 ida.setNumeroDeCredito(numeroDeCredito);
-                System.out.println(e.toString());
+                //System.out.println(e.toString());
     		}
     		else{
     			
@@ -282,7 +288,7 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
             	ida.setDescripcion("No se actualizó la información del caso");
             	ida.setNumeroDeCaso(numeroDeCaso);
                 ida.setNumeroDeCredito(numeroDeCredito);
-            	System.out.println(e);
+            	//System.out.println(e);
     		}
         	
         }
@@ -303,13 +309,13 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
         	FindByRequest fbr = new FindByRequest("numeroCaso",numeroDeCaso);        	
             FindResponse<CasoInfo> casoresponse = service.find(fbr);
             
-            System.out.println("CASO ID     " + casoresponse.getInfo().getId());
+            //System.out.println("CASO ID     " + casoresponse.getInfo().getId());
             
-            if(casoresponse.getInfo().getId() != 0){  
+            if(casoresponse.getInfo() != null){  
             	
 	            long idCarta = casoresponse.getInfo().getCartaCancelacionId();
 	            
-	            System.out.println("CARTA ID  .-.-.-.-.. " + idCarta);
+	            //System.out.println("CARTA ID  .-.-.-.-.. " + idCarta);
 	            
 	            if(idCarta != 0){
 	            	
@@ -341,19 +347,24 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
             }
             
         }catch(Exception e){
-        	System.out.println("CONSULTA ERROR:               "+e.getMessage());
-    		
-        	if (e.getMessage().equals("Could not open connection; nested exception is org.hibernate.exception.JDBCConnectionException: Could not open connection")){
-    			
-    			idc.setInfoConsulta(2);
-        		idc.setDescripcionConsulta("No hay conexión con la base de datos.");
-                System.out.println(e.toString());
+        	//System.out.println("CONSULTA ERROR:               "+e.getMessage());
+    		if(e.getMessage() != null){
+	        	if (e.getMessage().equals("Could not open connection; nested exception is org.hibernate.exception.JDBCConnectionException: Could not open connection")){
+	    			
+	    			idc.setInfoConsulta(2);
+	        		idc.setDescripcionConsulta("No hay conexión con la base de datos.");
+	                //System.out.println(e.toString());
+	    		}
+	    		else{
+	    			
+	    			idc.setInfoConsulta(5);
+	            	idc.setDescripcionConsulta("Caso no consultado.");
+	        		//System.out.println(e.toString());
+	    		}
     		}
     		else{
-    			
-    			idc.setInfoConsulta(5);
-            	idc.setDescripcionConsulta("Caso no consultado.");
-        		System.out.println(e.toString());
+    			idc.setInfoConsulta(6);
+            	idc.setDescripcionConsulta("No existe el caso " + numeroDeCaso);
     		}
     	}
         return idc;
@@ -393,7 +404,7 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
     			sc.setNombre("No hay conexión con la base de datos.");
     			sc.setDescripcion("El tiempo de conexión se ha agotado, verifique la conexión de la base de datos o que el servicio se encuentre iniciado.");
     			sc.setFechaActualizacion(new Date());    			
-                System.out.println(e.toString());
+                //System.out.println(e.toString());
     		}
     		else{
     			sc.setClave(5);
@@ -466,7 +477,7 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 					sc.setClave(4);
 					sc.setNombre("No se registró la carta de cancelación.");
 					sc.setDescripcion("La carta de cancelación no se ha guardado exitosamente en el caso");
-					System.out.println(e);
+					//System.out.println(e);
 				}
 				//}
 				/**else{
@@ -514,7 +525,7 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
             
             long idCarta = casoresponse.getInfo().getCartaCancelacionId();
             
-            System.out.println(".-.-.-.-.-.-.-.-.-.-.-.-.-.-..-.-.-.-.. " + idCarta);
+            //System.out.println(".-.-.-.-.-.-.-.-.-.-.-.-.-.-..-.-.-.-.. " + idCarta);
             
             if(idCarta != 0){
             

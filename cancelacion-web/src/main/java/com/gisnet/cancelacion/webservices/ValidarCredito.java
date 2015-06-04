@@ -55,6 +55,7 @@ public class ValidarCredito extends SpringBeanAutowiringSupport{
 	        
         }catch(Exception e){
         	System.out.println("ERROR VALIDACIÖN     "+ e.getMessage());
+        	
         	if (e.getMessage().equals("Could not open connection; nested exception is org.hibernate.exception.JDBCConnectionException: Could not open connection") || 
         		e.getMessage().equals("could not inspect JDBC autocommit mode; nested exception is org.hibernate.exception.GenericJDBCException: could not inspect JDBC autocommit mode")){
     			so.setCodigo(2);
