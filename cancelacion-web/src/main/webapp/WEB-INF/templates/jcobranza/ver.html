@@ -54,39 +54,45 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <div class="jarviswidget" id="wid-id-0" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
                                 <header>
                                     <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
-                                    <h2>Caso <span th:text="${caso.numeroCaso}"></span></h2>
+                                    <h2>Carta de Cancelacion</h2>
                                 </header>
-                                <div role="content" class="no-padding">
-                                    <object id="pdf" th:attr="data=@{/archivos/{id}/carta_de_cancelacion.pdf(id=${caso.cartaCancelacionId})}" type="application/pdf" style="width: 100%; height: 480px;">
-                                        <p>No se pudo mostrar la carta de cancelacion del caso <span th:text="${caso.numeroCaso}"></span> - <a th:href="@{/archivos/{id}/carta_de_cancelacion.pdf(id=${caso.cartaCancelacionId})}">carta_de_cancelacion.pdf</a></p>
-                                        <p th:text="${cartac}"></p>
-                                    </object>
+                                <div role="content">
+                                    <div class="widget-body no-padding">
+                                        <object id="pdf" th:attr="data=@{/archivos/{id}/carta_de_cancelacion.pdf(id=${caso.cartaCancelacionId})}" type="application/pdf" style="width: 100%; height: 480px;">
+                                            <p>No se pudo mostrar la carta de cancelacion del caso <span th:text="${caso.numeroCaso}"></span> - <a th:href="@{/archivos/{id}/carta_de_cancelacion.pdf(id=${caso.cartaCancelacionId})}">carta_de_cancelacion.pdf</a></p>
+                                        </object>
+                                    </div>
                                 </div><!-- fin jarviswidget content -->
                             </div><!-- fin jarviswidget -->
                         </div><!-- fin col -->
                     </div><!-- fin row -->
                     <div class="row">
                         <div class="col col-md-6">
-                            <div class="jarviswidget" id="wid-id-1" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+                            <div class="jarviswidget" th:if="${caso.notarioId}>0" id="wid-id-1" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
                                 <header>
                                     <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
                                     <h2>Archivos adjuntos por notario</h2>
                                 </header>
-                                <div role="content" class="no-padding">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Nombre</th>
-                                                <th>Descargar</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr th:each='a : ${archivos}' th:object='${a}'>
-                                                <td th:text='*{nombre}'></td>
-                                                <td><a th:href='@{/archivoss/{id}/{archivo}(id=${a.id},archivo=${a.nombre})}'>Descargar</a></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <div role="content">
+                                    <div class="widget-body no-padding">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nombre</th>
+                                                    <th>Descargar</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr th:each='a : ${archivos}' th:object='${a}'>
+                                                    <td th:text='*{nombre}'></td>
+                                                    <td><a th:href='@{/archivoss/{id}/{archivo}(id=${a.id},archivo=${a.nombre})}'>Descargar</a></td>
+                                                </tr>
+                                                <tr th:if="${archivos.isEmpty()}">
+                                                    <td colspan="2">No hay archivos adjuntos</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div><!-- fin jarviswidget content -->
                             </div><!-- fin jarviswidget -->
                         </div><!-- fin col -->
@@ -102,22 +108,40 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     	</div>
                                     </form>
                                 </header>
-                                <div role="content" class="widget-body" th:switch="${caso.procedeCredito}">
-                                    <span th:case="'PROCEDE'">Credito procede</span>
-                                    <span th:case="'NO PROCEDE'">El credito NO PROCEDE</span>
-                                    <span th:case="*">Estado del credito desconocido</span>
+                                <div role="content">
+                                    <div class="widget-body" th:switch="${caso.procedeCredito}">
+                                        <span th:case="'PROCEDE'">Credito procede</span>
+                                        <span th:case="'NO PROCEDE'">El credito NO PROCEDE</span>
+                                        <span th:case="*">Estado del credito desconocido</span>
+                                    </div>
                                 </div><!-- fin jarviswidget content -->
                             </div><!-- fin jarviswidget -->
-                            <div class="jarviswidget" id="wid-id-1" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+                            
+                            <div class="jarviswidget" id="wid-id-3" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+                                <header>
+                                    <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
+                                    <h2>Validar y firmar carta</h2>
+                                </header>
+                                <div role="content">
+                                    <div class="widget-body">
+                                        <form action="#" th:if="!${proyecto.autorizado}" th:action="@{/cobranza/caso/{numeroCaso}/autorizar(numeroCaso=${caso.numeroCaso})}" method="post">
+                                            <button class="btn btn-primary">Autorizar</button>
+                                        </form>
+                                        <span th:if="${proyecto.autorizado}">Proyecto de cancelacion autorizado.</span>
+                                    </div>
+                                </div><!-- fin jarviswidget content -->
+                            </div><!-- fin jarviswidget -->
+                            
+                            <div class="jarviswidget" th:if="${caso.notarioId}>0" id="wid-id-4" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
                                 <header>
                                     <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
                                     <h2>Firma de notario</h2>
                                 </header>
-                                <div role="content" class="widget-body">
-                                    <a class="btn btn-primary" th:href="@{/cobranza/caso/{numeroCaso}/fechafirma(numeroCaso=${caso.numeroCaso})}">
-                                        <span th:if="${proyecto.statusProyecto.clave}==5">Agendar</span>
-                                        <span th:if="${proyecto.statusProyecto.clave}==8">Registrar</span>
-                                    </a>
+                                <div role="content">
+                                    <div class="widget-body">
+                                        <a class="btn btn-primary" th:if="${proyecto.statusProyecto.clave}==5" th:href="@{/cobranza/caso/{numeroCaso}/fechafirma(numeroCaso=${caso.numeroCaso})}">Agendar</a>
+                                        <a class="btn btn-primary" th:if="${proyecto.statusProyecto.clave}==8" th:href="@{/cobranza/caso/{numeroCaso}/fechafirma(numeroCaso=${caso.numeroCaso})}">Registrar</a>
+                                    </div>
                                 </div><!-- fin jarviswidget content -->
                             </div><!-- fin jarviswidget -->
                         </div><!-- fin col -->

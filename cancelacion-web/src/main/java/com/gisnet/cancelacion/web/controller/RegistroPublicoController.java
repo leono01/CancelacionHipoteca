@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -48,24 +49,21 @@ public class RegistroPublicoController {
     public String registroPublico(Model model) {
         return "/registrop/index";
     }
-    
-    @RequestMapping(value = "/registrop/buscar", method = RequestMethod.POST)
+
+    @RequestMapping(value = "/registrop/", method = RequestMethod.POST)
     public String registroPublico(
-            @RequestParam("numeroCaso") String numeroCaso) {
-        return "redirect:/registrop/caso/" + numeroCaso;
-    }
-    
-    @RequestMapping(value = "/registrop/caso/{numeroCaso}", method = RequestMethod.GET)
-    public String verCartaCancelacion(@PathVariable String numeroCaso, Model model) {
-        List<String> mensajes = Utils.getMensajes(model);
+            @RequestParam("numeroCaso") String numeroCaso,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+        List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
         CasoInfo caso = casoService.find(new FindByRequest("numeroCaso", numeroCaso)).getInfo();
-        model.addAttribute("caso", caso);
+        redirectAttributes.addFlashAttribute("caso", caso);
         mensajes.add(caso != null ?
                 "info::Mostrando carta de cancelacion, caso numero " + numeroCaso :
                 "info::No se encontro ningun caso con el numero " + numeroCaso);
-        return "/registrop/index";
+        return "redirect:/registrop/";
     }
-    
+
     @RequestMapping(value = "/registrop/carta/{id}/carta_de_cancelacion.pdf", method = RequestMethod.GET, produces = "application/pdf")
     public @ResponseBody byte[] renderpdf(@PathVariable long id, HttpServletResponse response) {
         CartaCancelacionInfo carta = cartaCancelacionService.find(new FindByRequest(id)).getInfo();

@@ -39,6 +39,7 @@ public class ProyectoCancelacionInfo implements Info {
     private Date fechaFirmaNotario;
 
     public ProyectoCancelacionInfo() {
+        this.fechaCreacion = new Date();
     }
 
     public long getId() {

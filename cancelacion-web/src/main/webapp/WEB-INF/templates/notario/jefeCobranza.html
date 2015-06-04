@@ -37,14 +37,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <span th:replace="layout/smartadmin::fr-resetwidgets"></span>
                 <ol class="breadcrumb">
                     <li>Inicio</li>
-                    <li>caso</li>
+                    <li>Caso numero <span th:text="${caso.numeroCaso}"></span></li>
                 </ol>
             </div>
             
             <div id="content">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-                        <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Inicio</h1>
+                    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-6">
+                        <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Caso numero <th:block th:text="${caso.numeroCaso}"/> <span> &gt; Seleccion de jefe de cobranza</span></h1>
                     </div>
                 </div>
                 
@@ -57,7 +57,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
                                     <h2>Seleccionar jefe de cobranza</h2>
                                 </header>
-                                <div role="content" class="no-padding">
+                                <div role="content">
+                                    <div class="widget-body no-padding">
                                     <form class="smart-form" th:action="@{/notario/caso/{id}/aceptar/jefecobranza(id=${caso.numeroCaso})}" method="POST" action="#">
                                         <fieldset>
                                             <label class="select">
@@ -72,6 +73,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                             <button class="btn btn-primary" role="button">Terminar</button>
                                         </footer>
                                     </form>
+                                    </div>
                                 </div><!-- fin jarviswidget content -->
                             </div><!-- fin jarviswidget -->
                         </div><!-- fin col -->

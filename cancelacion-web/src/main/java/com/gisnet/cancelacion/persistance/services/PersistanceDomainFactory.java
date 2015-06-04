@@ -69,37 +69,27 @@ public class PersistanceDomainFactory {
     private UsuarioRepository usuarioRepository;
     
     public BitacoraCaso buildBitacoraCaso(BitacoraCasoInfo info) {
-        BitacoraCaso bc = new BitacoraCaso();
-        if (info.getId() > 0) {
-            bc = bitacoraCasoRepository.findOne(info.getId());
-            if (bc == null) {
-                bc = new BitacoraCaso();
-            }
-        }
+        BitacoraCaso b = new BitacoraCaso();
+        b.setId(info.getId());
         if (info.getBitacoraCasoId() > 0) {
-            bc.setBitacoraCaso(casoRepository.findOne(info.getBitacoraCasoId()));
+            b.setBitacoraCaso(casoRepository.findOne(info.getBitacoraCasoId()));
         }
-        bc.setFechaActualizacion(info.getFechaActualizacion());
+        b.setFechaActualizacion(info.getFechaActualizacion());
         if (info.getStatusCaso() != null) {
             if (info.getStatusCaso().getId() > 0) {
-                bc.setStatusCaso(statusCasoRepository.findOne(info.getStatusCaso().getId()));
+                b.setStatusCaso(statusCasoRepository.findOne(info.getStatusCaso().getId()));
             }
             else if (info.getStatusCaso().getNombre() != null) {
                 throw new UnsupportedOperationException("no soportado aun");
             }
         }
-        bc.setUsuario(info.getUsuario());
-        return bc;
+        b.setUsuario(info.getUsuario());
+        return b;
     }
     
     public BitacoraProyecto buildBitacoraProyecto(BitacoraProyectoInfo info) {
         BitacoraProyecto b = new BitacoraProyecto();
-        if (info.getId() > 0) {
-            b = bitacoraProyectoRepository.findOne(info.getId());
-            if (b == null) {
-                b = new BitacoraProyecto();
-            }
-        }
+        b.setId(info.getId());
         b.setFechaActualizacion(info.getFechaActualizacion());
         if (info.getProyectoCancelacionId() > 0) {
             b.setProyectoCancelacion(proyectoCancelacionRepository.findOne(info.getProyectoCancelacionId()));
@@ -118,12 +108,7 @@ public class PersistanceDomainFactory {
     
     public BitacoraRPP buildBitacoraRPP(BitacoraRPPInfo info) {
         BitacoraRPP b = new BitacoraRPP();
-        if (info.getId() > 0) {
-            b = bitacoraRPPRepository.findOne(info.getId());
-            if (b == null) {
-                b = new BitacoraRPP();
-            }
-        }
+        b.setId(info.getId());
         b.setFechaActualizacion(info.getFechaActualizacion());
         if (info.getProyectoRPPId() > 0) {
             b.setProyectoRPP(proyectoRPPRepository.findOne(info.getId()));
@@ -142,12 +127,7 @@ public class PersistanceDomainFactory {
     
     public BitacoraRegistroNotario buildBitacoraRegistroNotario(BitacoraRegistroNotarioInfo info) {
         BitacoraRegistroNotario b = new BitacoraRegistroNotario();
-        if (info.getId() > 0) {
-            b = bitacoraRegistroNotarioRepository.findOne(info.getId());
-            if (b == null) {
-                b = new BitacoraRegistroNotario();
-            }
-        }
+        b.setId(info.getId());
         b.setFechaActualizacion(info.getFechaActualizacion());
         if (info.getNotarioId() > 0) {
             b.setNotario(notarioRepository.findOne(info.getNotarioId()));
@@ -166,12 +146,7 @@ public class PersistanceDomainFactory {
     
     public CancelacionArchivo buildCancelacionArchivo(CancelacionArchivoInfo info) {
         CancelacionArchivo b = new CancelacionArchivo();
-        if (info.getId() > 0) {
-            b = cancelacionArchivoRepository.findOne(info.getId());
-            if (b == null) {
-                b = new CancelacionArchivo();
-            }
-        }
+        b.setId(info.getId());
         b.setArchivo(info.getArchivo());
         b.setNombre(info.getNombre());
         if (info.getProyectoCancelacionId() > 0) {
@@ -183,12 +158,7 @@ public class PersistanceDomainFactory {
     
     public CartaCancelacion buildCartaCancelacion(CartaCancelacionInfo info) {
         CartaCancelacion b = new CartaCancelacion();
-        if (info.getId() > 0) {
-            b = cartaCancelacionRepository.findOne(info.getId());
-            if (b == null) {
-                b = new CartaCancelacion();
-            }
-        }
+        b.setId(info.getId());
         b.setCodigoCarta(info.getCodigoCarta());
         b.setPdf(info.getPdf());
         b.setXml(info.getXml());
@@ -208,12 +178,7 @@ public class PersistanceDomainFactory {
     
     public Caso buildCaso(CasoInfo info) {
         Caso b = new Caso();
-        if (info.getId() > 0) {
-            b = casoRepository.findOne(info.getId());
-            if (b == null) {
-                b = new Caso();
-            }
-        }
+        b.setId(info.getId());
         if (info.getCartaCancelacionId() > 0) {
             b.setCartaCancelacion(cartaCancelacionRepository.findOne(info.getCartaCancelacionId()));
         }
@@ -247,12 +212,7 @@ public class PersistanceDomainFactory {
     
     public Empleado buildEmpleado(EmpleadoInfo info) {
         Empleado b = new Empleado();
-        if (info.getId() > 0) {
-            b = empleadoRepository.findOne(info.getId());
-            if (b == null) {
-                b = new Empleado();
-            }
-        }
+        b.setId(info.getId());
         b.setApellidoMaterno(info.getApellidoMaterno());
         b.setApellidoPaterno(info.getApellidoPaterno());
         b.setClave(info.getClave());
@@ -267,12 +227,7 @@ public class PersistanceDomainFactory {
     
     public Entidad buildEntidad(EntidadInfo info) {
         Entidad b = new Entidad();
-        if (info.getId() > 0) {
-            b = entidadRepository.findOne(info.getId());
-            if (b == null) {
-                b = new Entidad();
-            }
-        }
+        b.setId(info.getId());
         b.setClave(info.getClave());
         b.setConvenio(info.isConvenio());
         b.setNombre(info.getNombre());
@@ -281,12 +236,7 @@ public class PersistanceDomainFactory {
     
     public Municipio buildMunicipio(MunicipioInfo info) {
         Municipio b = new Municipio();
-        if (info.getId() > 0) {
-            b = municipioRepository.findOne(info.getId());
-            if (b == null) {
-                b = new Municipio();
-            }
-        }
+        b.setId(info.getId());
         if (info.getEntidadId() > 0) {
             b.setEntidad(entidadRepository.findOne(info.getEntidadId()));
         }
@@ -296,12 +246,7 @@ public class PersistanceDomainFactory {
     
     public Notario buildNotario(NotarioInfo info) {
         Notario b = new Notario();
-        if (info.getId() > 0) {
-            b = notarioRepository.findOne(info.getId());
-            if (b == null) {
-                b = new Notario();
-            }
-        }
+        b.setId(info.getId());
         b.setCalleNotaria(info.getCalleNotaria());
         b.setCodigo(info.getCodigo());
         b.setCodigoPostalNotaria(info.getCodigoPostalNotaria());
@@ -330,12 +275,7 @@ public class PersistanceDomainFactory {
     
     public ProyectoCancelacion buildProyectoCancelacion(ProyectoCancelacionInfo info) {
         ProyectoCancelacion b = new ProyectoCancelacion();
-        if (info.getId() > 0) {
-            b = proyectoCancelacionRepository.findOne(info.getId());
-            if (b == null) {
-                b = new ProyectoCancelacion();
-            }
-        }
+        b.setId(info.getId());
         b.setAutorizado(info.isAutorizado());
         if (info.getEmpleadoId() > 0) {
             b.setEmpleado(empleadoRepository.findOne(info.getEmpleadoId()));
@@ -360,12 +300,7 @@ public class PersistanceDomainFactory {
     
     public ProyectoRPP buildProyectoRPP(ProyectoRPPInfo info) {
         ProyectoRPP b = new ProyectoRPP();
-        if (info.getId() > 0) {
-            b = proyectoRPPRepository.findOne(info.getId());
-            if (b == null) {
-                b = new ProyectoRPP();
-            }
-        }
+        b.setId(info.getId());
         if (info.getEntidadId() > 0) {
             b.setEntidad(entidadRepository.findOne(info.getEntidadId()));
         }
@@ -389,12 +324,7 @@ public class PersistanceDomainFactory {
     
     public Rol builRol(RolInfo info) {
         Rol b = new Rol();
-        if (info.getId() > 0) {
-            b = rolRepository.findOne(info.getId());
-            if (b == null) {
-                b = new Rol();
-            }
-        }
+        b.setId(info.getId());
         b.setDescripcion(info.getDescripcion());
         b.setNombre(info.getNombre());
         return b;
@@ -402,12 +332,7 @@ public class PersistanceDomainFactory {
     
     public StatusCaso buildStatusCaso(StatusCasoInfo info) {
         StatusCaso b = new StatusCaso();
-        if (info.getId() > 0) {
-            b = statusCasoRepository.findOne(info.getId());
-            if (b == null) {
-                b = new StatusCaso();
-            }
-        }
+        b.setId(info.getId());
         b.setClave(info.getClave());
         b.setDescripcion(info.getDescripcion());
         b.setNombre(info.getNombre());
@@ -416,12 +341,7 @@ public class PersistanceDomainFactory {
     
     public StatusProyecto buildStatusProyecto(StatusProyectoInfo info) {
         StatusProyecto b = new StatusProyecto();
-        if (info.getId() > 0) {
-            b = statusProyectoRepository.findOne(info.getId());
-            if (b == null) {
-                b = new StatusProyecto();
-            }
-        }
+        b.setId(info.getId());
         b.setClave(info.getClave());
         b.setDescripcion(info.getDescripcion());
         b.setNombre(info.getNombre());
@@ -430,12 +350,7 @@ public class PersistanceDomainFactory {
     
     public StatusRPP buildStatusRPP(StatusRPPInfo info) {
         StatusRPP b = new StatusRPP();
-        if (info.getId() > 0) {
-            b = statusRPPRepository.findOne(info.getId());
-            if (b == null) {
-                b = new StatusRPP();
-            }
-        }
+        b.setId(info.getId());
         b.setClave(info.getClave());
         b.setDescripcion(info.getDescripcion());
         b.setNombre(info.getNombre());
@@ -444,12 +359,7 @@ public class PersistanceDomainFactory {
     
     public StatusNotario buildStatusNotario(StatusNotarioInfo info) {
         StatusNotario b = new StatusNotario();
-        if (info.getId() > 0) {
-            b = statusNotarioRepository.findOne(info.getId());
-            if (b == null) {
-                b = new StatusNotario();
-            }
-        }
+        b.setId(info.getId());
         b.setClave(info.getClave());
         b.setNombre(info.getNombre());
         b.setDescripcion(info.getDescripcion());
@@ -458,12 +368,7 @@ public class PersistanceDomainFactory {
     
     public Usuario buildUsuario(UsuarioInfo info) {
         Usuario b = new Usuario();
-        if (info.getId() > 0) {
-            b = usuarioRepository.findOne(info.getId());
-            if (b == null) {
-                b = new Usuario();
-            }
-        }
+        b.setId(info.getId());
         b.setActivo(info.isActivo());
         b.setBloqueado(info.isBloqueado());
         b.setContrasena(info.getContrasena());

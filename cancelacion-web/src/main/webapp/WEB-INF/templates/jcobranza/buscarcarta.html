@@ -51,23 +51,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <section id="widget-grid" class="">
                     <div th:replace="layout/smartadmin::fr-notificaciones"></div>
                     <div class="row">
-                        <div class="col-sm-12">
-                            <div class="jarviswidget" id="wid-id-0" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
-                                <header>
-                                    <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
-                                    <h2>Buscar carta de cancelacion</h2>
-                                </header>
-                                <div role="content" class="widget-body">
-
-                                    <span>numero de caso</span>
-                                    <span>y???</span>
-                                    <span>numero de credito</span>
-                                    <span>buscar</span>
-
-                                </div><!-- fin jarviswidget content -->
-                            </div><!-- fin jarviswidget -->
-                        </div><!-- fin col -->
-                    </div><!-- fin row -->
+                        <div class="col-md-12">
+                            <div class="well">
+                                <form action="#" th:action="@{/cobranza/buscar}" method="post">
+                                    <div class="row">
+                                        <div class="col-xs-5">
+                                            <input class="form-control" type="text" placeholder="Numero de caso" name="numeroCaso"/>
+                                        </div>
+                                        <div class="col-xs-5">
+                                            <input class="form-control" type="text" placeholder="Numero de credito" name="numeroCredito"/>
+                                        </div>
+                                        <div class="col-xs-1">
+                                            <button class="btn btn-default btn-primary"><i class="fa fa-search"></i>Buscar</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </section><!-- fin de widget-grid -->
             </div><!-- fin de content -->
         </div><!-- fin de main -->

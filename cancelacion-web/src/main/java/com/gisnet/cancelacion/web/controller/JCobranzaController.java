@@ -50,7 +50,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 @Controller
 public class JCobranzaController {
-    
+
     private static final Logger logger = Logger.getLogger(JCobranzaController.class);
 
     @Autowired
@@ -69,24 +69,19 @@ public class JCobranzaController {
     private StatusProyectoService statusProyectoService;
     @Autowired
     private UsuarioService usuarioService;
-    
+
     @Autowired
     private SesionJCobranza sesion;
 
     public String index(Model model, Principal principal) {
-        if (sesion.getEmpleado() == null) {
-            FindResponse<EmpleadoInfo> findresponse = empleadoService.find(
-                new FindByRequest("nombreUsuario", principal.getName()));
-            EmpleadoInfo empleado = findresponse.getInfo();
-            if (empleado == null) {
-                System.err.println("Datos del empleado no encontrados.");
-                model.addAttribute("casosrevizar", new ArrayList<>());
-                model.addAttribute("casosespera", new ArrayList<>());
-                return "/jcobranza/index";
-            }
-            sesion.setEmpleado(empleado);
+        sesionSetEmpleado(principal);
+        EmpleadoInfo empleado = sesion.getEmpleado();
+        if (empleado == null) {
+            System.err.println("Datos del empleado no encontrados.");
+            model.addAttribute("casosrevizar", new ArrayList<>());
+            model.addAttribute("casosespera", new ArrayList<>());
+            return "/jcobranza/index";
         }
-        sesion.setCaso(null);
         ListResponse<ProyectoCancelacionInfo> listresponse = proyectoCancelacionService.list(
                 new ListRequest("empleadoId", sesion.getEmpleado().getId()));
         List<CasoInfo> casosRevizar = new ArrayList<>();
@@ -96,8 +91,7 @@ public class JCobranzaController {
                 FindResponse<CasoInfo> find = casoService.find(
                         new FindByRequest("proyectoCancelacionId", info.getId()));
                 casosRevizar.add(find.getInfo());
-            }
-            else if (info.getStatusProyecto().getClave() == 8) {
+            } else if (info.getStatusProyecto().getClave() == 8) {
                 FindResponse<CasoInfo> find = casoService.find(
                         new FindByRequest("proyectoCancelacionId", info.getId()));
                 casosEspera.add(find.getInfo());
@@ -105,70 +99,112 @@ public class JCobranzaController {
         }
         model.addAttribute("casosrevizar", casosRevizar);
         model.addAttribute("casosespera", casosEspera);
-        logger.error("casosrevizar " + casosRevizar);
         return "/jcobranza/index";
     }
 
-    private CasoInfo getCaso(String numeroCaso) {
-    	if (sesion.getCaso() != null) {
+    private void sesionSetEmpleado(Principal principal) {
+        if (sesion.getEmpleado() == null) {
+            FindResponse<EmpleadoInfo> findresponse = empleadoService.find(
+                    new FindByRequest("nombreUsuario", principal.getName()));
+            EmpleadoInfo empleado = findresponse.getInfo();
+            sesion.setEmpleado(empleado);
+        }
+    }
+
+    private void sesionSetProyectoCancelacion() {
+        if (sesion.getCaso().getProyectoCancelacionId() > 0) {
+            FindResponse<ProyectoCancelacionInfo> find = proyectoCancelacionService.find(
+                    new FindByRequest(sesion.getCaso().getProyectoCancelacionId()));
+            sesion.setProyectoCancelacion(find.getInfo());
+        } else {
+            sesion.setProyectoCancelacion(new ProyectoCancelacionInfo());
+        }
+    }
+
+    private void sesionSetCaso(String numeroCaso) throws CancelacionWebException {
+        if (sesion.getCaso() != null) {
             if (sesion.getCaso().getNumeroCaso().equals(numeroCaso)) {
-                return sesion.getCaso();
+                sesionSetProyectoCancelacion();
+            }
+        } else {
+            FindResponse<CasoInfo> find = casoService.find(new FindByRequest("numeroCaso", numeroCaso));
+            sesion.setCaso(find.getInfo());
+            if (find.getInfo() != null) {
+                sesionSetProyectoCancelacion();
+            } else {
+                sesion.setProyectoCancelacion(null);
             }
         }
-        FindResponse<CasoInfo> find = casoService.find(new FindByRequest("numeroCaso", numeroCaso));
-        sesion.setCaso(find.getInfo());
-        return sesion.getCaso();
+        if (sesion.getProyectoCancelacion().getEmpleadoId() > 0) {
+            if (sesion.getProyectoCancelacion().getEmpleadoId() != sesion.getEmpleado().getId()) {
+                throw new CancelacionWebException("Asignado a otro jefe de cobranza");
+            }
+        }
     }
 
     @RequestMapping(value = "/cobranza/caso/{numeroCaso}", method = RequestMethod.GET)
-    public String ver(@PathVariable String numeroCaso, Model model, RedirectAttributes redirectAttributes) {
-    	List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
-        CasoInfo caso = getCaso(numeroCaso);
+    public String ver(@PathVariable String numeroCaso, Model model, RedirectAttributes redirectAttributes, Principal principal) {
+        sesionSetEmpleado(principal);
+        List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
+        try {
+            sesionSetCaso(numeroCaso);
+        } catch (CancelacionWebException ex) {
+            mensajes.add("warning::Caso asignado a otro jefe de cobranza");
+            return "redirect:/";
+        }
+        CasoInfo caso = sesion.getCaso();
         if (caso == null) {
-        	mensajes.add("warning::El caso " + numeroCaso + " no existe.");
-        	return "redirect:/";
+            mensajes.add("warning::El caso " + numeroCaso + " no existe.");
+            return "redirect:/";
         }
         model.addAttribute("caso", caso);
-        
-        FindResponse<ProyectoCancelacionInfo> find1 = proyectoCancelacionService.find(
-                new FindByRequest(caso.getProyectoCancelacionId()));
-        ProyectoCancelacionInfo proyecto = find1.getInfo();
+
+        ProyectoCancelacionInfo proyecto = sesion.getProyectoCancelacion();
         model.addAttribute("proyecto", proyecto);
-
-        ListResponse<CancelacionArchivoInfo> listresp = cancelacionArchivoService.list(
-                new ListRequest("proyectoCancelacionId", proyecto.getId()));
-        model.addAttribute("archivos", listresp.getList());
-
+        if (proyecto == null) {
+            model.addAttribute("archivos", new ArrayList<CancelacionArchivoInfo>());
+        } else {
+            ListResponse<CancelacionArchivoInfo> list1 = cancelacionArchivoService.list(
+                    new ListRequest("proyectoCancelacionId", proyecto.getId()));
+            model.addAttribute("archivos", list1.getList());
+        }
         return "/jcobranza/ver";
     }
 
     @RequestMapping(value = "/cobranza/caso/{numeroCaso}/validaCredito", method = RequestMethod.POST)
     public String actualizaProcedeCredito(@PathVariable String numeroCaso, Model model, RedirectAttributes redirectAttributes) {
-    	List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
-    	CasoInfo caso = getCaso(numeroCaso);
-        if (caso == null) {
-        	mensajes.add("warning::El caso " + numeroCaso + " no existe.");
-        	return "redirect:/";
+        List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
+        try {
+            sesionSetCaso(numeroCaso);
+        } catch (CancelacionWebException ex) {
+            mensajes.add("warning::Caso asignado a otro jefe de cobranza");
+            return "redirect:/";
         }
-    	String antes = caso.getProcedeCredito();
-    	SaveResponse<CasoInfo> validarCredito = casoService.validarCredito(new SaveRequest<>(caso));
+        CasoInfo caso = sesion.getCaso();
+        if (caso == null) {
+            mensajes.add("warning::El caso " + numeroCaso + " no existe.");
+            return "redirect:/";
+        }
+        String antes = caso.getProcedeCredito();
+        SaveResponse<CasoInfo> validarCredito = casoService.validarCredito(new SaveRequest<>(caso));
         caso = validarCredito.getInfo();
         if (!antes.equals(caso.getProcedeCredito())) {
-        	casoService.update(new UpdateRequest<>(caso));
+            casoService.update(new UpdateRequest<>(caso));
         }
         sesion.setCaso(caso);
-    	return "redirect:/cobranza/caso/" + numeroCaso;
+        return "redirect:/cobranza/caso/" + numeroCaso;
     }
 
     @RequestMapping(value = "/archivoss/{id}/{filename}", method = RequestMethod.GET, produces = MediaType.ALL_VALUE)
-    public @ResponseBody byte[] descargar(
+    public @ResponseBody
+    byte[] descargar(
             @PathVariable long id,
             @PathVariable String filename,
             HttpServletResponse response) {
         FindResponse<CancelacionArchivoInfo> file = cancelacionArchivoService.findBy(new FindByRequest(id));
         if (file.getInfo() == null) {
-        	response.setContentType("text/plain");
-        	return "Archivo no encontrado.".getBytes();
+            response.setContentType("text/plain");
+            return "Archivo no encontrado.".getBytes();
         }
         CancelacionArchivoInfo info = file.getInfo();
         response.setContentType(info.getMimetype());
@@ -177,18 +213,21 @@ public class JCobranzaController {
 
     @RequestMapping(value = "/cobranza/caso/{numeroCaso}/fechafirma", method = RequestMethod.GET)
     public String asignarFechaFirmaNotario(@PathVariable String numeroCaso, Model model, RedirectAttributes redirectAttributes) {
-    	List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
-    	CasoInfo caso = getCaso(numeroCaso);
+        List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
+        try {
+            sesionSetCaso(numeroCaso);
+        } catch (CancelacionWebException ex) {
+            mensajes.add("warning::Caso asignado a otro jefe de cobranza");
+            return "redirect:/";
+        }
+        CasoInfo caso = sesion.getCaso();
         if (caso == null) {
-        	mensajes.add("warning::El caso " + numeroCaso + " no existe.");
-        	return "redirect:/";
+            mensajes.add("warning::El caso " + numeroCaso + " no existe.");
+            return "redirect:/";
         }
         model.addAttribute("caso", caso);
-        
-        FindResponse<ProyectoCancelacionInfo> find1 = proyectoCancelacionService.find(
-                new FindByRequest(caso.getProyectoCancelacionId()));
-        model.addAttribute("proyecto", find1.getInfo());
-        
+        model.addAttribute("proyecto", sesion.getProyectoCancelacion());
+
         return "/jcobranza/firma";
     }
 
@@ -198,23 +237,27 @@ public class JCobranzaController {
             @RequestParam("fechaFirma") Date fechaAsignada,
             Model model,
             RedirectAttributes redirectAttributes) {
-    	List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
-    	CasoInfo caso = getCaso(numeroCaso);
+        List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
+        try {
+            sesionSetCaso(numeroCaso);
+        } catch (CancelacionWebException ex) {
+            mensajes.add("warning::Caso asignado a otro jefe de cobranza");
+            return "redirect:/";
+        }
+        CasoInfo caso = sesion.getCaso();
         if (caso == null) {
-        	mensajes.add("warning::El caso " + numeroCaso + " no existe.");
-        	return "redirect:/";
+            mensajes.add("warning::El caso " + numeroCaso + " no existe.");
+            return "redirect:/";
         }
         model.addAttribute("caso", caso);
 
         // TODO guarda fecha firma con notario / actualizacion de estados
-        FindResponse<ProyectoCancelacionInfo> find1 = proyectoCancelacionService.find(
-                new FindByRequest(caso.getProyectoCancelacionId()));
-        ProyectoCancelacionInfo proyecto = find1.getInfo();
+        ProyectoCancelacionInfo proyecto = sesion.getProyectoCancelacion();
         FindResponse<StatusProyectoInfo> find2 = statusProyectoService.find(new FindByRequest("clave", 8));
         proyecto.setStatusProyecto(find2.getInfo());
         proyecto.setFechaAsignadaParaFirma(fechaAsignada);
-        
-        UpdateResponse<ProyectoCancelacionInfo> update = proyectoCancelacionService.update(new UpdateRequest<>(proyecto));
+
+        proyectoCancelacionService.update(new UpdateRequest<>(proyecto));
         return "redirect:/";
     }
 
@@ -224,23 +267,115 @@ public class JCobranzaController {
             @RequestParam("fechaFirma") Date fechaAsignada,
             Model model,
             RedirectAttributes redirectAttributes) {
-    	List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
-    	CasoInfo caso = getCaso(numeroCaso);
+        List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
+        try {
+            sesionSetCaso(numeroCaso);
+        } catch (CancelacionWebException ex) {
+            mensajes.add("warning::Caso asignado a otro jefe de cobranza");
+            return "redirect:/";
+        }
+        CasoInfo caso = sesion.getCaso();
         if (caso == null) {
-        	mensajes.add("warning::El caso " + numeroCaso + " no existe.");
-        	return "redirect:/";
+            mensajes.add("warning::El caso " + numeroCaso + " no existe.");
+            return "redirect:/";
         }
         model.addAttribute("caso", caso);
 
         // TODO guarda fecha firma con notario / actualizacion de estados
-        FindResponse<ProyectoCancelacionInfo> find1 = proyectoCancelacionService.find(
-                new FindByRequest(caso.getProyectoCancelacionId()));
-        ProyectoCancelacionInfo proyecto = find1.getInfo();
+        ProyectoCancelacionInfo proyecto = sesion.getProyectoCancelacion();
+
         FindResponse<StatusProyectoInfo> find2 = statusProyectoService.find(new FindByRequest("clave", 9));
         proyecto.setStatusProyecto(find2.getInfo());
         proyecto.setFechaFirmaNotario(fechaAsignada);
-        
-        UpdateResponse<ProyectoCancelacionInfo> update = proyectoCancelacionService.update(new UpdateRequest<>(proyecto));
+
+        proyectoCancelacionService.update(new UpdateRequest<>(proyecto));
         return "redirect:/";
     }
+
+    @RequestMapping(value = "/cobranza/buscar", method = RequestMethod.GET)
+    public String buscar(Model model, RedirectAttributes redirectAttributes) {
+        return "/jcobranza/buscarcarta";
+    }
+
+    @RequestMapping(value = "/cobranza/buscar", method = RequestMethod.POST)
+    public String buscarResultado(
+            @RequestParam("numeroCaso") String numeroCaso,
+            @RequestParam("numeroCredito") String numeroCredito,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+        List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
+        FindResponse<CasoInfo> find1 = casoService.find(new FindByRequest("numeroCaso", numeroCaso));
+        CasoInfo caso = find1.getInfo();
+        if (!caso.getNumeroCredito().equals(numeroCredito)) {
+            mensajes.add("info::No existe caso con los datos ingresados");
+            return "redirect:/cobranza/buscar";
+        }
+        if (caso.getNotarioId() > 0) {
+            if (caso.getProyectoCancelacionId() > 0) {
+                FindResponse<ProyectoCancelacionInfo> find = proyectoCancelacionService.find(
+                        new FindByRequest(caso.getProyectoCancelacionId()));
+                ProyectoCancelacionInfo info = find.getInfo();
+                if (info.getStatusProyecto().getClave() != 11) {
+                    if (info.getEmpleadoId() > 0 && info.getEmpleadoId() != sesion.getEmpleado().getId()) {
+                        mensajes.add("warning::Caso asignado a otro jefe de cobranza");
+                        return "redirect:/cobranza/buscar";
+                    }
+                }
+                sesion.setProyectoCancelacion(info);
+            }
+        }
+        sesion.setCaso(caso);
+        return "redirect:/cobranza/caso/" + caso.getNumeroCaso();
+    }
+
+    @RequestMapping(value = "/cobranza/caso/{numeroCaso}/autorizar", method = RequestMethod.POST)
+    public String autorizarProyecto(
+            @PathVariable String numeroCaso,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+        List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
+        try {
+            sesionSetCaso(numeroCaso);
+        } catch (CancelacionWebException ex) {
+            mensajes.add("warning::Caso asignado a otro jefe de cobranza");
+            return "redirect:/";
+        }
+        CasoInfo caso = sesion.getCaso();
+        ProyectoCancelacionInfo proyecto = sesion.getProyectoCancelacion();
+
+        if (caso.getNotarioId() > 0 && caso.getProyectoCancelacionId() > 0) {
+            if (proyecto.getStatusProyecto().getClave() == 2) {
+                mensajes.add("warning::Caso asignado a notario, en espera de aceptacion o rechazo.");
+                return "redirect:/cobranza/caso/" + caso.getNumeroCaso();
+            }
+            if (proyecto.getEmpleadoId() > 0 && proyecto.getEmpleadoId() != sesion.getEmpleado().getId()) {
+                mensajes.add("warning::Caso asignado a otro jefe de cobranza.");
+                return "redirect:/cobranza/caso/" + caso.getNumeroCaso();
+            }
+        } else if (caso.getProyectoCancelacionId() > 0) {
+            if (proyecto.isAutorizado()) {
+                mensajes.add("warning::Proyecto previamente autorizado.");
+                return "redirect:/cobranza/caso/" + caso.getNumeroCaso();
+            }
+            if (proyecto.getEmpleadoId() > 0 && proyecto.getEmpleadoId() != sesion.getEmpleado().getId()) {
+                mensajes.add("warning::Caso asignado a otro jefe de cobranza.");
+                return "redirect:/cobranza/caso/" + caso.getNumeroCaso();
+            }
+        }
+
+        proyecto.setEmpleadoId(sesion.getEmpleado().getId());
+        proyecto.setAutorizado(true);
+        proyecto.setFechaAutorizacion(new Date());
+        proyecto.setStatusProyecto(statusProyectoService.find(new FindByRequest("clave", 6)).getInfo());
+        UpdateResponse<ProyectoCancelacionInfo> update1 = proyectoCancelacionService.update(new UpdateRequest<>(proyecto));
+        proyecto = update1.getInfo();
+
+        caso.setProyectoCancelacionId(proyecto.getId());
+        casoService.update(new UpdateRequest<>(caso));
+
+        mensajes.add("success::Caso autorizado.");
+
+        return "redirect:/cobranza/caso/" + caso.getNumeroCaso();
+    }
+
 }

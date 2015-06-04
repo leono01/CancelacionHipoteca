@@ -18,6 +18,7 @@ package com.gisnet.cancelacion.web.domain;
 
 import com.gisnet.cancelacion.events.info.CasoInfo;
 import com.gisnet.cancelacion.events.info.EmpleadoInfo;
+import com.gisnet.cancelacion.events.info.ProyectoCancelacionInfo;
 import com.gisnet.cancelacion.events.info.UsuarioInfo;
 
 /**
@@ -30,6 +31,7 @@ public class SesionJCobranza {
     private UsuarioInfo info;
 
     private CasoInfo caso;
+    private ProyectoCancelacionInfo proyectoCancelacion;
 
     public SesionJCobranza() {
     }
@@ -56,6 +58,14 @@ public class SesionJCobranza {
 
     public void setCaso(CasoInfo caso) {
         this.caso = caso;
+    }
+
+        public ProyectoCancelacionInfo getProyectoCancelacion() {
+        return proyectoCancelacion;
+    }
+
+    public void setProyectoCancelacion(ProyectoCancelacionInfo proyectoCancelacion) {
+        this.proyectoCancelacion = proyectoCancelacion;
     }
 
 }

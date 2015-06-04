@@ -69,7 +69,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                 <th>calle</th>
                                                 <th>numero</th>
                                                 <th>colonia</th>
-                                                <th>modificar</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -83,10 +82,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                 <td th:text="*{calleNotaria}"></td>
                                                 <td th:text="*{numeroCalle}"></td>
                                                 <td th:text="*{coloniaNotaria}"></td>
-                                                <td><a href="#" th:href="@{/juridico/modificar/{notario}(notario=${row.id})}">Modificar</a></td>
                                             </tr>
                                             <tr th:if="${list.isEmpty()}">
-                                                <td colspan="10">Ningun notario registrado</td>
+                                                <td colspan="9">Ningun notario registrado</td>
                                             </tr>
                                         </tbody>
                                     </table>

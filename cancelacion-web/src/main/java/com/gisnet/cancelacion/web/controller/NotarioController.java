@@ -333,8 +333,6 @@ public class NotarioController {
     		
     		// crea proyecto cancelacion
             ProyectoCancelacionInfo proyecto = new ProyectoCancelacionInfo();
-            proyecto.setFechaCreacion(new Date());
-            
             FindResponse<StatusProyectoInfo> findstatus = statusProyectoService.find(
                     new FindByRequest("clave", 11));
             proyecto.setStatusProyecto(findstatus.getInfo());

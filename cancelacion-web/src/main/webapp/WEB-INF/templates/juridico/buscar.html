@@ -34,17 +34,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         
         <div id="main" role="main">
             <div id="ribbon">
-                <span th:replace="layout/smartadmin::fr-resetwidgets"></span>
                 <ol class="breadcrumb">
                     <li>Inicio</li>
-                    <li>Buscar Notario</li>
+                    <li>Modificar Notario</li>
                 </ol>
             </div>
             
             <div id="content">
                 <div class="row">
                     <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-                        <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Inicio</h1>
+                        <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> Modificar notario<span>&gt; buscar</span></h1>
                     </div>
                 </div>
                 
@@ -54,10 +53,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                         <div class="col-md-6">
                             <div class="well">
                                 <form class="form-inline" action="#" th:action="@{/juridico/buscar}" method="post">
-                                    <div class="input-group" style="width: 30%;">
-                                        <input class="form-control" type="text" placeholder="Buscar numero de notaria y estado" name="nombre"/>
-                                    </div>
                                     <div class="input-group" style="width: 50%;">
+                                        <input class="form-control" type="text" placeholder="Numero de notaria" name="nombre"/>
+                                    </div>
+                                    <div class="input-group" style="width: 30%;">
                                         <select class="form-control" name="entidad">
                                             <option th:each="entidad:${entidades}" th:value="${entidad.id}" th:text="${entidad.nombre}"></option>
                                         </select>
@@ -70,7 +69,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <div class="well">
                                 <form action="#" th:action="@{/juridico/buscar}" method="post">
                                     <div class="input-group">
-                                        <input class="form-control" type="text" placeholder="Buscar nombre notario" name="nombre"/>
+                                        <input class="form-control" type="text" placeholder="Nombre del notario" name="nombre"/>
                                         <div class="input-group-btn">
                                             <input type="hidden" name="entidad" value="-1"/>
                                             <button class="btn btn-default btn-primary"><i class="fa fa-search"></i>Buscar</button>
@@ -118,7 +117,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                 <td><a href="#" th:href="@{/juridico/modificar/{notario}(notario=${row.id})}">Modificar</a></td>
                                             </tr>
                                             <tr th:if="${list.isEmpty()}">
-                                                <td colspan="10">Ningun notario registrado</td>
+                                                <td colspan="10">Ningun notario encontrado</td>
                                             </tr>
                                         </tbody>
                                     </table>
