@@ -219,7 +219,8 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 	        
 	        ida.setCodigo(0);
 	        ida.setDescripcion("Se actualizó correctamente el caso.");
-	        
+	        ida.setNumeroDeCaso(numeroDeCaso);
+            ida.setNumeroDeCredito(numeroDeCredito);
 	        
 	        //System.out.println("IDA CODIGO:   "+ ida.getCodigo());
 	        
