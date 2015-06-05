@@ -95,7 +95,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     </div>
                                 </div><!-- fin jarviswidget content -->
                             </div><!-- fin jarviswidget -->
-                        </div><!-- fin col -->
+                        
+                        
                         <div class="col col-md-6">
                             <div class="jarviswidget" id="wid-id-2" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
                                 <header>
@@ -120,30 +121,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                             <div class="jarviswidget" id="wid-id-3" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
                                 <header>
                                     <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
-                                    <h2>Validar y firmar carta</h2>
+                                    <h2>Validar y firmar Caso</h2>
                                 </header>
                                 <div role="content">
                                     <div class="widget-body">
                                         <form action="#" th:if="!${proyecto.autorizado}" th:action="@{/cobranza/caso/{numeroCaso}/autorizar(numeroCaso=${caso.numeroCaso})}" method="post">
                                             <button class="btn btn-primary">Autorizar</button>
                                         </form>
+                                        <div th:if="${caso.notarioId}&gt;0">
+                                            <a class="btn btn-primary" th:if="${caso.statusCaso.clave}==13" th:href="@{/cobranza/caso/{numeroCaso}/fechafirma(numeroCaso=${caso.numeroCaso})}">Agendar</a>
+                                            <a class="btn btn-primary" th:if="${caso.statusCaso.clave}==14" th:href="@{/cobranza/caso/{numeroCaso}/fechafirma(numeroCaso=${caso.numeroCaso})}">Registrar</a>
+                                        </div>
                                         <span th:if="${proyecto.autorizado}">Proyecto de cancelacion autorizado.</span>
                                     </div>
                                 </div><!-- fin jarviswidget content -->
                             </div><!-- fin jarviswidget -->
                             
-                            <div class="jarviswidget" th:if="${caso.notarioId}>0" id="wid-id-4" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
-                                <header>
-                                    <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
-                                    <h2>Firma de notario</h2>
-                                </header>
-                                <div role="content">
-                                    <div class="widget-body">
-                                        <a class="btn btn-primary" th:if="${proyecto.statusProyecto.clave}==5" th:href="@{/cobranza/caso/{numeroCaso}/fechafirma(numeroCaso=${caso.numeroCaso})}">Agendar</a>
-                                        <a class="btn btn-primary" th:if="${proyecto.statusProyecto.clave}==8" th:href="@{/cobranza/caso/{numeroCaso}/fechafirma(numeroCaso=${caso.numeroCaso})}">Registrar</a>
-                                    </div>
-                                </div><!-- fin jarviswidget content -->
-                            </div><!-- fin jarviswidget -->
                         </div><!-- fin col -->
                     </div><!-- fin row -->
                 </section><!-- fin de widget-grid -->

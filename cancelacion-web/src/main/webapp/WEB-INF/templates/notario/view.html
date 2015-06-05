@@ -64,18 +64,38 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
                                     <h2>Carta de cancelacion</h2>
                                 </header>
-                                <div role="content" class="no-padding">
-                                    <object id="pdf" th:attr="data=@{/archivos/{id}/carta_de_cancelacion.pdf(id=${caso.cartaCancelacionId})}" type="application/pdf" style="width: 100%; height: 500px;">
-                                        <p>No se pudo mostrar la carta de cancelacion del caso <span th:text="${caso.numeroCaso}"></span> - <a th:href="@{/archivos/{id}/carta_de_cancelacion.pdf(id=${caso.cartaCancelacionId})}">carta_de_cancelacion.pdf</a></p>
-                                        <p th:text="${cartac}"></p>
-                                    </object>
-                                    
-                                    <div class="widget-footer">
-                                        <a class="btn btn-success" th:if="${caso.statusCaso.clave} == 2" th:href="@{/notario/caso/{id}/aceptar(id=${caso.numeroCaso})}" role="button">Aceptar</a>
-                                        <a class="btn btn-warning" th:if="${caso.statusCaso.clave} == 2" th:href="@{/notario/caso/{id}/rechazar(id=${caso.numeroCaso})}" role="button">Rechazar</a>
+                                <div role="content">
+                                    <div class="widget-body no-padding">
+                                        <object id="pdf" th:attr="data=@{/archivos/{id}/carta_de_cancelacion.pdf(id=${caso.cartaCancelacionId})}" type="application/pdf" style="width: 100%; height: 500px;">
+                                            <p>No se pudo mostrar la carta de cancelacion del caso <span th:text="${caso.numeroCaso}"></span> - <a th:href="@{/archivos/{id}/carta_de_cancelacion.pdf(id=${caso.cartaCancelacionId})}">carta_de_cancelacion.pdf</a></p>
+                                        </object>
+                                        <!-- caso notario infonavit -->
+                                        <div class="widget-footer" th:if="${caso.statusCaso.clave}==8">
+                                            <a class="btn btn-success" th:href="@{/notario/caso/{id}/aceptar(id=${caso.numeroCaso})}" role="button">Aceptar</a>
+                                            <a class="btn btn-warning" th:href="@{/notario/caso/{id}/rechazar(id=${caso.numeroCaso})}" role="button">Rechazar</a>
+                                        </div>
+                                        <!-- caso notario no infonavit -->
+                                        <!-- clave 4 -->
                                     </div>
                                 </div><!-- fin jarviswidget content -->
                             </div><!-- fin jarviswidget -->
+                        </div><!-- fin col -->
+                    </div><!-- fin row -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <!--
+                            <div class="jarviswidget" id="wid-id-2" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+                                <header>
+                                    <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
+                                    <h2>Registro fecha de proyecto</h2>
+                                </header>
+                                <div role="content">
+                                    <div class="widget-body no-padding">
+                            
+                                    </div>
+                                </div>
+                            </div>
+                            -->
                         </div><!-- fin col -->
                     </div><!-- fin row -->
                 </section><!-- fin de widget-grid -->

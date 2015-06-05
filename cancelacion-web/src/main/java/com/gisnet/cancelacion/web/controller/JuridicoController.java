@@ -137,7 +137,7 @@ public class JuridicoController {
         info.setColoniaNotaria(form.getColoniaNotaria());
         info.setHabilitado(form.isActivo());
         
-        info.setMunicipioId(0l);
+        info.setMunicipioId(form.getMunicipioId());
         info.setEntidadId(form.getEntidadId());
         FindResponse<EntidadInfo> find = entidadservice.find(new FindByRequest(form.getEntidadId()));
         if (find.getInfo() != null) {

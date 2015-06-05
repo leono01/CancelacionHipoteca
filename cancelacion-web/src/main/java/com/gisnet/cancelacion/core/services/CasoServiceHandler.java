@@ -68,7 +68,37 @@ public class CasoServiceHandler implements CasoService {
     public DeleteResponse<CasoInfo> delete(DeleteRequest event) {
         return service.delete(event);
     }
+    
+    public Object notarioInfonavitListaCasosPendientes() {
+        throw new UnsupportedOperationException("no soportado aun");
+    }
+    
+    public Object notarioInfonavitListaCasosAsignados() {
+        throw new UnsupportedOperationException("no soportado aun");
+    }
+    
+    public Object notarioInfonavitAceptaCaso() {
+        throw new UnsupportedOperationException("no soportado aun");
+    }
+    
+    public Object notarioInfonavitRechazaCaso() {
+        throw new UnsupportedOperationException("no soportado aun");
+    }
+    
+    
+    public Object gerenteCobranzaValidaCaso() {
+        throw new UnsupportedOperationException("no soportado aun");
+    }
+    
+    public Object gerenteCobranzaProgramaFechaFirma() {
+        throw new UnsupportedOperationException("no soportado aun");
+    }
+    
+    public Object gerenteCobranzaRegistraFechaFirma() {
+        throw new UnsupportedOperationException("no soportado aun");
+    }
 
+    
     @Override
     public SaveResponse<CasoInfo> validarCredito(SaveRequest<CasoInfo> event) {
         return microflujo.validarCredito(event);

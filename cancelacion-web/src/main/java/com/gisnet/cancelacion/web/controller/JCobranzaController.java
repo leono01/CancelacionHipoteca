@@ -22,6 +22,7 @@ import com.gisnet.cancelacion.core.services.CasoService;
 import com.gisnet.cancelacion.core.services.EmpleadoService;
 import com.gisnet.cancelacion.core.services.NotarioService;
 import com.gisnet.cancelacion.core.services.ProyectoCancelacionService;
+import com.gisnet.cancelacion.core.services.StatusCasoService;
 import com.gisnet.cancelacion.core.services.StatusProyectoService;
 import com.gisnet.cancelacion.core.services.UsuarioService;
 import com.gisnet.cancelacion.events.*;
@@ -65,6 +66,8 @@ public class JCobranzaController {
     private NotarioService notarioService;
     @Autowired
     private ProyectoCancelacionService proyectoCancelacionService;
+    @Autowired
+    private StatusCasoService statusCasoService;
     @Autowired
     private StatusProyectoService statusProyectoService;
     @Autowired
@@ -111,28 +114,36 @@ public class JCobranzaController {
         }
     }
 
-    private void sesionSetProyectoCancelacion() {
+    private void sesionSetProyectoCancelacion() throws NullPointerException {
         if (sesion.getCaso().getProyectoCancelacionId() > 0) {
             FindResponse<ProyectoCancelacionInfo> find = proyectoCancelacionService.find(
                     new FindByRequest(sesion.getCaso().getProyectoCancelacionId()));
+            if (find.getInfo() == null) {
+                sesion.setProyectoCancelacion(null);
+                throw new NullPointerException("No existe proyecto de cancelacion con id " + sesion.getCaso().getProyectoCancelacionId());
+            }
             sesion.setProyectoCancelacion(find.getInfo());
         } else {
             sesion.setProyectoCancelacion(new ProyectoCancelacionInfo());
         }
     }
 
-    private void sesionSetCaso(String numeroCaso) throws CancelacionWebException {
+    private void sesionSetCaso(String numeroCaso) throws CancelacionWebException, NullPointerException {
         if (sesion.getCaso() != null) {
             if (sesion.getCaso().getNumeroCaso().equals(numeroCaso)) {
                 sesionSetProyectoCancelacion();
+            } else {
+                sesion.setCaso(null);
             }
-        } else {
+        }
+        if (sesion.getCaso() == null) {
             FindResponse<CasoInfo> find = casoService.find(new FindByRequest("numeroCaso", numeroCaso));
             sesion.setCaso(find.getInfo());
             if (find.getInfo() != null) {
                 sesionSetProyectoCancelacion();
             } else {
                 sesion.setProyectoCancelacion(null);
+                throw new NullPointerException("No existe caso con id " + numeroCaso);
             }
         }
         if (sesion.getProyectoCancelacion().getEmpleadoId() > 0) {
@@ -151,12 +162,11 @@ public class JCobranzaController {
         } catch (CancelacionWebException ex) {
             mensajes.add("warning::Caso asignado a otro jefe de cobranza");
             return "redirect:/";
-        }
-        CasoInfo caso = sesion.getCaso();
-        if (caso == null) {
+        } catch (NullPointerException ex) {
             mensajes.add("warning::El caso " + numeroCaso + " no existe.");
             return "redirect:/";
         }
+        CasoInfo caso = sesion.getCaso();
         model.addAttribute("caso", caso);
 
         ProyectoCancelacionInfo proyecto = sesion.getProyectoCancelacion();
@@ -179,12 +189,11 @@ public class JCobranzaController {
         } catch (CancelacionWebException ex) {
             mensajes.add("warning::Caso asignado a otro jefe de cobranza");
             return "redirect:/";
-        }
-        CasoInfo caso = sesion.getCaso();
-        if (caso == null) {
+        } catch (NullPointerException ex) {
             mensajes.add("warning::El caso " + numeroCaso + " no existe.");
             return "redirect:/";
         }
+        CasoInfo caso = sesion.getCaso();
         String antes = caso.getProcedeCredito();
         SaveResponse<CasoInfo> validarCredito = casoService.validarCredito(new SaveRequest<>(caso));
         caso = validarCredito.getInfo();
@@ -219,12 +228,11 @@ public class JCobranzaController {
         } catch (CancelacionWebException ex) {
             mensajes.add("warning::Caso asignado a otro jefe de cobranza");
             return "redirect:/";
-        }
-        CasoInfo caso = sesion.getCaso();
-        if (caso == null) {
+        } catch (NullPointerException ex) {
             mensajes.add("warning::El caso " + numeroCaso + " no existe.");
             return "redirect:/";
         }
+        CasoInfo caso = sesion.getCaso();
         model.addAttribute("caso", caso);
         model.addAttribute("proyecto", sesion.getProyectoCancelacion());
 
@@ -243,15 +251,15 @@ public class JCobranzaController {
         } catch (CancelacionWebException ex) {
             mensajes.add("warning::Caso asignado a otro jefe de cobranza");
             return "redirect:/";
-        }
-        CasoInfo caso = sesion.getCaso();
-        if (caso == null) {
+        } catch (NullPointerException ex) {
             mensajes.add("warning::El caso " + numeroCaso + " no existe.");
             return "redirect:/";
         }
-        model.addAttribute("caso", caso);
+        CasoInfo caso = sesion.getCaso();
+        FindResponse<StatusCasoInfo> find = statusCasoService.find(new FindByRequest("clave", 14));
+        caso.setStatusCaso(find.getInfo());
+        casoService.update(new UpdateRequest<>(caso));
 
-        // TODO guarda fecha firma con notario / actualizacion de estados
         ProyectoCancelacionInfo proyecto = sesion.getProyectoCancelacion();
         FindResponse<StatusProyectoInfo> find2 = statusProyectoService.find(new FindByRequest("clave", 8));
         proyecto.setStatusProyecto(find2.getInfo());
@@ -273,13 +281,14 @@ public class JCobranzaController {
         } catch (CancelacionWebException ex) {
             mensajes.add("warning::Caso asignado a otro jefe de cobranza");
             return "redirect:/";
-        }
-        CasoInfo caso = sesion.getCaso();
-        if (caso == null) {
+        } catch (NullPointerException ex) {
             mensajes.add("warning::El caso " + numeroCaso + " no existe.");
             return "redirect:/";
         }
-        model.addAttribute("caso", caso);
+        CasoInfo caso = sesion.getCaso();
+        FindResponse<StatusCasoInfo> find = statusCasoService.find(new FindByRequest("clave", 15));
+        caso.setStatusCaso(find.getInfo());
+        casoService.update(new UpdateRequest<>(caso));
 
         // TODO guarda fecha firma con notario / actualizacion de estados
         ProyectoCancelacionInfo proyecto = sesion.getProyectoCancelacion();
@@ -339,10 +348,14 @@ public class JCobranzaController {
         } catch (CancelacionWebException ex) {
             mensajes.add("warning::Caso asignado a otro jefe de cobranza");
             return "redirect:/";
+        } catch (NullPointerException ex) {
+            mensajes.add("warning::El caso " + numeroCaso + " no existe.");
+            return "redirect:/";
         }
         CasoInfo caso = sesion.getCaso();
         ProyectoCancelacionInfo proyecto = sesion.getProyectoCancelacion();
 
+        // TODO revisar
         if (caso.getNotarioId() > 0 && caso.getProyectoCancelacionId() > 0) {
             if (proyecto.getStatusProyecto().getClave() == 2) {
                 mensajes.add("warning::Caso asignado a notario, en espera de aceptacion o rechazo.");
@@ -362,7 +375,9 @@ public class JCobranzaController {
                 return "redirect:/cobranza/caso/" + caso.getNumeroCaso();
             }
         }
+        // TODO revisar
 
+        // autoriza caso con notario infonavit
         proyecto.setEmpleadoId(sesion.getEmpleado().getId());
         proyecto.setAutorizado(true);
         proyecto.setFechaAutorizacion(new Date());
@@ -371,6 +386,8 @@ public class JCobranzaController {
         proyecto = update1.getInfo();
 
         caso.setProyectoCancelacionId(proyecto.getId());
+        FindResponse<StatusCasoInfo> find = statusCasoService.find(new FindByRequest("clave", 13));
+        caso.setStatusCaso(find.getInfo());
         casoService.update(new UpdateRequest<>(caso));
 
         mensajes.add("success::Caso autorizado.");
