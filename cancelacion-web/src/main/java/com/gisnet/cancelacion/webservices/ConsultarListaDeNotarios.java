@@ -77,6 +77,7 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
     	
     	// Operación que regresa una lista del total de notarios
     	List<CNotario> notarios = new ArrayList<CNotario>();
+    	List<CNotario> notariosSinConvenio = new ArrayList<CNotario>();
     	
     	try{
     		
@@ -97,8 +98,51 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
 		        	cn.setTelefono(ni.getTelefono());
 		        	cn.setCodigo(0);
 		        	cn.setDescripcion("Se consulto satisfactoriamente el notario.");
-		        	notarios.add(cn);
+		        	
+		        	if(cn.getConvenioInfonavit().length() > 0){
+		        		//System.out.println("Se agrega notario CON convenio");
+		        		notarios.add(cn);
+		        	}
+		        	else{
+		        		if(cn.getConvenioInfonavit().length() == 0){
+			        		//System.out.println("Se agrega notario SIN convenio");
+			        		notariosSinConvenio.add(cn);
+		        		}
+		        	}
 		        }
+		        
+		      //System.out.println("-----Ordenado por Nombre de Notario CON convenio-----");
+	    		Collections.sort(notarios, new Comparator<CNotario>(){
+	     
+	    			@Override
+	    			public int compare(CNotario cn1, CNotario cn2) {
+	    				return cn1.getNombreNotario().compareTo(cn2.getNombreNotario());
+	    			}
+	    			
+	    			
+	    		});
+	    		
+	    		/**for(CNotario notario : notarios){
+	    			System.out.println("Notario: "+ notario.getNombreNotario()+ " CONVENIO: " + notario.getConvenioInfonavit());
+	    		}**/
+	        	
+	    		//System.out.println("-----Ordenado por Nombre de Notario SIN convenio-----");
+	    		Collections.sort(notariosSinConvenio, new Comparator<CNotario>(){
+	     
+	    			@Override
+	    			public int compare(CNotario cn1, CNotario cn2) {
+	    				return cn1.getNombreNotario().compareTo(cn2.getNombreNotario());
+	    			}
+	    			
+	    			
+	    		});
+	    		
+	    		/**for(CNotario notario : notariosSinConvenio){
+	    			System.out.println("Notario: "+ notario.getNombreNotario()+ " CONVENIO: " + notario.getConvenioInfonavit());
+	    		}**/
+	        	
+	        	notarios.addAll(notariosSinConvenio);
+		        
 	        }
 	        else{
 	        	CNotario cn = new CNotario();
