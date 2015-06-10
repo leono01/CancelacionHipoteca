@@ -29,6 +29,8 @@ import com.gisnet.cancelacion.web.domain.NotarioForm;
 import com.gisnet.cancelacion.webservices.dto.CNotario;
 
 
+
+
 import java.security.Principal;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -37,6 +39,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -91,7 +95,8 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
 		        	cn.setConvenioInfonavit(ni.getConvenio());
 		        	cn.setEmail(ni.getEmail());
 		        	cn.setTelefono(ni.getTelefono());
-		        	
+		        	cn.setCodigo(0);
+		        	cn.setDescripcion("Se consulto satisfactoriamente el notario.");
 		        	notarios.add(cn);
 		        }
 	        }
@@ -137,7 +142,7 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
     public List<CNotario> consultarListaDeNotariosPorEntidad(String entidad) {
         
     	List<CNotario> notarios = new ArrayList<CNotario>();
-    	
+    	List<CNotario> notariosSinConvenio = new ArrayList<CNotario>();
     	
     	try{
     		
@@ -157,9 +162,73 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
 		        	cn.setConvenioInfonavit(ni.getConvenio());
 		        	cn.setEmail(ni.getEmail());
 		        	cn.setTelefono(ni.getTelefono());
+		        	cn.setCodigo(0);
+		        	cn.setDescripcion("Se consulto satisfactoriamente el notario.");
+		        	/**System.out.println("("+cn.getConvenioInfonavit()+")");
+		        	System.out.println("(length:"+cn.getConvenioInfonavit().length()+")");**/
 		        	
-		        	notarios.add(cn);
+		        	if(cn.getConvenioInfonavit().length() > 0){
+		        		//System.out.println("Se agrega notario CON convenio");
+		        		notarios.add(cn);
+		        	}
+		        	else{
+		        		if(cn.getConvenioInfonavit().length() == 0){
+			        		//System.out.println("Se agrega notario SIN convenio");
+			        		notariosSinConvenio.add(cn);
+		        		}
+		        	}
+		        	
 		        }
+	        	
+	        	/**System.out.println("-----Se muestran los notarios con convenio -----");
+	        	for(CNotario notario : notarios){
+	    			System.out.println("Notario: "+ notario.getNombreNotario()+ " CONVENIO: " + notario.getConvenioInfonavit());
+	    		}
+	        	
+	        	System.out.println("-----Se muestran los notarios que no tienen convenio-----");
+	        	for(CNotario notario : notariosSinConvenio){
+	    			System.out.println("Notario: "+ notario.getNombreNotario()+ " CONVENIO: " + notario.getConvenioInfonavit());
+	    		}**/
+	        	
+	        	//System.out.println("-----Ordenado por Nombre de Notario CON convenio-----");
+	    		Collections.sort(notarios, new Comparator<CNotario>(){
+	     
+	    			@Override
+	    			public int compare(CNotario cn1, CNotario cn2) {
+	    				return cn1.getNombreNotario().compareTo(cn2.getNombreNotario());
+	    			}
+	    			
+	    			
+	    		});
+	    		
+	    		/**for(CNotario notario : notarios){
+	    			System.out.println("Notario: "+ notario.getNombreNotario()+ " CONVENIO: " + notario.getConvenioInfonavit());
+	    		}**/
+	        	
+	    		//System.out.println("-----Ordenado por Nombre de Notario SIN convenio-----");
+	    		Collections.sort(notariosSinConvenio, new Comparator<CNotario>(){
+	     
+	    			@Override
+	    			public int compare(CNotario cn1, CNotario cn2) {
+	    				return cn1.getNombreNotario().compareTo(cn2.getNombreNotario());
+	    			}
+	    			
+	    			
+	    		});
+	    		
+	    		/**for(CNotario notario : notariosSinConvenio){
+	    			System.out.println("Notario: "+ notario.getNombreNotario()+ " CONVENIO: " + notario.getConvenioInfonavit());
+	    		}**/
+	        	
+	        	notarios.addAll(notariosSinConvenio);
+	        	//System.out.println(" posición (0):" + notarios.get(0).getNombreNotario());
+	        	/**System.out.println("-----Se muestran primero los notarios CON convenio y después los que no tienen convenio (EN TEORIA jajaja)-----");
+	        	for(CNotario notario : notarios){
+	    			System.out.println("Notario: "+ notario.getNombreNotario()+ " CONVENIO: " + notario.getConvenioInfonavit());
+	    		}**/
+	        	
+	        	
+	        	
 	        }
 	        else{
         	
