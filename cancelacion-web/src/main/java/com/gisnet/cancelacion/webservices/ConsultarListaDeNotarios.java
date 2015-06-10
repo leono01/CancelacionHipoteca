@@ -73,37 +73,48 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
     	
     	// Operación que regresa una lista del total de notarios
     	List<CNotario> notarios = new ArrayList<CNotario>();
-    	CNotario cn = new CNotario();
+    	
     	try{
     		
     		
 	        ListRequest lr = new ListRequest();
 	        ListResponse<NotarioInfo> list = service.list(lr);
 	        
-	        for(NotarioInfo ni : list.getList()){
-	        	
-	        	cn.setEntidad(ni.getEntidad2());
-	        	cn.setNombreNotario(ni.getNombre());
-	        	cn.setCodigoNotario(ni.getCodigo());
-	        	cn.setNotariaNumero(ni.getNotariaNumero());
-	        	cn.setConvenioInfonavit(ni.getConvenio());
-	        	cn.setEmail(ni.getEmail());
-	        	cn.setTelefono(ni.getTelefono());
-	        	
-	        	notarios.add(cn);
+	        if(!list.getList().isEmpty()){
+	        
+		        for(NotarioInfo ni : list.getList()){
+		        	CNotario cn = new CNotario();
+		        	cn.setEntidad(ni.getEntidad2());
+		        	cn.setNombreNotario(ni.getNombre());
+		        	cn.setCodigoNotario(ni.getCodigo());
+		        	cn.setNotariaNumero(ni.getNotariaNumero());
+		        	cn.setConvenioInfonavit(ni.getConvenio());
+		        	cn.setEmail(ni.getEmail());
+		        	cn.setTelefono(ni.getTelefono());
+		        	
+		        	notarios.add(cn);
+		        }
+	        }
+	        else{
+	        	CNotario cn = new CNotario();
+	    		cn.setCodigo(1);
+	    		cn.setDescripcion("No se encontraron notarios.");
+	    		notarios.add(cn);
+	    		System.out.println("Status 1");
+				System.out.println("No se encontraron notarios.");
 	        }
 	        
-	    	}
-	    	catch(Exception e){
-	    		
-	    		cn.setCodigo(2);
-	    		cn.setDescripcion("No hay conexión con la base de datos.");
-	    		notarios.add(cn);
-	    		System.out.println(2);
-				System.out.println("No hay conexión con la base de datos.");
-	    		
-	    		
-	    	}
+	    }
+    	catch(Exception e){
+    		CNotario cn = new CNotario();
+    		cn.setCodigo(2);
+    		cn.setDescripcion("No hay conexión con la base de datos.");
+    		notarios.add(cn);
+    		System.out.println("Status 2");
+			System.out.println("No hay conexión con la base de datos.");
+    		
+    		
+    	}
        
         return notarios;
     }
@@ -126,7 +137,7 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
     public List<CNotario> consultarListaDeNotariosPorEntidad(String entidad) {
         
     	List<CNotario> notarios = new ArrayList<CNotario>();
-    	CNotario cn = new CNotario();
+    	
     	
     	try{
     		
@@ -134,9 +145,11 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
 	        // Operación que regresa una lista de los notarios de la determinada entidad.
 	    	ListRequest lr = new ListRequest("entidad",entidad);
 	        ListResponse<NotarioInfo> list = service.list(lr);
-	        if(list.getList() != null){
-		        for(NotarioInfo ni : list.getList()){
-		        	
+	        
+	        if(!list.getList().isEmpty()){
+		    
+	        	for(NotarioInfo ni : list.getList()){
+		        	CNotario cn = new CNotario();
 		        	cn.setEntidad(ni.getEntidad2());
 		        	cn.setNombreNotario(ni.getNombre());
 		        	cn.setCodigoNotario(ni.getCodigo());
@@ -149,14 +162,22 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
 		        }
 	        }
 	        else{
-	        	
+        	
+	        	CNotario cn = new CNotario();
+	    		cn.setCodigo(1);
+	    		cn.setDescripcion("No se encontraron notarios en la entidad " + entidad + ".");
+	    		notarios.add(cn);
+	    		System.out.println("Status 1");
+				System.out.println("No se encontraron notarios en la entidad " + entidad + ".");
+	        
 	        }
     	}catch(Exception e){
-    	
+    		
+    		CNotario cn = new CNotario();
 			cn.setCodigo(2);
 			cn.setDescripcion("No hay conexión con la base de datos.");
 			notarios.add(cn);
-			System.out.println(2);
+			System.out.println("Status 2");
 			System.out.println("No hay conexión con la base de datos.");
     		
     	}
