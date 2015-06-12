@@ -16,15 +16,11 @@
  */
 package com.gisnet.cancelacion.web.controller;
 
-import com.gisnet.cancelacion.core.services.CancelacionArchivoService;
 import com.gisnet.cancelacion.core.services.CartaCancelacionService;
 import com.gisnet.cancelacion.core.services.CasoService;
 import com.gisnet.cancelacion.core.services.EmpleadoService;
 import com.gisnet.cancelacion.core.services.NotarioService;
 import com.gisnet.cancelacion.core.services.ProyectoCancelacionService;
-import com.gisnet.cancelacion.core.services.StatusCasoService;
-import com.gisnet.cancelacion.core.services.StatusProyectoService;
-import com.gisnet.cancelacion.core.services.UsuarioService;
 import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.*;
 import com.gisnet.cancelacion.web.domain.SesionNotario;
@@ -52,8 +48,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class NotarioController {
 
     @Autowired
-    private CancelacionArchivoService cancelacionArchivoService;
-    @Autowired
     private CartaCancelacionService cartaCancelacionService;
     @Autowired
     private CasoService casoService;
@@ -63,12 +57,6 @@ public class NotarioController {
     private NotarioService notarioService;
     @Autowired
     private ProyectoCancelacionService proyectoCancelacionService;
-    @Autowired
-    private StatusCasoService statusCasoService;
-    @Autowired
-    private StatusProyectoService statusProyectoService;
-    @Autowired
-    private UsuarioService usuarioService;
 
     @Autowired
     private SesionNotario sesion;
@@ -84,18 +72,10 @@ public class NotarioController {
             }
             sesion.setNotarioInfo(findresponse.getInfo());
         }
-        ListResponse<CasoInfo> list1 = casoService.list(
-                new ListRequest("notarioId", sesion.getNotarioInfo().getId()));
-
-        // filtro, solo casos estado 8
-        List<CasoInfo> casos8 = new ArrayList<>();
-        model.addAttribute("casos", casos8);
-        
-        for (CasoInfo caso : list1.getList()) {
-            if (caso.getStatusCaso().getClave() == 8) {
-                casos8.add(caso);
-            }
-            if (caso.getStatusCaso().getClave() == 14 && caso.getProyectoCancelacionId() > 0) {
+        ListResponse<CasoInfo> list2 = casoService.notarioInfonavitListaCasosPendientes(sesion.getNotarioInfo().getId());
+        model.addAttribute("casos", list2.getList());
+        for (CasoInfo caso : list2.getList()) {
+            if (caso.getStatusCaso().getClave() == 14) {
                 FindResponse<ProyectoCancelacionInfo> find1 = proyectoCancelacionService.find(
                         new FindByRequest(caso.getProyectoCancelacionId()));
                 ProyectoCancelacionInfo info = find1.getInfo();
@@ -251,7 +231,7 @@ public class NotarioController {
     }
 
     @RequestMapping(value = "/notario/caso/{numeroCaso}/aceptar/jefecobranza", method = RequestMethod.GET)
-    public String verSeleccionJefeCobranza(
+    public String verSeleccionGerenteCobranza(
             @PathVariable String numeroCaso,
             Model model,
             RedirectAttributes redirectAttributes) {
@@ -265,15 +245,8 @@ public class NotarioController {
         CasoInfo caso = sesion.getCasoInfo();
         model.addAttribute("caso", caso);
 
-        ListResponse<UsuarioInfo> list = usuarioService.list(
-                new ListRequest("rol", "JEFE_COBRANZA"));
-        List<EmpleadoInfo> jefesc = new ArrayList<>();
-        for (UsuarioInfo ui : list.getList()) {
-            FindResponse<EmpleadoInfo> find = empleadoService.find(
-                    new FindByRequest("usuarioId", ui.getId()));
-            jefesc.add(find.getInfo());
-        }
-        model.addAttribute("jefesc", jefesc);
+        ListResponse<EmpleadoInfo> list1 = empleadoService.listarGerentesCobranza();
+        model.addAttribute("jefesc", list1.getList());
 
         return "/notario/jefeCobranza";
     }
@@ -291,34 +264,18 @@ public class NotarioController {
             mensajes.add("warning::El caso " + numeroCaso + " no existe.");
             return "redirect:/";
         }
-        CasoInfo caso = sesion.getCasoInfo();
-        model.addAttribute("caso", caso);
-
-        // crea proyecto cancelacion
-        ProyectoCancelacionInfo proyecto = new ProyectoCancelacionInfo();
-        proyecto.setEmpleadoId(jefec);
-        FindResponse<StatusProyectoInfo> find2 = statusProyectoService.find(
-                new FindByRequest("clave", 5));
-        proyecto.setStatusProyecto(find2.getInfo());
-
-        SaveResponse<ProyectoCancelacionInfo> saved = proyectoCancelacionService.save(
-                new SaveRequest<>(proyecto));
-        proyecto = saved.getInfo();
-
-        // guarda archivos
-        for (CancelacionArchivoInfo archivo : sesion.getCancelacionArchivos()) {
-            archivo.setProyectoCancelacionId(proyecto.getId());
-            cancelacionArchivoService.save(new SaveRequest<>(archivo));
+        StatusResponse notarioInfonavitAceptaCaso = casoService.notarioInfonavitAceptaCaso(
+                sesion.getNotarioInfo().getId(),
+                sesion.getCasoInfo().getId(),
+                jefec,
+                sesion.getCancelacionArchivos());
+        if (notarioInfonavitAceptaCaso.getStatus() == 1) {
+            mensajes.add("success::El caso ha sido aceptado y remitido al gerente de cobranza.");
+            return "redirect:/";
+        } else {
+            mensajes.add("warning::Ocurrio un error.");
+            return "redirect:/";
         }
-        sesion.getCancelacionArchivos().clear();
-
-        // Actualiza caso
-        caso.setProyectoCancelacionId(proyecto.getId());
-        FindResponse<StatusCasoInfo> find1 = statusCasoService.find(new FindByRequest("clave", 11));
-        caso.setStatusCaso(find1.getInfo());
-        casoService.update(new UpdateRequest<>(caso));
-
-        return "redirect:/";
     }
 
     @RequestMapping(value = "/notario/caso/{numeroCaso}/rechazar", method = RequestMethod.GET)
@@ -351,28 +308,17 @@ public class NotarioController {
             mensajes.add("warning::El caso " + numeroCaso + " no existe.");
             return "redirect:/";
         }
-        CasoInfo caso = sesion.getCasoInfo();
-        model.addAttribute("caso", caso);
-
-        // crea proyecto cancelacion
-        ProyectoCancelacionInfo proyecto = new ProyectoCancelacionInfo();
-        FindResponse<StatusProyectoInfo> findstatus = statusProyectoService.find(
-                new FindByRequest("clave", 11));
-        proyecto.setStatusProyecto(findstatus.getInfo());
-        proyecto.setMotivoRechazo(motivoRechazo);
-
-        SaveResponse<ProyectoCancelacionInfo> saved = proyectoCancelacionService.save(
-                new SaveRequest<>(proyecto));
-        proyecto = saved.getInfo();
-
-        caso.setProyectoCancelacionId(proyecto.getId());
-        caso.setNotarioId(0l);
-        FindResponse<StatusCasoInfo> find1 = statusCasoService.find(new FindByRequest("clave", 17));
-        caso.setStatusCaso(find1.getInfo());
-
-        casoService.update(new UpdateRequest<>(caso));
-
-        return "redirect:/";
+        StatusResponse notarioInfonavitRechazaCaso = casoService.notarioInfonavitRechazaCaso(
+                sesion.getNotarioInfo().getId(),
+                sesion.getCasoInfo().getId(),
+                motivoRechazo);
+        if (notarioInfonavitRechazaCaso.getStatus() == 1) {
+            mensajes.add("success::El caso ha sido rechazado.");
+            return "redirect:/";
+        } else {
+            mensajes.add("warning::Ocurrio un error.");
+            return "redirect:/notario/caso/" + numeroCaso + "/rechazar";
+        }
     }
 
 }

@@ -129,7 +129,7 @@ public class JuridicoController {
         NotarioInfo info = new NotarioInfo();
         info.setNombre(form.getNombre());
         info.setNotariaNumero(form.getNotariaNumero());
-        info.setConvenio(form.isConvenioInfonavit() ? "SI" : "NO");
+        info.setConvenio(form.getConvenioInfonavit());
         info.setEmail(form.getEmail());
         info.setTelefono(form.getTelefono());
         info.setCalleNotaria(form.getCalleNotaria());
@@ -178,7 +178,7 @@ public class JuridicoController {
         form.setCalleNotaria(info.getCalleNotaria());
         form.setColoniaNotaria(info.getColoniaNotaria());
         form.setNumeroCalle(info.getNumeroCalle());
-        form.setConvenioInfonavit(info.getConvenio().equals("SI"));
+        form.setConvenioInfonavit(info.getConvenio());
         form.setActivo(info.isHabilitado());
         model.addAttribute("notarioForm", form);
         model.addAttribute("modificar", true);
@@ -212,7 +212,7 @@ public class JuridicoController {
         info.setCalleNotaria(form.getCalleNotaria());
         info.setColoniaNotaria(form.getColoniaNotaria());
         info.setNumeroCalle(form.getNumeroCalle());
-        info.setConvenio(form.isConvenioInfonavit() ? "SI" : "NO");
+        info.setConvenio(form.getConvenioInfonavit());
         info.setHabilitado(form.isActivo());
         service.update(new UpdateRequest<>(info));
         mensajes.add("success::Notario modificado correctamente");

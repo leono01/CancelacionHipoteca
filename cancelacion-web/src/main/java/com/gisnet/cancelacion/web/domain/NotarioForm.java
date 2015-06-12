@@ -25,7 +25,7 @@ public class NotarioForm {
     private long id;
     private String nombre;
     private String notariaNumero;
-    private boolean convenioInfonavit;
+    private String convenioInfonavit;
     private String email;
     private String telefono;
     private String calleNotaria;
@@ -63,11 +63,11 @@ public class NotarioForm {
         this.notariaNumero = notariaNumero;
     }
 
-    public boolean isConvenioInfonavit() {
+    public String getConvenioInfonavit() {
         return convenioInfonavit;
     }
 
-    public void setConvenioInfonavit(boolean convenioInfonavit) {
+    public void setConvenioInfonavit(String convenioInfonavit) {
         this.convenioInfonavit = convenioInfonavit;
     }
 

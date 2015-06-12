@@ -18,7 +18,10 @@ package com.gisnet.cancelacion.core.services;
 
 import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.EmpleadoInfo;
+import com.gisnet.cancelacion.events.info.UsuarioInfo;
 import com.gisnet.cancelacion.persistance.services.EmpleadoPersistanceService;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -26,6 +29,9 @@ public class EmpleadoServiceHandler implements EmpleadoService {
     
     @Autowired
     private EmpleadoPersistanceService service;
+    
+    @Autowired
+    private UsuarioService usuarioService;
 
     @Override
     public FindResponse<EmpleadoInfo> find(FindByRequest event) {
@@ -50,6 +56,19 @@ public class EmpleadoServiceHandler implements EmpleadoService {
     @Override
     public DeleteResponse<EmpleadoInfo> delete(DeleteRequest event) {
         return service.delete(event);
+    }
+
+    @Override
+    public ListResponse<EmpleadoInfo> listarGerentesCobranza() {
+        ListResponse<UsuarioInfo> list = usuarioService.list(
+                new ListRequest("rol", "JEFE_COBRANZA"));
+        List<EmpleadoInfo> gerentes = new ArrayList<>();
+        for (UsuarioInfo usuario : list.getList()) {
+            FindResponse<EmpleadoInfo> find = service.find(
+                    new FindByRequest("usuarioId", usuario.getId()));
+            gerentes.add(find.getInfo());
+        }
+        return new ListResponse<>(gerentes);
     }
     
 }

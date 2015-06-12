@@ -14,27 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.gisnet.cancelacion.core.services;
-
-import com.gisnet.cancelacion.events.*;
-import com.gisnet.cancelacion.events.info.EmpleadoInfo;
+package com.gisnet.cancelacion.events;
 
 /**
  *
  * @author marco-g8
  */
-public interface EmpleadoService {
-    
-    public FindResponse<EmpleadoInfo> find(FindByRequest event);
-    
-    public ListResponse<EmpleadoInfo> list(ListRequest event);
-    
-    public SaveResponse<EmpleadoInfo> save(SaveRequest<EmpleadoInfo> event);
-    
-    public UpdateResponse<EmpleadoInfo> update(UpdateRequest<EmpleadoInfo> event);
-    
-    public DeleteResponse<EmpleadoInfo> delete(DeleteRequest event);
+public class StatusResponse {
 
-    public ListResponse<EmpleadoInfo> listarGerentesCobranza();
+    private final int status;
+
+    public StatusResponse(int status) {
+        this.status = status;
+    }
+
+    public int getStatus() {
+        return status;
+    }
 
 }

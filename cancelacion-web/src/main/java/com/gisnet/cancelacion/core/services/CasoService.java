@@ -17,18 +17,10 @@
 
 package com.gisnet.cancelacion.core.services;
 
-import com.gisnet.cancelacion.events.DeleteRequest;
-import com.gisnet.cancelacion.events.DeleteResponse;
-import com.gisnet.cancelacion.events.FindByIdRequest;
-import com.gisnet.cancelacion.events.FindByRequest;
-import com.gisnet.cancelacion.events.FindResponse;
-import com.gisnet.cancelacion.events.ListRequest;
-import com.gisnet.cancelacion.events.ListResponse;
-import com.gisnet.cancelacion.events.SaveRequest;
-import com.gisnet.cancelacion.events.SaveResponse;
-import com.gisnet.cancelacion.events.UpdateRequest;
-import com.gisnet.cancelacion.events.UpdateResponse;
+import com.gisnet.cancelacion.events.*;
+import com.gisnet.cancelacion.events.info.CancelacionArchivoInfo;
 import com.gisnet.cancelacion.events.info.CasoInfo;
+import java.util.List;
 
 /**
  *
@@ -36,7 +28,9 @@ import com.gisnet.cancelacion.events.info.CasoInfo;
  */
 
 public interface CasoService {
-	
+
+    // persistencia
+
     public FindResponse<CasoInfo> find(FindByIdRequest event);
     
     public FindResponse<CasoInfo> find(FindByRequest event);
@@ -48,8 +42,27 @@ public interface CasoService {
     public UpdateResponse<CasoInfo> update(UpdateRequest<CasoInfo> event);
     
     public DeleteResponse<CasoInfo> delete(DeleteRequest event);
+    
+    // notario infonavit
+    
+    public ListResponse<CasoInfo> notarioInfonavitListaCasosPendientes(long notarioId);
+    
+    public ListResponse<CasoInfo> notarioInfonavitListaCasosAsignados(long notarioId);
+    
+    public StatusResponse notarioInfonavitAceptaCaso(long notarioId, long casoId, long empleadoGerenteCobranzaId, List<CancelacionArchivoInfo> archivosCancelacion);
+    
+    public StatusResponse notarioInfonavitRechazaCaso(long notarioId, long casoId, String motivoRechazo);
+    
+    // gerente cobranza
+    
+    //public StatusResponse gerenteCobranzaValidaCaso();
+    
+    //public StatusResponse gerenteCobranzaProgramaFechaFirma();
+    
+    //public StatusResponse gerenteCobranzaRegistraFechaFirma();
 
-
+    // microflujo
+    
     public SaveResponse<CasoInfo> validarCredito(SaveRequest<CasoInfo> event);
     
     public UpdateResponse<CasoInfo> actualizarCaso(UpdateRequest<CasoInfo> event);
