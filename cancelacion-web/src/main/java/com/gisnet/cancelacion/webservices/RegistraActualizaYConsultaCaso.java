@@ -35,6 +35,8 @@ import com.gisnet.cancelacion.webservices.dto.StatusOperacion;
 
 
 
+
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -58,10 +60,14 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 	@Autowired
 	private CartaCancelacionService ccService;
 	
-    public StatusOperacion registraCaso(String numeroDeCredito,
-                                        String numeroDeCaso,
-                                        String nombreAcreditado,
-                                        String entidad
+    public StatusOperacion registraCaso(String 		numeroDeCredito,
+                                        String 		numeroDeCaso,
+                                        String 		nombreAcreditado,
+                                        String 		entidad,
+                                        String		procedeCredito,
+                                        String 		descripcionCredito,
+                                    	Double		saldoCredito,
+                                    	String		fechaLiquidacionCredito
     ) {
 
         StatusOperacion so = new StatusOperacion();
@@ -76,15 +82,18 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 	        caso.setNumeroCaso(numeroDeCaso);
 	        caso.setNumeroCredito(numeroDeCredito);
 	        caso.setFechaCreacion(fechaDeCreacion);
-	        caso.setFechaActualizacion(fechaDeCreacion);
-	        caso.setProcedeCredito("NO");
+	        caso.setFechaActualizacion(fechaDeCreacion);	        
 	        caso.setEntidad(entidad);
+	        
+	        //Información del crédito
+	        caso.setProcedeCredito(procedeCredito);
+	        caso.setDescripcionCredito(descripcionCredito);
+	        caso.setSaldoCredito(saldoCredito);
+	        caso.setFechaLiquidacionCredito(fechaLiquidacionCredito);
 	        
 	        int s = 1;
 	        
 	        FindByRequest clave = new FindByRequest("clave",s);
-	        
-	        //System.out.println("Clave " + clave);
 	        
 	        
 	        if(clave != null){
@@ -127,14 +136,14 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
     }
 
 
-    public InfoDeActualizacion actualizaCaso(	String  numeroDeCredito,
-                                            	String  numeroDeCaso,                                            
-                                            	Date    fecha,
-                                            	int     status,
-                                            	byte[]  cartaDeCancelacionPdf,
-                                            	Date    fechaEmisionCarta,
-                                            	String  numeroDeFolio,
-                                            	String	md5
+    public InfoDeActualizacion actualizaCaso(	String  	numeroDeCredito,
+                                            	String  	numeroDeCaso,                                            
+                                            	Date    	fecha,
+                                            	int     	status,
+                                            	byte[]  	cartaDeCancelacionPdf,
+                                            	Date    	fechaEmisionCarta,
+                                            	String  	numeroDeFolio,
+                                            	String		md5
                                         ) {
 
         InfoDeActualizacion ida = new InfoDeActualizacion();
@@ -174,6 +183,9 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 	        }
 	        
 	        casoresponse.getInfo().setFechaActualizacion(fecha);
+	        
+	        //Agregar nuevos campos
+	        //AQUÍ
 	        
 	        long idCarta = casoresponse.getInfo().getCartaCancelacionId();
 	                
@@ -310,13 +322,10 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
         	FindByRequest fbr = new FindByRequest("numeroCaso",numeroDeCaso);        	
             FindResponse<CasoInfo> casoresponse = service.find(fbr);
             
-            //System.out.println("CASO ID     " + casoresponse.getInfo().getId());
             
             if(casoresponse.getInfo() != null){  
             	
-	            long idCarta = casoresponse.getInfo().getCartaCancelacionId();
-	            
-	            //System.out.println("CARTA ID  .-.-.-.-.. " + idCarta);
+	            long idCarta = casoresponse.getInfo().getCartaCancelacionId();	            
 	            
 	            if(idCarta != 0){
 	            	
@@ -333,7 +342,13 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 	            idc.setNombreAcreditado(casoresponse.getInfo().getNombreAcreditado());
 	            idc.setEntidad(casoresponse.getInfo().getEntidad());
 	            idc.setNumeroDeCaso(casoresponse.getInfo().getNumeroCaso());
+	            
+	            //Información del crédito asociado al caso
 	            idc.setNumeroDeCredito(casoresponse.getInfo().getNumeroCredito());
+	            idc.setProcedeCredito(casoresponse.getInfo().getProcedeCredito());
+	            idc.setDescripcionCredito(casoresponse.getInfo().getDescripcionCredito());
+	            idc.setSaldoCredito(casoresponse.getInfo().getSaldoCredito());
+	            idc.setFechaLiquidacionCredito(casoresponse.getInfo().getFechaLiquidacionCredito());
 	    
 	            if (casoresponse.getInfo().getStatusCaso().getId() != 0){
 	            	idc.setStatus(casoresponse.getInfo().getStatusCaso().getClave());
@@ -348,19 +363,19 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
             }
             
         }catch(Exception e){
-        	//System.out.println("CONSULTA ERROR:               "+e.getMessage());
+
     		if(e.getMessage() != null){
 	        	if (e.getMessage().equals("Could not open connection; nested exception is org.hibernate.exception.JDBCConnectionException: Could not open connection")){
 	    			
 	    			idc.setInfoConsulta(2);
 	        		idc.setDescripcionConsulta("No hay conexión con la base de datos.");
-	                //System.out.println(e.toString());
+
 	    		}
 	    		else{
 	    			
 	    			idc.setInfoConsulta(5);
 	            	idc.setDescripcionConsulta("Caso no consultado.");
-	        		//System.out.println(e.toString());
+
 	    		}
     		}
     		else{
@@ -405,7 +420,6 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
     			sc.setNombre("No hay conexión con la base de datos.");
     			sc.setDescripcion("El tiempo de conexión se ha agotado, verifique la conexión de la base de datos o que el servicio se encuentre iniciado.");
     			sc.setFechaActualizacion(new Date());    			
-                //System.out.println(e.toString());
     		}
     		else{
     			sc.setClave(5);
@@ -504,7 +518,7 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
     public StatusCarta actualizarCarta(	int 	numeroDeCaso,
 										String 	codigoCarta,
 										byte[] 	base64,
-										//String 	md5,
+										String 	md5,
 										String 	folio,
 										String 	entidad,
 										Date 	fechaEmision,
@@ -534,7 +548,7 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 	            FindResponse<CartaCancelacionInfo> cartaresponse = ccService.find(carta);
 	            
 	            cartaresponse.getInfo().setCodigoCarta(codigoCarta);
-	            cartaresponse.getInfo().setPdf(base64);
+	            cartaresponse.getInfo().setPdf(base64);	            
 	            cartaresponse.getInfo().setFolio(folio);
 	            cartaresponse.getInfo().setEntidad(entidad);
 	            cartaresponse.getInfo().setFechaEmisionCarta(fechaEmision);

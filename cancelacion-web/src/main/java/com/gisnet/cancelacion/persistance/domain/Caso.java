@@ -17,8 +17,10 @@
 package com.gisnet.cancelacion.persistance.domain;
 
 import com.gisnet.cancelacion.events.info.CasoInfo;
+
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,22 +40,27 @@ import javax.persistence.TemporalType;
 @Table(name = "C_CASO")
 public class Caso implements Infoable<CasoInfo>, Serializable {
     
-    private long id;
-    private String numeroCredito;
-    private String numeroCaso;
-    private Date fechaCreacion;
-    private Date fechaCierre;
-    private String nombreAcreditado;
+    private long 				id;
+    private String 				numeroCredito;
+    private String 				numeroCaso;
+    private	Date 				fechaCreacion;
+    private Date 				fechaCierre;
+    private String 				nombreAcreditado;
     
-    private Notario notario;
+    private Notario 			notario;
     private ProyectoCancelacion proyectoCancelacion;
-    private CartaCancelacion cartaCancelacion;
-    private ProyectoRPP proyectoRPP;
-    private StatusCaso statusCaso;
+    private CartaCancelacion 	cartaCancelacion;
+    private ProyectoRPP 		proyectoRPP;
+    private StatusCaso 			statusCaso;
     
-    private Date fechaActualizacion;
-    private String procedeCredito;
-    private String entidad;
+    private Date 				fechaActualizacion;
+    private String 				procedeCredito;
+    private String 				entidad;
+    
+    private String 				descripcionCredito;
+	private Double				saldoCredito;
+	private String				fechaLiquidacionCredito;
+    
 
     public Caso() {
     }
@@ -194,6 +201,33 @@ public class Caso implements Infoable<CasoInfo>, Serializable {
         this.entidad = entidad;
     }
     
+    @Column(name = "DESCRIPCION_CREDITO")
+    public String getDescripcionCredito() {
+		return descripcionCredito;
+	}
+
+	public void setDescripcionCredito(String descripcionCredito) {
+		this.descripcionCredito = descripcionCredito;
+	}
+
+	@Column(name = "SALDO_CREDITO")
+	public Double getSaldoCredito() {
+		return saldoCredito;
+	}
+
+	public void setSaldoCredito(Double saldoCredito) {
+		this.saldoCredito = saldoCredito;
+	}
+
+	@Column(name = "FECHA_LIQUIDACION_CREDITO")
+	public String getFechaLiquidacionCredito() {
+		return fechaLiquidacionCredito;
+	}
+
+	public void setFechaLiquidacionCredito(String fechaLiquidacionCredito) {
+		this.fechaLiquidacionCredito = fechaLiquidacionCredito;
+	}
+    
     @Override
     public CasoInfo asInfo() {
         CasoInfo info = new CasoInfo();
@@ -216,7 +250,10 @@ public class Caso implements Infoable<CasoInfo>, Serializable {
         info.setFechaActualizacion(fechaActualizacion);
         info.setProcedeCredito(procedeCredito);
         info.setEntidad(entidad);
+        info.setDescripcionCredito(descripcionCredito);
+        info.setSaldoCredito(saldoCredito);
+        info.setFechaLiquidacionCredito(fechaLiquidacionCredito);
         return info;
     }
-    
+
 }

@@ -33,8 +33,12 @@ public class InfoDeConsulta {
     String 	numeroDeFolio;
     String	nombreAcreditado;
     String 	entidad;
-    int	infoConsulta;
-    String descripcionConsulta;
+    int		infoConsulta;
+    String 	descripcionConsulta;
+    String	procedeCredito;
+    String 	descripcionCredito;
+	Double	saldoCredito;
+	String	fechaLiquidacionCredito;
     
     public int getInfoConsulta() {
 		return infoConsulta;
@@ -139,6 +143,38 @@ public class InfoDeConsulta {
     public void setNumeroDeFolio(String numeroDeFolio) {
         this.numeroDeFolio = numeroDeFolio;
     }
+
+	public String getProcedeCredito() {
+		return procedeCredito;
+	}
+
+	public void setProcedeCredito(String procedeCredito) {
+		this.procedeCredito = procedeCredito;
+	}
+
+	public String getDescripcionCredito() {
+		return descripcionCredito;
+	}
+
+	public void setDescripcionCredito(String descripcionCredito) {
+		this.descripcionCredito = descripcionCredito;
+	}
+
+	public Double getSaldoCredito() {
+		return saldoCredito;
+	}
+
+	public void setSaldoCredito(Double saldoCredito) {
+		this.saldoCredito = saldoCredito;
+	}
+
+	public String getFechaLiquidacionCredito() {
+		return fechaLiquidacionCredito;
+	}
+
+	public void setFechaLiquidacionCredito(String fechaLiquidacionCredito) {
+		this.fechaLiquidacionCredito = fechaLiquidacionCredito;
+	}
     
 }
 

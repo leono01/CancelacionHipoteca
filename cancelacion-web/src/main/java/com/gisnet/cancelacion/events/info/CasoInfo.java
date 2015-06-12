@@ -17,6 +17,7 @@
 package com.gisnet.cancelacion.events.info;
 
 import com.gisnet.cancelacion.events.Info;
+
 import java.util.Date;
 
 /**
@@ -25,22 +26,26 @@ import java.util.Date;
  */
 public class CasoInfo implements Info {
     
-    private long id;
-    private String numeroCredito;
-    private String numeroCaso;
-    private Date fechaCreacion;
-    private Date fechaCierre;
-    private String nombreAcreditado;
+    private long 			id;
+    private String 			numeroCredito;
+    private String 			numeroCaso;
+    private Date 			fechaCreacion;
+    private Date 			fechaCierre;
+    private String 			nombreAcreditado;
     
-    private long notarioId;
-    private long proyectoCancelacionId;
-    private long cartaCancelacionId;
-    private long proyectoRPPId;
-    private StatusCasoInfo statusCaso;
+    private long 			notarioId;
+    private long 			proyectoCancelacionId;
+    private long 			cartaCancelacionId;
+    private long 			proyectoRPPId;
+    private StatusCasoInfo 	statusCaso;
     
-    private Date fechaActualizacion;
-    private String procedeCredito;
-    private String entidad;
+    private Date 			fechaActualizacion;
+    private String 			procedeCredito;
+    private String 			entidad;
+    
+    private String 			descripcionCredito;
+	private Double			saldoCredito;
+	private String			fechaLiquidacionCredito;
 
     public CasoInfo() {
     }
@@ -156,6 +161,30 @@ public class CasoInfo implements Info {
     public void setEntidad(String entidad) {
         this.entidad = entidad;
     }
+
+	public String getDescripcionCredito() {
+		return descripcionCredito;
+	}
+
+	public void setDescripcionCredito(String descripcionCredito) {
+		this.descripcionCredito = descripcionCredito;
+	}
+
+	public Double getSaldoCredito() {
+		return saldoCredito;
+	}
+
+	public void setSaldoCredito(Double saldoCredito) {
+		this.saldoCredito = saldoCredito;
+	}
+
+	public String getFechaLiquidacionCredito() {
+		return fechaLiquidacionCredito;
+	}
+
+	public void setFechaLiquidacionCredito(String fechaLiquidacionCredito) {
+		this.fechaLiquidacionCredito = fechaLiquidacionCredito;
+	}
     
     
     

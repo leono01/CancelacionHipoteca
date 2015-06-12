@@ -207,6 +207,9 @@ public class PersistanceDomainFactory {
         b.setFechaActualizacion(info.getFechaActualizacion());
         b.setProcedeCredito(info.getProcedeCredito());
         b.setEntidad(info.getEntidad());
+        b.setDescripcionCredito(info.getDescripcionCredito());
+        b.setSaldoCredito(info.getSaldoCredito());
+        b.setFechaLiquidacionCredito(info.getFechaLiquidacionCredito());
         return b;
     }
     

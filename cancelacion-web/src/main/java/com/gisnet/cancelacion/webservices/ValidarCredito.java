@@ -26,7 +26,7 @@ import com.gisnet.cancelacion.core.services.CasoService;
 import com.gisnet.cancelacion.events.FindByRequest;
 import com.gisnet.cancelacion.events.FindResponse;
 import com.gisnet.cancelacion.events.info.CasoInfo;
-import com.gisnet.cancelacion.webservices.dto.StatusOperacion;
+import com.gisnet.cancelacion.webservices.dto.InfoValidarCredito;;
 
 
 public class ValidarCredito extends SpringBeanAutowiringSupport{
@@ -34,9 +34,9 @@ public class ValidarCredito extends SpringBeanAutowiringSupport{
 	@Autowired
     private CasoService service;
 	
-	public StatusOperacion validaCredito(String numeroDeCredito){
+	public InfoValidarCredito validaCredito(String numeroDeCredito){
 		
-		StatusOperacion so = new StatusOperacion();
+		InfoValidarCredito ivc = new InfoValidarCredito();
 		
 		
 		try{
@@ -45,12 +45,15 @@ public class ValidarCredito extends SpringBeanAutowiringSupport{
 	        FindResponse<CasoInfo> casoresponse = service.find(fbr);
 	        
 		        if(casoresponse.getInfo() != null){
-		        	so.setCodigo(0);
-		        	so.setDescripcion("El número de crédito tiene asociado un caso");
+		        	ivc.setCodigo(0);
+		        	ivc.setDescripcion("El número de crédito tiene asociado un caso");
+		        	ivc.setNumeroDeCredito(casoresponse.getInfo().getNumeroCredito());
+		        	ivc.setNumeroDeCaso(casoresponse.getInfo().getNumeroCaso());
 		        }
 		        else{
-	        		so.setCodigo(1);
-	        		so.setDescripcion("El número de crédito no tiene asociado un caso");
+	        		ivc.setCodigo(1);
+	        		ivc.setDescripcion("El número de crédito no tiene asociado un caso");
+	        		ivc.setNumeroDeCredito(numeroDeCredito);
 	        	}
 	        
         }catch(Exception e){
@@ -58,15 +61,15 @@ public class ValidarCredito extends SpringBeanAutowiringSupport{
         	
         	if (e.getMessage().equals("Could not open connection; nested exception is org.hibernate.exception.JDBCConnectionException: Could not open connection") || 
         		e.getMessage().equals("could not inspect JDBC autocommit mode; nested exception is org.hibernate.exception.GenericJDBCException: could not inspect JDBC autocommit mode")){
-    			so.setCodigo(2);
-				so.setDescripcion("No hay conexión con la base de datos.");
+    			ivc.setCodigo(2);
+				ivc.setDescripcion("No hay conexión con la base de datos.");
         	}
         	
         	
         }
         	
         
-		return so;
+		return ivc;
 	}
 	
 
