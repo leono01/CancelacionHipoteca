@@ -29,8 +29,12 @@ import com.gisnet.cancelacion.persistance.services.ProyectoCancelacionPersistanc
 import com.gisnet.cancelacion.persistance.services.StatusCasoPersistanceService;
 import com.gisnet.cancelacion.persistance.services.StatusProyectoPersistanceService;
 import com.gisnet.cancelacion.wsclient.microflujo.ClienteMicroflujoService;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -179,16 +183,167 @@ public class CasoServiceHandler implements CasoService {
     
     // gerente de cobranza
     
-    public StatusResponse gerenteCobranzaValidaCaso() {
-        throw new UnsupportedOperationException("no soportado aun");
+    @Override
+    public ListResponse<CasoInfo> gerenteCobranzaListaCasosPendientes(long empleadoGerenteCobranzaId) {
+        ListResponse<ProyectoCancelacionInfo> listresponse = proyectoCancelacionPService.list(
+                new ListRequest("empleadoId", empleadoGerenteCobranzaId));
+        List<CasoInfo> casos = new ArrayList<>();
+        for (ProyectoCancelacionInfo info : listresponse.getList()) {
+            int clave = info.getStatusProyecto().getClave();
+            if (clave == 5 || clave == 8) {
+                FindResponse<CasoInfo> find = service.find(
+                        new FindByRequest("proyectoCancelacionId", info.getId()));
+                casos.add(find.getInfo());
+            }
+        }
+        return new ListResponse<>(casos);
     }
     
-    public StatusResponse gerenteCobranzaProgramaFechaFirma() {
-        throw new UnsupportedOperationException("no soportado aun");
+    @Override
+    public MapResponse<List<CasoInfo>> gerenteCobranzaMapaCasosPendientes(long empleadoGerenteCobranzaId) {
+        ListResponse<ProyectoCancelacionInfo> listresponse = proyectoCancelacionPService.list(
+                new ListRequest("empleadoId", empleadoGerenteCobranzaId));
+        List<CasoInfo> casosRevizar = new ArrayList<>();
+        List<CasoInfo> casosEspera = new ArrayList<>();
+        for (ProyectoCancelacionInfo info : listresponse.getList()) {
+            int clave = info.getStatusProyecto().getClave();
+            if (clave == 5) {
+                FindResponse<CasoInfo> find = service.find(
+                        new FindByRequest("proyectoCancelacionId", info.getId()));
+                casosRevizar.add(find.getInfo());
+            } else if (clave == 8) {
+                FindResponse<CasoInfo> find = service.find(
+                        new FindByRequest("proyectoCancelacionId", info.getId()));
+                casosEspera.add(find.getInfo());
+            }
+        }
+        Map<String, List<CasoInfo>> casos = new HashMap<>();
+        casos.put("casosRevizar", casosRevizar);
+        casos.put("casosEspera", casosEspera);
+        
+        return new MapResponse<>(casos);
+    }
+
+    @Override
+    public UpdateResponse<CasoInfo> gerenteCobranzaActualizaProcedeCredito(long casoId) {
+        return gerenteCobranzaActualizaProcedeCredito( service.find(new FindByRequest(casoId)).getInfo() );
+    }
+
+    @Override
+    public UpdateResponse<CasoInfo> gerenteCobranzaActualizaProcedeCredito(CasoInfo caso) {
+        String antes = caso.getProcedeCredito();
+        SaveResponse<CasoInfo> validarCredito = microflujo.validarCredito(new SaveRequest<>(caso));
+        caso = validarCredito.getInfo();
+        if (!antes.equals(caso.getProcedeCredito())) {
+            service.update(new UpdateRequest<>(caso));
+        }
+        return new UpdateResponse<>(caso);
     }
     
-    public StatusResponse gerenteCobranzaRegistraFechaFirma() {
-        throw new UnsupportedOperationException("no soportado aun");
+    @Override
+    public StatusResponse gerenteCobranzaAutorizaCaso(long empleadoGerenteCobranzaId, CasoInfo caso, ProyectoCancelacionInfo proyecto) {
+        // TODO revisar
+        if (caso.getNotarioId() > 0 && caso.getProyectoCancelacionId() > 0) {
+            if (proyecto.getStatusProyecto().getClave() == 2) {
+                //Caso asignado a notario, en espera de aceptacion o rechazo.
+                return new StatusResponse(0);
+            }
+            if (proyecto.getEmpleadoId() > 0 && proyecto.getEmpleadoId() != empleadoGerenteCobranzaId) {
+                //Caso asignado a otro jefe de cobranza.
+                return new StatusResponse(0);
+            }
+        } else if (caso.getProyectoCancelacionId() > 0) {
+            if (proyecto.isAutorizado()) {
+                //Proyecto previamente autorizado.
+                return new StatusResponse(0);
+            }
+            if (proyecto.getEmpleadoId() > 0 && proyecto.getEmpleadoId() != empleadoGerenteCobranzaId) {
+                //Caso asignado a otro jefe de cobranza.
+                return new StatusResponse(0);
+            }
+        }
+        // TODO revisar
+
+        // autoriza caso con notario infonavit
+        proyecto.setEmpleadoId(empleadoGerenteCobranzaId);
+        proyecto.setAutorizado(true);
+        proyecto.setFechaAutorizacion(new Date());
+        proyecto.setStatusProyecto(statusProyectoPService.find(
+                new FindByRequest("clave", 6)).getInfo());
+        UpdateResponse<ProyectoCancelacionInfo> update1 = proyectoCancelacionPService.update(
+                new UpdateRequest<>(proyecto));
+        proyecto = update1.getInfo();
+
+        caso.setProyectoCancelacionId(proyecto.getId());
+        FindResponse<StatusCasoInfo> find = statusCasoPService.find(
+                new FindByRequest("clave", 13));
+        caso.setStatusCaso(find.getInfo());
+        service.update(new UpdateRequest<>(caso));
+        //cas
+
+        return new StatusResponse(1);
+    }
+    
+    @Override
+    public StatusResponse gerenteCobranzaProgramaFechaFirma(CasoInfo caso, ProyectoCancelacionInfo proyecto, Date fechaAsignada) {
+        FindResponse<StatusCasoInfo> find = statusCasoPService.find(
+                new FindByRequest("clave", 14));
+        caso.setStatusCaso(find.getInfo());
+        service.update(new UpdateRequest<>(caso));
+
+        FindResponse<StatusProyectoInfo> find2 = statusProyectoPService.find(
+                new FindByRequest("clave", 8));
+        proyecto.setStatusProyecto(find2.getInfo());
+        proyecto.setFechaAsignadaParaFirma(fechaAsignada);
+
+        proyectoCancelacionPService.update(new UpdateRequest<>(proyecto));
+        
+        return new StatusResponse(1);
+    }
+    
+    @Override
+    public StatusResponse gerenteCobranzaRegistraFechaFirma(CasoInfo caso, ProyectoCancelacionInfo proyecto, Date fechaFirma) {
+        FindResponse<StatusCasoInfo> find = statusCasoPService.find(
+                new FindByRequest("clave", 15));
+        caso.setStatusCaso(find.getInfo());
+        service.update(new UpdateRequest<>(caso));
+
+        // TODO guarda fecha firma con notario / actualizacion de estados
+
+        FindResponse<StatusProyectoInfo> find2 = statusProyectoPService.find(
+                new FindByRequest("clave", 9));
+        proyecto.setStatusProyecto(find2.getInfo());
+        proyecto.setFechaFirmaNotario(fechaFirma);
+
+        proyectoCancelacionPService.update(new UpdateRequest<>(proyecto));
+        
+        return new StatusResponse(1);
+    }
+    
+    @Override
+    public FindResponse<CasoInfo> gerenteCobranzaBuscaCasoParaValidar(long empleadoGerenteCobranzaId, String numeroCaso, String numeroCredito) {
+        FindResponse<CasoInfo> find1 = service.find(
+                new FindByRequest("numeroCaso", numeroCaso));
+        CasoInfo caso = find1.getInfo();
+        if (caso == null) {
+            return new FindResponse<>(null);
+        }
+        if (!caso.getNumeroCredito().equals(numeroCredito)) {
+            return new FindResponse<>(null);
+        }
+        if (caso.getNotarioId() > 0) {
+            if (caso.getProyectoCancelacionId() > 0) {
+                FindResponse<ProyectoCancelacionInfo> find = proyectoCancelacionPService.find(
+                        new FindByRequest(caso.getProyectoCancelacionId()));
+                ProyectoCancelacionInfo info = find.getInfo();
+                if (info.getStatusProyecto().getClave() != 11) {
+                    if (info.getEmpleadoId() > 0 && info.getEmpleadoId() != empleadoGerenteCobranzaId) {
+                        return new FindResponse<>(null);
+                    }
+                }
+            }
+        }
+        return new FindResponse<>(caso);
     }
 
     

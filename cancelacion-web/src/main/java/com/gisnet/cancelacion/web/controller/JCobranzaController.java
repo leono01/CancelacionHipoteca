@@ -17,14 +17,11 @@
 package com.gisnet.cancelacion.web.controller;
 
 import com.gisnet.cancelacion.core.services.CancelacionArchivoService;
-import com.gisnet.cancelacion.core.services.CartaCancelacionService;
 import com.gisnet.cancelacion.core.services.CasoService;
 import com.gisnet.cancelacion.core.services.EmpleadoService;
-import com.gisnet.cancelacion.core.services.NotarioService;
 import com.gisnet.cancelacion.core.services.ProyectoCancelacionService;
 import com.gisnet.cancelacion.core.services.StatusCasoService;
 import com.gisnet.cancelacion.core.services.StatusProyectoService;
-import com.gisnet.cancelacion.core.services.UsuarioService;
 import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.*;
 import com.gisnet.cancelacion.web.domain.SesionJCobranza;
@@ -57,21 +54,11 @@ public class JCobranzaController {
     @Autowired
     private CancelacionArchivoService cancelacionArchivoService;
     @Autowired
-    private CartaCancelacionService cartaCancelacionService;
-    @Autowired
     private CasoService casoService;
     @Autowired
     private EmpleadoService empleadoService;
     @Autowired
-    private NotarioService notarioService;
-    @Autowired
     private ProyectoCancelacionService proyectoCancelacionService;
-    @Autowired
-    private StatusCasoService statusCasoService;
-    @Autowired
-    private StatusProyectoService statusProyectoService;
-    @Autowired
-    private UsuarioService usuarioService;
 
     @Autowired
     private SesionJCobranza sesion;
@@ -85,23 +72,12 @@ public class JCobranzaController {
             model.addAttribute("casosespera", new ArrayList<>());
             return "/jcobranza/index";
         }
-        ListResponse<ProyectoCancelacionInfo> listresponse = proyectoCancelacionService.list(
-                new ListRequest("empleadoId", sesion.getEmpleado().getId()));
-        List<CasoInfo> casosRevizar = new ArrayList<>();
-        List<CasoInfo> casosEspera = new ArrayList<>();
-        for (ProyectoCancelacionInfo info : listresponse.getList()) {
-            if (info.getStatusProyecto().getClave() == 5) {
-                FindResponse<CasoInfo> find = casoService.find(
-                        new FindByRequest("proyectoCancelacionId", info.getId()));
-                casosRevizar.add(find.getInfo());
-            } else if (info.getStatusProyecto().getClave() == 8) {
-                FindResponse<CasoInfo> find = casoService.find(
-                        new FindByRequest("proyectoCancelacionId", info.getId()));
-                casosEspera.add(find.getInfo());
-            }
-        }
-        model.addAttribute("casosrevizar", casosRevizar);
-        model.addAttribute("casosespera", casosEspera);
+
+        MapResponse<List<CasoInfo>> mapa1 = casoService.gerenteCobranzaMapaCasosPendientes(
+                sesion.getEmpleado().getId());
+        model.addAttribute("casosrevizar", mapa1.getMapa().get("casosRevizar"));
+        model.addAttribute("casosespera", mapa1.getMapa().get("casosEspera"));
+        
         return "/jcobranza/index";
     }
 
@@ -193,14 +169,9 @@ public class JCobranzaController {
             mensajes.add("warning::El caso " + numeroCaso + " no existe.");
             return "redirect:/";
         }
-        CasoInfo caso = sesion.getCaso();
-        String antes = caso.getProcedeCredito();
-        SaveResponse<CasoInfo> validarCredito = casoService.validarCredito(new SaveRequest<>(caso));
-        caso = validarCredito.getInfo();
-        if (!antes.equals(caso.getProcedeCredito())) {
-            casoService.update(new UpdateRequest<>(caso));
-        }
-        sesion.setCaso(caso);
+        UpdateResponse<CasoInfo> update1 = casoService.gerenteCobranzaActualizaProcedeCredito(sesion.getCaso());
+        sesion.setCaso(update1.getInfo());
+
         return "redirect:/cobranza/caso/" + numeroCaso;
     }
 
@@ -255,18 +226,17 @@ public class JCobranzaController {
             mensajes.add("warning::El caso " + numeroCaso + " no existe.");
             return "redirect:/";
         }
-        CasoInfo caso = sesion.getCaso();
-        FindResponse<StatusCasoInfo> find = statusCasoService.find(new FindByRequest("clave", 14));
-        caso.setStatusCaso(find.getInfo());
-        casoService.update(new UpdateRequest<>(caso));
-
-        ProyectoCancelacionInfo proyecto = sesion.getProyectoCancelacion();
-        FindResponse<StatusProyectoInfo> find2 = statusProyectoService.find(new FindByRequest("clave", 8));
-        proyecto.setStatusProyecto(find2.getInfo());
-        proyecto.setFechaAsignadaParaFirma(fechaAsignada);
-
-        proyectoCancelacionService.update(new UpdateRequest<>(proyecto));
-        return "redirect:/";
+        StatusResponse gerenteCobranzaProgramaFechaFirma = casoService.gerenteCobranzaProgramaFechaFirma(
+                sesion.getCaso(),
+                sesion.getProyectoCancelacion(),
+                fechaAsignada);
+        if (gerenteCobranzaProgramaFechaFirma.getStatus() == 1) {
+            mensajes.add("success::Fecha de firma asignada.");
+            return "redirect:/";
+        } else {
+            mensajes.add("warning::Ocurrio un error.");
+            return "redirect:/cobranza/caso/" + numeroCaso + "/fechafirma";
+        }
     }
 
     @RequestMapping(value = "/cobranza/caso/{numeroCaso}/registrarfirma", method = RequestMethod.POST)
@@ -285,20 +255,17 @@ public class JCobranzaController {
             mensajes.add("warning::El caso " + numeroCaso + " no existe.");
             return "redirect:/";
         }
-        CasoInfo caso = sesion.getCaso();
-        FindResponse<StatusCasoInfo> find = statusCasoService.find(new FindByRequest("clave", 15));
-        caso.setStatusCaso(find.getInfo());
-        casoService.update(new UpdateRequest<>(caso));
-
-        // TODO guarda fecha firma con notario / actualizacion de estados
-        ProyectoCancelacionInfo proyecto = sesion.getProyectoCancelacion();
-
-        FindResponse<StatusProyectoInfo> find2 = statusProyectoService.find(new FindByRequest("clave", 9));
-        proyecto.setStatusProyecto(find2.getInfo());
-        proyecto.setFechaFirmaNotario(fechaAsignada);
-
-        proyectoCancelacionService.update(new UpdateRequest<>(proyecto));
-        return "redirect:/";
+        StatusResponse gerenteCobranzaRegistraFechaFirma = casoService.gerenteCobranzaRegistraFechaFirma(
+                sesion.getCaso(),
+                sesion.getProyectoCancelacion(),
+                fechaAsignada);
+        if (gerenteCobranzaRegistraFechaFirma.getStatus() == 1) {
+            mensajes.add("success::Fecha de firma registrada.");
+            return "redirect:/";
+        } else {
+            mensajes.add("warning::Ocurrio un error.");
+            return "redirect:/cobranza/caso/" + numeroCaso + "/registrarfirma";
+        }
     }
 
     @RequestMapping(value = "/cobranza/buscar", method = RequestMethod.GET)
@@ -313,28 +280,15 @@ public class JCobranzaController {
             Model model,
             RedirectAttributes redirectAttributes) {
         List<String> mensajes = Utils.getFlashMensajes(model, redirectAttributes);
-        FindResponse<CasoInfo> find1 = casoService.find(new FindByRequest("numeroCaso", numeroCaso));
+        FindResponse<CasoInfo> find1 = casoService.gerenteCobranzaBuscaCasoParaValidar(
+                sesion.getEmpleado().getId(), numeroCaso, numeroCredito);
         CasoInfo caso = find1.getInfo();
-        if (!caso.getNumeroCredito().equals(numeroCredito)) {
-            mensajes.add("info::No existe caso con los datos ingresados");
+        if (caso == null) {
+            mensajes.add("info::Caso no encontrado.");
             return "redirect:/cobranza/buscar";
+        } else {
+            return "redirect:/cobranza/caso/" + caso.getNumeroCaso();
         }
-        if (caso.getNotarioId() > 0) {
-            if (caso.getProyectoCancelacionId() > 0) {
-                FindResponse<ProyectoCancelacionInfo> find = proyectoCancelacionService.find(
-                        new FindByRequest(caso.getProyectoCancelacionId()));
-                ProyectoCancelacionInfo info = find.getInfo();
-                if (info.getStatusProyecto().getClave() != 11) {
-                    if (info.getEmpleadoId() > 0 && info.getEmpleadoId() != sesion.getEmpleado().getId()) {
-                        mensajes.add("warning::Caso asignado a otro jefe de cobranza");
-                        return "redirect:/cobranza/buscar";
-                    }
-                }
-                sesion.setProyectoCancelacion(info);
-            }
-        }
-        sesion.setCaso(caso);
-        return "redirect:/cobranza/caso/" + caso.getNumeroCaso();
     }
 
     @RequestMapping(value = "/cobranza/caso/{numeroCaso}/autorizar", method = RequestMethod.POST)
@@ -352,47 +306,14 @@ public class JCobranzaController {
             mensajes.add("warning::El caso " + numeroCaso + " no existe.");
             return "redirect:/";
         }
-        CasoInfo caso = sesion.getCaso();
-        ProyectoCancelacionInfo proyecto = sesion.getProyectoCancelacion();
-
-        // TODO revisar
-        if (caso.getNotarioId() > 0 && caso.getProyectoCancelacionId() > 0) {
-            if (proyecto.getStatusProyecto().getClave() == 2) {
-                mensajes.add("warning::Caso asignado a notario, en espera de aceptacion o rechazo.");
-                return "redirect:/cobranza/caso/" + caso.getNumeroCaso();
-            }
-            if (proyecto.getEmpleadoId() > 0 && proyecto.getEmpleadoId() != sesion.getEmpleado().getId()) {
-                mensajes.add("warning::Caso asignado a otro jefe de cobranza.");
-                return "redirect:/cobranza/caso/" + caso.getNumeroCaso();
-            }
-        } else if (caso.getProyectoCancelacionId() > 0) {
-            if (proyecto.isAutorizado()) {
-                mensajes.add("warning::Proyecto previamente autorizado.");
-                return "redirect:/cobranza/caso/" + caso.getNumeroCaso();
-            }
-            if (proyecto.getEmpleadoId() > 0 && proyecto.getEmpleadoId() != sesion.getEmpleado().getId()) {
-                mensajes.add("warning::Caso asignado a otro jefe de cobranza.");
-                return "redirect:/cobranza/caso/" + caso.getNumeroCaso();
-            }
+        StatusResponse gerenteCobranzaValidaCaso = casoService.gerenteCobranzaAutorizaCaso(sesion.getEmpleado().getId(), sesion.getCaso(), sesion.getProyectoCancelacion());
+        if (gerenteCobranzaValidaCaso.getStatus() == 1) {
+            mensajes.add("success::Caso autorizado.");
+            return "redirect:/cobranza/caso/" + sesion.getCaso().getNumeroCaso();
+        } else {
+            mensajes.add("warning::Ocurrio un error.");
+            return "redirect:/cobranza/caso/" + sesion.getCaso().getNumeroCaso();
         }
-        // TODO revisar
-
-        // autoriza caso con notario infonavit
-        proyecto.setEmpleadoId(sesion.getEmpleado().getId());
-        proyecto.setAutorizado(true);
-        proyecto.setFechaAutorizacion(new Date());
-        proyecto.setStatusProyecto(statusProyectoService.find(new FindByRequest("clave", 6)).getInfo());
-        UpdateResponse<ProyectoCancelacionInfo> update1 = proyectoCancelacionService.update(new UpdateRequest<>(proyecto));
-        proyecto = update1.getInfo();
-
-        caso.setProyectoCancelacionId(proyecto.getId());
-        FindResponse<StatusCasoInfo> find = statusCasoService.find(new FindByRequest("clave", 13));
-        caso.setStatusCaso(find.getInfo());
-        casoService.update(new UpdateRequest<>(caso));
-
-        mensajes.add("success::Caso autorizado.");
-
-        return "redirect:/cobranza/caso/" + caso.getNumeroCaso();
     }
 
 }

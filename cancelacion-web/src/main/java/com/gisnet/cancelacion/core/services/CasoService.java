@@ -20,6 +20,8 @@ package com.gisnet.cancelacion.core.services;
 import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.CancelacionArchivoInfo;
 import com.gisnet.cancelacion.events.info.CasoInfo;
+import com.gisnet.cancelacion.events.info.ProyectoCancelacionInfo;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,11 +57,21 @@ public interface CasoService {
     
     // gerente cobranza
     
-    //public StatusResponse gerenteCobranzaValidaCaso();
+    public ListResponse<CasoInfo> gerenteCobranzaListaCasosPendientes(long empleadoGerenteCobranzaId);
+
+    public MapResponse<List<CasoInfo>> gerenteCobranzaMapaCasosPendientes(long empleadoGerenteCobranzaId);
     
-    //public StatusResponse gerenteCobranzaProgramaFechaFirma();
+    public UpdateResponse<CasoInfo> gerenteCobranzaActualizaProcedeCredito(long casoId);
     
-    //public StatusResponse gerenteCobranzaRegistraFechaFirma();
+    public UpdateResponse<CasoInfo> gerenteCobranzaActualizaProcedeCredito(CasoInfo caso);
+    
+    public StatusResponse gerenteCobranzaProgramaFechaFirma(CasoInfo caso, ProyectoCancelacionInfo proyecto, Date fechaAsignada);
+    
+    public StatusResponse gerenteCobranzaRegistraFechaFirma(CasoInfo caso, ProyectoCancelacionInfo proyecto, Date fechaFirma);
+    
+    public FindResponse<CasoInfo> gerenteCobranzaBuscaCasoParaValidar(long empleadoGerenteCobranzaId, String numeroCaso, String numeroCredito);
+    
+    public StatusResponse gerenteCobranzaAutorizaCaso(long empleadoGerenteCobranzaId, CasoInfo caso, ProyectoCancelacionInfo proyecto);
 
     // microflujo
     
