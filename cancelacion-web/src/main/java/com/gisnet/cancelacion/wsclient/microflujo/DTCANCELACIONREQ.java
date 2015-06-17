@@ -5,6 +5,7 @@
 
 package com.gisnet.cancelacion.wsclient.microflujo;
 
+import java.math.BigInteger;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -14,25 +15,26 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>Java class for Input complex type.
+ * tipo dato request cancelacion
+ * 
+ * <p>Java class for DT_CANCELACION_REQ complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="Input">
+ * &lt;complexType name="DT_CANCELACION_REQ">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="numeroCredito" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="numeroCaso" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="tipoOperacion" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="estatus" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
+ *         &lt;element name="nombreAcreditado" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="tipoOperacion" type="{http://www.w3.org/2001/XMLSchema}integer" minOccurs="0"/>
+ *         &lt;element name="carta" type="{http://www.w3.org/2001/XMLSchema}base64Binary" minOccurs="0"/>
+ *         &lt;element name="fechaEmision" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
+ *         &lt;element name="estatus" type="{http://www.w3.org/2001/XMLSchema}integer" minOccurs="0"/>
  *         &lt;element name="descripcion" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="entidad" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="Carta" type="{http://www.w3.org/2001/XMLSchema}base64Binary" minOccurs="0"/>
- *         &lt;element name="nombreAcreditado" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="fechaEmision" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
- *         &lt;element name="md5" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -42,33 +44,30 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Input", namespace = "http://www.sap.com/caf/sap.com/home.infonavit_po_ch.bl.caf/modeled", propOrder = {
+@XmlType(name = "DT_CANCELACION_REQ", propOrder = {
     "numeroCredito",
     "numeroCaso",
+    "nombreAcreditado",
     "tipoOperacion",
+    "carta",
+    "fechaEmision",
     "estatus",
     "descripcion",
-    "entidad",
-    "carta",
-    "nombreAcreditado",
-    "fechaEmision",
-    "md5"
+    "entidad"
 })
-public class Input {
+public class DTCANCELACIONREQ {
 
     @XmlElement(required = true)
     protected String numeroCredito;
     protected String numeroCaso;
-    protected int tipoOperacion;
-    protected Integer estatus;
-    protected String descripcion;
-    protected String entidad;
-    @XmlElement(name = "Carta")
-    protected byte[] carta;
     protected String nombreAcreditado;
+    protected BigInteger tipoOperacion;
+    protected byte[] carta;
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar fechaEmision;
-    protected String md5;
+    protected BigInteger estatus;
+    protected String descripcion;
+    protected String entidad;
 
     /**
      * Gets the value of the numeroCredito property.
@@ -119,19 +118,97 @@ public class Input {
     }
 
     /**
+     * Gets the value of the nombreAcreditado property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getNombreAcreditado() {
+        return nombreAcreditado;
+    }
+
+    /**
+     * Sets the value of the nombreAcreditado property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setNombreAcreditado(String value) {
+        this.nombreAcreditado = value;
+    }
+
+    /**
      * Gets the value of the tipoOperacion property.
      * 
+     * @return
+     *     possible object is
+     *     {@link BigInteger }
+     *     
      */
-    public int getTipoOperacion() {
+    public BigInteger getTipoOperacion() {
         return tipoOperacion;
     }
 
     /**
      * Sets the value of the tipoOperacion property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link BigInteger }
+     *     
      */
-    public void setTipoOperacion(int value) {
+    public void setTipoOperacion(BigInteger value) {
         this.tipoOperacion = value;
+    }
+
+    /**
+     * Gets the value of the carta property.
+     * 
+     * @return
+     *     possible object is
+     *     byte[]
+     */
+    public byte[] getCarta() {
+        return carta;
+    }
+
+    /**
+     * Sets the value of the carta property.
+     * 
+     * @param value
+     *     allowed object is
+     *     byte[]
+     */
+    public void setCarta(byte[] value) {
+        this.carta = ((byte[]) value);
+    }
+
+    /**
+     * Gets the value of the fechaEmision property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public XMLGregorianCalendar getFechaEmision() {
+        return fechaEmision;
+    }
+
+    /**
+     * Sets the value of the fechaEmision property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public void setFechaEmision(XMLGregorianCalendar value) {
+        this.fechaEmision = value;
     }
 
     /**
@@ -139,10 +216,10 @@ public class Input {
      * 
      * @return
      *     possible object is
-     *     {@link Integer }
+     *     {@link BigInteger }
      *     
      */
-    public Integer getEstatus() {
+    public BigInteger getEstatus() {
         return estatus;
     }
 
@@ -151,10 +228,10 @@ public class Input {
      * 
      * @param value
      *     allowed object is
-     *     {@link Integer }
+     *     {@link BigInteger }
      *     
      */
-    public void setEstatus(Integer value) {
+    public void setEstatus(BigInteger value) {
         this.estatus = value;
     }
 
@@ -204,100 +281,6 @@ public class Input {
      */
     public void setEntidad(String value) {
         this.entidad = value;
-    }
-
-    /**
-     * Gets the value of the carta property.
-     * 
-     * @return
-     *     possible object is
-     *     byte[]
-     */
-    public byte[] getCarta() {
-        return carta;
-    }
-
-    /**
-     * Sets the value of the carta property.
-     * 
-     * @param value
-     *     allowed object is
-     *     byte[]
-     */
-    public void setCarta(byte[] value) {
-        this.carta = ((byte[]) value);
-    }
-
-    /**
-     * Gets the value of the nombreAcreditado property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getNombreAcreditado() {
-        return nombreAcreditado;
-    }
-
-    /**
-     * Sets the value of the nombreAcreditado property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setNombreAcreditado(String value) {
-        this.nombreAcreditado = value;
-    }
-
-    /**
-     * Gets the value of the fechaEmision property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
-     */
-    public XMLGregorianCalendar getFechaEmision() {
-        return fechaEmision;
-    }
-
-    /**
-     * Sets the value of the fechaEmision property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
-     */
-    public void setFechaEmision(XMLGregorianCalendar value) {
-        this.fechaEmision = value;
-    }
-
-    /**
-     * Gets the value of the md5 property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getMd5() {
-        return md5;
-    }
-
-    /**
-     * Sets the value of the md5 property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setMd5(String value) {
-        this.md5 = value;
     }
 
 }

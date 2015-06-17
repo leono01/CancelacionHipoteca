@@ -12,13 +12,13 @@ import javax.xml.ws.Dispatch;
 import javax.xml.ws.Service;
 import javax.xml.ws.soap.SOAPBinding;
 
-public class StartFlowBindingPortProxy{
+public class HTTP_PortProxy{
 
     protected Descriptor _descriptor;
 
     public class Descriptor {
-        private com.gisnet.cancelacion.wsclient.microflujo.StartFlowClient _service = null;
-        private com.gisnet.cancelacion.wsclient.microflujo.StartFlowSEI _proxy = null;
+        private com.gisnet.cancelacion.wsclient.microflujo.SICANCELACIONOUService _service = null;
+        private com.gisnet.cancelacion.wsclient.microflujo.SICANCELACIONOU _proxy = null;
         private Dispatch<Source> _dispatch = null;
         private boolean _useJNDIOnly = false;
 
@@ -27,7 +27,7 @@ public class StartFlowBindingPortProxy{
         }
 
         public Descriptor(URL wsdlLocation, QName serviceName) {
-            _service = new com.gisnet.cancelacion.wsclient.microflujo.StartFlowClient(wsdlLocation, serviceName);
+            _service = new com.gisnet.cancelacion.wsclient.microflujo.SICANCELACIONOUService(wsdlLocation, serviceName);
             initCommon();
         }
 
@@ -38,7 +38,7 @@ public class StartFlowBindingPortProxy{
             try
             {
                 InitialContext ctx = new InitialContext();
-                _service = (com.gisnet.cancelacion.wsclient.microflujo.StartFlowClient)ctx.lookup("java:comp/env/service/StartFlow");
+                _service = (com.gisnet.cancelacion.wsclient.microflujo.SICANCELACIONOUService)ctx.lookup("java:comp/env/service/SI_CANCELACION_OUService");
             }
             catch (NamingException e)
             {
@@ -49,15 +49,15 @@ public class StartFlowBindingPortProxy{
             }
 
             if (_service == null && !_useJNDIOnly)
-                _service = new com.gisnet.cancelacion.wsclient.microflujo.StartFlowClient();
+                _service = new com.gisnet.cancelacion.wsclient.microflujo.SICANCELACIONOUService();
             initCommon();
         }
 
         private void initCommon() {
-            _proxy = _service.getStartFlowBindingPort();
+            _proxy = _service.getHTTPPort();
         }
 
-        public com.gisnet.cancelacion.wsclient.microflujo.StartFlowSEI getProxy() {
+        public com.gisnet.cancelacion.wsclient.microflujo.SICANCELACIONOU getProxy() {
             return _proxy;
         }
 
@@ -68,7 +68,7 @@ public class StartFlowBindingPortProxy{
 
         public Dispatch<Source> getDispatch() {
             if (_dispatch == null ) {
-                QName portQName = new QName("http://www.sap.com/caf/sap.com/home.infonavit_po_ch.bl.caf/modeled/StartFlow", "StartFlowBindingPort");
+                QName portQName = new QName("http://infonavit.org.mx/Cancelacion_ARPP", "HTTP_Port");
                 _dispatch = _service.createDispatch(portQName, Source.class, Service.Mode.MESSAGE);
 
                 String proxyEndpointUrl = getEndpoint();
@@ -101,12 +101,12 @@ public class StartFlowBindingPortProxy{
         }
     }
 
-    public StartFlowBindingPortProxy() {
+    public HTTP_PortProxy() {
         _descriptor = new Descriptor();
         _descriptor.setMTOMEnabled(false);
     }
 
-    public StartFlowBindingPortProxy(URL wsdlLocation, QName serviceName) {
+    public HTTP_PortProxy(URL wsdlLocation, QName serviceName) {
         _descriptor = new Descriptor(wsdlLocation, serviceName);
         _descriptor.setMTOMEnabled(false);
     }
@@ -115,24 +115,8 @@ public class StartFlowBindingPortProxy{
         return _descriptor;
     }
 
-    public Estatus cambioEstatus(Input inputParameter1) {
-        return _getDescriptor().getProxy().cambioEstatus(inputParameter1);
-    }
-
-    public DatosNotarios consultaNotarios(Input inputParameter1) {
-        return _getDescriptor().getProxy().consultaNotarios(inputParameter1);
-    }
-
-    public Estatus registraCaso(Input inputParameter1) {
-        return _getDescriptor().getProxy().registraCaso(inputParameter1);
-    }
-
-    public DatosCredito validarCredito(Input inputParameter1) {
-        return _getDescriptor().getProxy().validarCredito(inputParameter1);
-    }
-
-    public Output operacionPrincipal(Input inputParameter1) {
-        return _getDescriptor().getProxy().operacionPrincipal(inputParameter1);
+    public DTCANCELACIONRESP siCANCELACIONOU(DTCANCELACIONREQ mtCANCELACIONRQST) {
+        return _getDescriptor().getProxy().siCANCELACIONOU(mtCANCELACIONRQST);
     }
 
 }

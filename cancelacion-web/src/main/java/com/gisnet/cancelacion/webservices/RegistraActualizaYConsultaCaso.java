@@ -36,7 +36,9 @@ import com.gisnet.cancelacion.webservices.dto.StatusOperacion;
 
 
 
+
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -154,9 +156,9 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
         return port.suma(sumador1, sumador2);
          * **/
         
-        com.gisnet.cancelacion.wsclient.microflujo.StartFlowBindingPortProxy microService = new com.gisnet.cancelacion.wsclient.microflujo.StartFlowBindingPortProxy();
-        com.gisnet.cancelacion.wsclient.microflujo.Input entradas = new com.gisnet.cancelacion.wsclient.microflujo.Input();
-        com.gisnet.cancelacion.wsclient.microflujo.Estatus salidas = new com.gisnet.cancelacion.wsclient.microflujo.Estatus();
+        com.gisnet.cancelacion.wsclient.microflujo.SICANCELACIONOUService microService = new com.gisnet.cancelacion.wsclient.microflujo.SICANCELACIONOUService();
+        com.gisnet.cancelacion.wsclient.microflujo.DTCANCELACIONREQ entradas = new com.gisnet.cancelacion.wsclient.microflujo.DTCANCELACIONREQ();
+        com.gisnet.cancelacion.wsclient.microflujo.DTCANCELACIONRESP salidas = new com.gisnet.cancelacion.wsclient.microflujo.DTCANCELACIONRESP();
         
         
         
@@ -244,24 +246,24 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 	        		
 		        	if(sciResponse.getInfo().getId() != 0){	        
 			        	
-			        	entradas.setEstatus(sciResponse.getInfo().getClave());
+			        	entradas.setEstatus(BigInteger.valueOf(sciResponse.getInfo().getClave()));
 			        	entradas.setDescripcion(sciResponse.getInfo().getDescripcion());
 			        }
 		        	
 		        	entradas.setNumeroCredito(numeroDeCredito);
 		        	entradas.setNumeroCaso(numeroDeCaso);
-		        	entradas.setTipoOperacion(4);
+		        	entradas.setTipoOperacion(BigInteger.valueOf(4));
 		        	
 		        	entradas.setCarta(null);
 		        	entradas.setFechaEmision(null);
 		        	entradas.setNombreAcreditado("");
 		        	entradas.setEntidad(null);
 		        	
-		        	salidas = microService.cambioEstatus(entradas);
+		        	salidas = microService.getHTTPPort().siCANCELACIONOU(entradas);
 		        	//isc = pmsPort.statusCaso(numeroDeCredito, numeroDeCaso, null, status, null, null, null, null, 4);
 			        
-			        System.out.println("Salida del WS PMS -> status : " + salidas.getEstatus());
-			        System.out.println("Salida del WS PMS -> descripción : " + salidas.getDescripcion());
+			        System.out.println("Salida del WS PMS -> status : " + salidas.getDatosCredito().getEstatus());
+			        System.out.println("Salida del WS PMS -> descripción : " + salidas.getDatosCredito().getDescripcion());
 	        	}
 	        	
 	        	catch(Exception e){

@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:p1="http://infonavit.org.mx/Cancelacion_ARPP" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" name="SI_CANCELACION_OU" targetNamespace="http://infonavit.org.mx/Cancelacion_ARPP">
+  <wsdl:documentation/>
+  <wsp:UsingPolicy wsdl:required="true"/>
+  <wsp:Policy wsu:Id="OP_SI_CANCELACION_OU"/>
+  <wsdl:types>
+    <xsd:schema xmlns="http://infonavit.org.mx/Cancelacion_ARPP" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://infonavit.org.mx/Cancelacion_ARPP">
+      <xsd:element name="MT_CANCELACION_RQST" type="DT_CANCELACION_REQ"/>
+      <xsd:element name="MT_CANCELACION_RESP" type="DT_CANCELACION_RESP"/>
+      <xsd:complexType name="DT_CANCELACION_RESP">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="EN">tipo dato respuesta cancelacion</xsd:documentation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">44fe39050fb311e595f70000006a88da</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="DatosCredito">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">c99f4a82f46e11e497d600ff50e2c7d3</xsd:appinfo>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element minOccurs="0" name="numeroCredito" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">e707630ef46f11e4b93500ff50e2c7d3</xsd:appinfo>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="estatus" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">e70782fdf46f11e4a58400ff50e2c7d3</xsd:appinfo>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="descripcion" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">e70782fef46f11e4ba0000ff50e2c7d3</xsd:appinfo>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="direccion" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">e70782fff46f11e4c44500ff50e2c7d3</xsd:appinfo>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="procede" type="xsd:boolean">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">1f9f9d57f47011e4ae3800ff50e2c7d3</xsd:appinfo>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="entidad" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">69a3d78808aa11e5878700ff5cc0acfe</xsd:appinfo>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="fechaLiquidacion" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">451e86090fb311e5ae2100ff5cc0acfe</xsd:appinfo>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="numeroCaso" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">451e860a0fb311e59e2300ff5cc0acfe</xsd:appinfo>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element maxOccurs="unbounded" minOccurs="0" name="DatosNotario">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">440d8b42f46f11e48b3700ff50e2c7d3</xsd:appinfo>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element minOccurs="0" name="codigoNotario" type="xsd:integer">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">1f9f9d58f47011e48b8e00ff50e2c7d3</xsd:appinfo>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="nombrenotario" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">1f9f9d59f47011e4b98f00ff50e2c7d3</xsd:appinfo>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="notaria" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">1f9f9d5af47011e485c100ff50e2c7d3</xsd:appinfo>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="entidad" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">6f8bde29f47011e4957600ff50e2c7d3</xsd:appinfo>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="convenioInfonavit" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">6f8bde2af47011e4c03f00ff50e2c7d3</xsd:appinfo>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="correoElectronico" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">33675848f47411e4aefb00ff50e2c7d3</xsd:appinfo>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element minOccurs="0" name="telefono" type="xsd:string">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">33678fe3f47411e4b1a700ff50e2c7d3</xsd:appinfo>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DT_CANCELACION_REQ">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="EN">tipo dato request cancelacion</xsd:documentation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">72d9112708aa11e5809f0000006a88da</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="numeroCredito" type="xsd:string">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">8543b3f4f46c11e4a92400ff50e2c7d3</xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="numeroCaso" type="xsd:string">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">c7a7c086f46c11e4bb9000ff50e2c7d3</xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="nombreAcreditado" type="xsd:string">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">f70cbe8cf46c11e4ced300ff50e2c7d3</xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="tipoOperacion" type="xsd:integer">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">f70d0472f46c11e4a79200ff50e2c7d3</xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="carta" type="xsd:base64Binary">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">1fcd669ef46d11e4c44900ff50e2c7d3</xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="fechaEmision" type="xsd:date">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">6bd14d04f46d11e4b2c000ff50e2c7d3</xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="estatus" type="xsd:integer">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">8ef02e92f46d11e4bb6800ff50e2c7d3</xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="descripcion" type="xsd:string">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">8ef02e93f46d11e4bb5a00ff50e2c7d3</xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="entidad" type="xsd:string">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">eced86a9f47311e4a10100ff50e2c7d3</xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="MT_CANCELACION_RQST">
+    <wsdl:documentation/>
+    <wsdl:part element="p1:MT_CANCELACION_RQST" name="MT_CANCELACION_RQST"/>
+  </wsdl:message>
+  <wsdl:message name="MT_CANCELACION_RESP">
+    <wsdl:documentation/>
+    <wsdl:part element="p1:MT_CANCELACION_RESP" name="MT_CANCELACION_RESP"/>
+  </wsdl:message>
+  <wsdl:portType name="SI_CANCELACION_OU">
+    <wsdl:documentation/>
+    <wsdl:operation name="SI_CANCELACION_OU">
+      <wsdl:documentation/>
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP_SI_CANCELACION_OU"/>
+      </wsp:Policy>
+      <wsdl:input message="p1:MT_CANCELACION_RQST"/>
+      <wsdl:output message="p1:MT_CANCELACION_RESP"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SI_CANCELACION_OUBinding" type="p1:SI_CANCELACION_OU">
+    <soap:binding xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="SI_CANCELACION_OU">
+      <soap:operation xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="http://sap.com/xi/WebService/soap1.1"/>
+      <wsdl:input>
+        <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SI_CANCELACION_OUService">
+    <wsdl:port binding="p1:SI_CANCELACION_OUBinding" name="HTTP_Port">
+      <soap:address xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" location="http://091402ai203.infonavit.net:50000/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_BPM&amp;receiverParty=&amp;receiverService=&amp;interface=SI_CANCELACION_OU&amp;interfaceNamespace=http%3A%2F%2Finfonavit.org.mx%2FCancelacion_ARPP"/>
+    </wsdl:port>
+    <wsdl:port binding="p1:SI_CANCELACION_OUBinding" name="HTTPS_Port">
+      <soap:address xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" location="https://091402ai203.infonavit.net:50001/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_BPM&amp;receiverParty=&amp;receiverService=&amp;interface=SI_CANCELACION_OU&amp;interfaceNamespace=http%3A%2F%2Finfonavit.org.mx%2FCancelacion_ARPP"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -9,4 +9,7 @@
   <serviceRefs xmi:id="ServiceRef_1432571341226" serviceRefLink="service/StartFlow">
     <portQnameBindings xmi:id="PortQnameBinding_1432571341226" portQnameNamespaceLink="http://www.sap.com/caf/sap.com/home.infonavit_po_ch.bl.caf/modeled/StartFlow" portQnameLocalNameLink="StartFlowBindingPort" overriddenEndpointURI="http://10.90.8.163:50000/sap.com_home.infonavit_po_ch.bl.caf_StartFlow"/>
   </serviceRefs>
+  <serviceRefs xmi:id="ServiceRef_1434406390221" serviceRefLink="service/SI_CANCELACION_OUService">
+    <portQnameBindings xmi:id="PortQnameBinding_1434406390221" portQnameNamespaceLink="http://infonavit.org.mx/Cancelacion_ARPP" portQnameLocalNameLink="HTTP_Port" overriddenEndpointURI="http://091402ai203.infonavit.net:50000/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_BPM&amp;receiverParty=&amp;receiverService=&amp;interface=SI_CANCELACION_OU&amp;interfaceNamespace=http%3A%2F%2Finfonavit.org.mx%2FCancelacion_ARPP"/>
+  </serviceRefs>
 </com.ibm.etools.webservice.wscbnd:ClientBinding>

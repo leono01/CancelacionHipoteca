@@ -5,7 +5,10 @@
 
 package com.gisnet.cancelacion.wsclient.microflujo;
 
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.annotation.XmlElementDecl;
 import javax.xml.bind.annotation.XmlRegistry;
+import javax.xml.namespace.QName;
 
 
 /**
@@ -25,6 +28,8 @@ import javax.xml.bind.annotation.XmlRegistry;
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _MTCANCELACIONRESP_QNAME = new QName("http://infonavit.org.mx/Cancelacion_ARPP", "MT_CANCELACION_RESP");
+    private final static QName _MTCANCELACIONRQST_QNAME = new QName("http://infonavit.org.mx/Cancelacion_ARPP", "MT_CANCELACION_RQST");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.gisnet.cancelacion.wsclient.microflujo
@@ -34,123 +39,53 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ConsultaNotarios }
+     * Create an instance of {@link DTCANCELACIONRESP }
      * 
      */
-    public ConsultaNotarios createConsultaNotarios() {
-        return new ConsultaNotarios();
+    public DTCANCELACIONRESP createDTCANCELACIONRESP() {
+        return new DTCANCELACIONRESP();
     }
 
     /**
-     * Create an instance of {@link Input }
+     * Create an instance of {@link DTCANCELACIONREQ }
      * 
      */
-    public Input createInput() {
-        return new Input();
+    public DTCANCELACIONREQ createDTCANCELACIONREQ() {
+        return new DTCANCELACIONREQ();
     }
 
     /**
-     * Create an instance of {@link OperacionPrincipalResponse }
+     * Create an instance of {@link DTCANCELACIONRESP.DatosCredito }
      * 
      */
-    public OperacionPrincipalResponse createOperacionPrincipalResponse() {
-        return new OperacionPrincipalResponse();
+    public DTCANCELACIONRESP.DatosCredito createDTCANCELACIONRESPDatosCredito() {
+        return new DTCANCELACIONRESP.DatosCredito();
     }
 
     /**
-     * Create an instance of {@link Output }
+     * Create an instance of {@link DTCANCELACIONRESP.DatosNotario }
      * 
      */
-    public Output createOutput() {
-        return new Output();
+    public DTCANCELACIONRESP.DatosNotario createDTCANCELACIONRESPDatosNotario() {
+        return new DTCANCELACIONRESP.DatosNotario();
     }
 
     /**
-     * Create an instance of {@link OperacionPrincipal }
+     * Create an instance of {@link JAXBElement }{@code <}{@link DTCANCELACIONRESP }{@code >}}
      * 
      */
-    public OperacionPrincipal createOperacionPrincipal() {
-        return new OperacionPrincipal();
+    @XmlElementDecl(namespace = "http://infonavit.org.mx/Cancelacion_ARPP", name = "MT_CANCELACION_RESP")
+    public JAXBElement<DTCANCELACIONRESP> createMTCANCELACIONRESP(DTCANCELACIONRESP value) {
+        return new JAXBElement<DTCANCELACIONRESP>(_MTCANCELACIONRESP_QNAME, DTCANCELACIONRESP.class, null, value);
     }
 
     /**
-     * Create an instance of {@link ConsultaNotariosResponse }
+     * Create an instance of {@link JAXBElement }{@code <}{@link DTCANCELACIONREQ }{@code >}}
      * 
      */
-    public ConsultaNotariosResponse createConsultaNotariosResponse() {
-        return new ConsultaNotariosResponse();
-    }
-
-    /**
-     * Create an instance of {@link DatosNotarios }
-     * 
-     */
-    public DatosNotarios createDatosNotarios() {
-        return new DatosNotarios();
-    }
-
-    /**
-     * Create an instance of {@link RegistraCaso }
-     * 
-     */
-    public RegistraCaso createRegistraCaso() {
-        return new RegistraCaso();
-    }
-
-    /**
-     * Create an instance of {@link RegistraCasoResponse }
-     * 
-     */
-    public RegistraCasoResponse createRegistraCasoResponse() {
-        return new RegistraCasoResponse();
-    }
-
-    /**
-     * Create an instance of {@link Estatus }
-     * 
-     */
-    public Estatus createEstatus() {
-        return new Estatus();
-    }
-
-    /**
-     * Create an instance of {@link ValidarCreditoResponse }
-     * 
-     */
-    public ValidarCreditoResponse createValidarCreditoResponse() {
-        return new ValidarCreditoResponse();
-    }
-
-    /**
-     * Create an instance of {@link DatosCredito }
-     * 
-     */
-    public DatosCredito createDatosCredito() {
-        return new DatosCredito();
-    }
-
-    /**
-     * Create an instance of {@link ValidarCredito }
-     * 
-     */
-    public ValidarCredito createValidarCredito() {
-        return new ValidarCredito();
-    }
-
-    /**
-     * Create an instance of {@link CambioEstatusResponse }
-     * 
-     */
-    public CambioEstatusResponse createCambioEstatusResponse() {
-        return new CambioEstatusResponse();
-    }
-
-    /**
-     * Create an instance of {@link CambioEstatus }
-     * 
-     */
-    public CambioEstatus createCambioEstatus() {
-        return new CambioEstatus();
+    @XmlElementDecl(namespace = "http://infonavit.org.mx/Cancelacion_ARPP", name = "MT_CANCELACION_RQST")
+    public JAXBElement<DTCANCELACIONREQ> createMTCANCELACIONRQST(DTCANCELACIONREQ value) {
+        return new JAXBElement<DTCANCELACIONREQ>(_MTCANCELACIONRQST_QNAME, DTCANCELACIONREQ.class, null, value);
     }
 
 }

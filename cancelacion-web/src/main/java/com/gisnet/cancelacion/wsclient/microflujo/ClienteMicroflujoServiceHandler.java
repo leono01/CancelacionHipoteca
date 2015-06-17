@@ -16,6 +16,8 @@
  */
 package com.gisnet.cancelacion.wsclient.microflujo;
 
+import java.math.BigInteger;
+
 import com.gisnet.cancelacion.events.SaveRequest;
 import com.gisnet.cancelacion.events.SaveResponse;
 import com.gisnet.cancelacion.events.UpdateRequest;
@@ -25,27 +27,27 @@ import com.gisnet.cancelacion.events.info.CasoInfo;
 
 public class ClienteMicroflujoServiceHandler implements ClienteMicroflujoService {
     
-    private final StartFlowClient clientews;
+    private final SICANCELACIONOUService clientews;
 
     public ClienteMicroflujoServiceHandler() {
-        clientews = new StartFlowClient();
+        clientews = new SICANCELACIONOUService();
     }
 
     @Override
     public SaveResponse<CasoInfo> validarCredito(SaveRequest<CasoInfo> event) {
         CasoInfo caso = event.getInfo();
         
-        Input input = new Input();
+        DTCANCELACIONREQ input = new DTCANCELACIONREQ();
         input.setNumeroCredito(caso.getNumeroCredito());
         input.setNumeroCaso(caso.getNumeroCaso());
         input.setEntidad(caso.getEntidad());
-        input.setEstatus(caso.getStatusCaso().getClave());
+        input.setEstatus(BigInteger.valueOf(caso.getStatusCaso().getClave()));
         input.setNombreAcreditado(caso.getNombreAcreditado());
-        input.setTipoOperacion(1);
+        input.setTipoOperacion(BigInteger.valueOf(1));
         
         try {
-            StartFlowSEI puerto = clientews.getStartFlowBindingPort();
-            Output credito = puerto.operacionPrincipal(input);
+        	SICANCELACIONOU puerto = clientews.getHTTPPort();
+        	DTCANCELACIONRESP credito = puerto.siCANCELACIONOU(input);
             caso.setProcedeCredito(credito.getDatosCredito().isProcede() ? "PROCEDE" : "NO PROCEDE");
         } catch (Exception ex) {
             System.err.println("Excepcion ClienteMicroflujoService validarCredito, " + ex.getMessage());
@@ -58,17 +60,21 @@ public class ClienteMicroflujoServiceHandler implements ClienteMicroflujoService
     public UpdateResponse<CasoInfo> actualizarCaso(UpdateRequest<CasoInfo> event) {
         CasoInfo caso = event.getInfo();
         
-        Input input = new Input();
+        DTCANCELACIONREQ input = new DTCANCELACIONREQ();
         input.setNumeroCredito(caso.getNumeroCredito());
         input.setNumeroCaso(caso.getNumeroCaso());
         input.setEntidad(caso.getEntidad());
-        input.setEstatus(caso.getStatusCaso().getClave());
+        input.setEstatus(BigInteger.valueOf(caso.getStatusCaso().getClave()));
         input.setNombreAcreditado(caso.getNombreAcreditado());
-        input.setTipoOperacion(4);
+        input.setTipoOperacion(BigInteger.valueOf(4));
         
         try {
-            StartFlowSEI puerto = clientews.getStartFlowBindingPort();
-            puerto.operacionPrincipal(input);
+            SICANCELACIONOU puerto = clientews.getHTTPPort();
+            DTCANCELACIONRESP actualiza = puerto.siCANCELACIONOU(input);
+            
+            System.out.println("Salida del WS PMS -> status : " + actualiza.getDatosCredito().getEstatus());
+	        System.out.println("Salida del WS PMS -> descripción : " + actualiza.getDatosCredito().getDescripcion());
+	        
         } catch (Exception ex) {
             System.err.println("Excepcion ClienteMicroflujoService actualizarCaso, " + ex.getMessage());
         }
