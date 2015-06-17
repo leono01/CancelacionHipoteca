@@ -69,7 +69,8 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
                                         String		procedeCredito,
                                         String 		descripcionCredito,
                                     	Double		saldoCredito,
-                                    	String		fechaLiquidacionCredito
+                                    	String		fechaLiquidacionCredito,
+                                    	String		saldoCreditoVSM
     ) {
 
         StatusOperacion so = new StatusOperacion();
@@ -92,6 +93,7 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 	        caso.setDescripcionCredito(descripcionCredito);
 	        caso.setSaldoCredito(saldoCredito);
 	        caso.setFechaLiquidacionCredito(fechaLiquidacionCredito);
+	        caso.setSaldoCreditoVSM(saldoCreditoVSM);
 	        
 	        int s = 1;
 	        
@@ -262,8 +264,8 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 		        	salidas = microService.getHTTPPort().siCANCELACIONOU(entradas);
 		        	//isc = pmsPort.statusCaso(numeroDeCredito, numeroDeCaso, null, status, null, null, null, null, 4);
 			        
-			        System.out.println("Salida del WS PMS -> status : " + salidas.getDatosCredito().getEstatus());
-			        System.out.println("Salida del WS PMS -> descripción : " + salidas.getDatosCredito().getDescripcion());
+			        System.out.println("Salida del WS PMS PI -> status : " + salidas.getDatosCredito().getEstatus());
+			        System.out.println("Salida del WS PMS PI -> descripción : " + salidas.getDatosCredito().getDescripcion());
 	        	}
 	        	
 	        	catch(Exception e){

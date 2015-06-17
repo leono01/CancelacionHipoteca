@@ -24,26 +24,26 @@ import com.gisnet.cancelacion.events.Info;
  */
 public class NotarioInfo implements Info {
     
-    private long id;
-    private String nombre;
-    private int codigo;
-    private String notariaNumero;
-    private String email;
-    private String telefono;
-    private String calleNotaria;
-    private String numeroCalle;
-    private String coloniaNotaria;
-    private String codigoPostalNotaria;
+    private long 		id;
+    private String 		nombre;
+    private String 		codigoNotario;
+    private String 		notariaNumero;
+    private String 		email;
+    private String 		telefono;
+    private String 		calleNotaria;
+    private String 		numeroCalle;
+    private String 		coloniaNotaria;
+    private String 		codigoPostalNotaria;
     
-    private long usuarioId;
-    private long municipioId;
-    private long entidadId;
+    private long 		usuarioId;
+    private long 		municipioId;
+    private long 		entidadId;
     
-    private String rfc;
-    private String curp;
-    private boolean habilitado;
-    private String convenio;
-    private String entidad2;
+    private String 		rfc;
+    private String 		curp;
+    private boolean 	habilitado;
+    private String 		convenio;
+    private String 		entidad2;
 
     public NotarioInfo() {
     }
@@ -64,12 +64,12 @@ public class NotarioInfo implements Info {
         this.nombre = nombre;
     }
 
-    public int getCodigo() {
-        return codigo;
+    public String getCodigoNotario() {
+        return codigoNotario;
     }
 
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
+    public void setCodigoNotario(String codigoNotario) {
+        this.codigoNotario = codigoNotario;
     }
 
     public String getNotariaNumero() {

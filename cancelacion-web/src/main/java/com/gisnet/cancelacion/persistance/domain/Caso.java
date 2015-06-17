@@ -61,6 +61,7 @@ public class Caso implements Infoable<CasoInfo>, Serializable {
 	private Double				saldoCredito;
 	private String				fechaLiquidacionCredito;
     
+	private String 				saldoCreditoVSM;
 
     public Caso() {
     }
@@ -227,6 +228,15 @@ public class Caso implements Infoable<CasoInfo>, Serializable {
 	public void setFechaLiquidacionCredito(String fechaLiquidacionCredito) {
 		this.fechaLiquidacionCredito = fechaLiquidacionCredito;
 	}
+	
+    @Column(name = "SALDO_CREDITO_VSM")
+	public String getSaldoCreditoVSM() {
+		return saldoCreditoVSM;
+	}
+
+	public void setSaldoCreditoVSM(String saldoCreditoVSM) {
+		this.saldoCreditoVSM = saldoCreditoVSM;
+	}
     
     @Override
     public CasoInfo asInfo() {
@@ -253,6 +263,7 @@ public class Caso implements Infoable<CasoInfo>, Serializable {
         info.setDescripcionCredito(descripcionCredito);
         info.setSaldoCredito(saldoCredito);
         info.setFechaLiquidacionCredito(fechaLiquidacionCredito);
+        info.setSaldoCreditoVSM(saldoCreditoVSM);
         return info;
     }
 

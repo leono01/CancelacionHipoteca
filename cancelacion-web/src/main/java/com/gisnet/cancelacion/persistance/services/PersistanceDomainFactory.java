@@ -210,6 +210,7 @@ public class PersistanceDomainFactory {
         b.setDescripcionCredito(info.getDescripcionCredito());
         b.setSaldoCredito(info.getSaldoCredito());
         b.setFechaLiquidacionCredito(info.getFechaLiquidacionCredito());
+        b.setSaldoCreditoVSM(info.getSaldoCreditoVSM());
         return b;
     }
     
@@ -251,7 +252,7 @@ public class PersistanceDomainFactory {
         Notario b = new Notario();
         b.setId(info.getId());
         b.setCalleNotaria(info.getCalleNotaria());
-        b.setCodigo(info.getCodigo());
+        b.setCodigoNotario(info.getCodigoNotario());
         b.setCodigoPostalNotaria(info.getCodigoPostalNotaria());
         b.setColoniaNotaria(info.getColoniaNotaria());
         b.setEmail(info.getEmail());

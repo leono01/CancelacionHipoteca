@@ -35,26 +35,26 @@ import javax.persistence.Table;
 @Table(name = "C_NOTARIO")
 public class Notario implements Infoable<NotarioInfo>, Serializable {
 
-    private long id;
-    private String nombre;
-    private int codigo;
-    private String notariaNumero;
-    private String email;
-    private String telefono;
-    private String calleNotaria;
-    private String numeroCalle;
-    private String coloniaNotaria;
-    private String codigoPostalNotaria;
+    private long 		id;
+    private String 		nombre;
+    private String 		codigoNotario;
+    private String 		notariaNumero;
+    private String 		email;
+    private String 		telefono;
+    private String 		calleNotaria;
+    private String 		numeroCalle;
+    private String 		coloniaNotaria;
+    private String 		codigoPostalNotaria;
     
-    private Usuario usuario;
-    private Municipio municipio;
-    private Entidad entidad; //renombrar
+    private Usuario 	usuario;
+    private Municipio 	municipio;
+    private Entidad 	entidad; //renombrar
     
-    private String rfc;
-    private String curp;
-    private boolean habilitado;
-    private String convenio;
-    private String entidad2;
+    private String 		rfc;
+    private String 		curp;
+    private boolean 	habilitado;
+    private String 		convenio;
+    private String 		entidad2;
     
     public Notario() {
     }
@@ -80,12 +80,12 @@ public class Notario implements Infoable<NotarioInfo>, Serializable {
     }
 
     @Column(name = "CODIGO_NOTARIO")
-    public int getCodigo() {
-        return codigo;
+    public String getCodigoNotario() {
+        return codigoNotario;
     }
 
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
+    public void setCodigoNotario(String codigoNotario) {
+        this.codigoNotario = codigoNotario;
     }
 
     @Column(name = "NOTARIA_NUMERO")
@@ -231,7 +231,7 @@ public class Notario implements Infoable<NotarioInfo>, Serializable {
         NotarioInfo info = new NotarioInfo();
         info.setId(id);
         info.setNombre(nombre);
-        info.setCodigo(codigo);
+        info.setCodigoNotario(codigoNotario);
         info.setNotariaNumero(notariaNumero);
         info.setEmail(email);
         info.setTelefono(telefono);

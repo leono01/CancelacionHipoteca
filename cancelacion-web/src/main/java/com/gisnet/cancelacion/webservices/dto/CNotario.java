@@ -29,7 +29,7 @@ public class CNotario  implements java.io.Serializable {
      
      private String   	entidad;      
      private String 	nombreNotario;
-     private int 		codigoNotario;
+     private String		codigoNotario;
      private String 	notariaNumero;     
      private String		convenioInfonavit;
      private String 	email;
@@ -44,7 +44,7 @@ public class CNotario  implements java.io.Serializable {
 
 	
     public CNotario(String nombreNotario, 
-    				int codigoNotario, 
+    				String codigoNotario, 
     				String notariaNumero, 
     				String convenioInfonavit,
     				String email,
@@ -71,11 +71,11 @@ public class CNotario  implements java.io.Serializable {
     public void setNombreNotario(String nombreNotario) {
         this.nombreNotario = nombreNotario;
     }
-    public int getCodigoNotario() {
+    public String getCodigoNotario() {
         return this.codigoNotario;
     }
     
-    public void setCodigoNotario(int codigoNotario) {
+    public void setCodigoNotario(String codigoNotario) {
         this.codigoNotario = codigoNotario;
     }
     public String getNotariaNumero() {
