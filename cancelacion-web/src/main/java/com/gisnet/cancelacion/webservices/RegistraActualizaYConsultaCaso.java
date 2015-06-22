@@ -75,66 +75,78 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 
         StatusOperacion so = new StatusOperacion();
 
-
-        Date fechaDeCreacion = new Date();
-
-        CasoInfo caso = new CasoInfo();        
+      //Busca número de caso si existe o no	
+	    FindByRequest fbr = new FindByRequest("numeroCaso",numeroDeCaso);
+	    FindResponse<CasoInfo> casoresponse = service.find(fbr);
+	    
+	    //System.out.println("CASO ID:      "+ casoresponse.getInfo().getId());
+	    
+	    // si no existe el caso lo crea
+	    if(casoresponse.getInfo() == null){
         
-        try{
-	        caso.setNombreAcreditado(nombreAcreditado);
-	        caso.setNumeroCaso(numeroDeCaso);
-	        caso.setNumeroCredito(numeroDeCredito);
-	        caso.setFechaCreacion(fechaDeCreacion);
-	        caso.setFechaActualizacion(fechaDeCreacion);	        
-	        caso.setEntidad(entidad);
+	        Date fechaDeCreacion = new Date();
+	
+	        CasoInfo caso = new CasoInfo();        
 	        
-	        //Información del crédito
-	        caso.setProcedeCredito(procedeCredito);
-	        caso.setDescripcionCredito(descripcionCredito);
-	        caso.setSaldoCredito(saldoCredito);
-	        caso.setFechaLiquidacionCredito(fechaLiquidacionCredito);
-	        caso.setSaldoCreditoVSM(saldoCreditoVSM);
+	        try{
+		        caso.setNombreAcreditado(nombreAcreditado);
+		        caso.setNumeroCaso(numeroDeCaso);
+		        caso.setNumeroCredito(numeroDeCredito);
+		        caso.setFechaCreacion(fechaDeCreacion);
+		        caso.setFechaActualizacion(fechaDeCreacion);	        
+		        caso.setEntidad(entidad);
+		        
+		        //Información del crédito
+		        caso.setProcedeCredito(procedeCredito);
+		        caso.setDescripcionCredito(descripcionCredito);
+		        caso.setSaldoCredito(saldoCredito);
+		        caso.setFechaLiquidacionCredito(fechaLiquidacionCredito);
+		        caso.setSaldoCreditoVSM(saldoCreditoVSM);
+		        
+		        int s = 1;
+		        
+		        FindByRequest clave = new FindByRequest("clave",s);
+		        
+		        
+		        if(clave != null){
+		        	
+		        	FindResponse<StatusCasoInfo> scresponse = statusService.find(clave);
+		        	caso.setStatusCaso(scresponse.getInfo());
+		        
+		        }
 	        
-	        int s = 1;
-	        
-	        FindByRequest clave = new FindByRequest("clave",s);
-	        
-	        
-	        if(clave != null){
 	        	
-	        	FindResponse<StatusCasoInfo> scresponse = statusService.find(clave);
-	        	caso.setStatusCaso(scresponse.getInfo());
+	        	SaveRequest<CasoInfo> saveRequest = new SaveRequest<>();
+	        	saveRequest.setInfo(caso);
+	        	SaveResponse<CasoInfo> save = service.save(saveRequest);
 	        
-	        }
-        
-        	
-        	SaveRequest<CasoInfo> saveRequest = new SaveRequest<>();
-        	saveRequest.setInfo(caso);
-        	SaveResponse<CasoInfo> save = service.save(saveRequest);
-        
-        	so.setCodigo(0);
-        	so.setDescripcion("Caso registrado con éxito");
-        
-    	}catch(Exception e){
-    		
-    		//System.out.println("ERRORRRRRRRRRRR    "+e.getMessage());
-    		
-    		if(e.getMessage() != null){
-	    		if (e.getMessage().equals("Could not open connection; nested exception is org.hibernate.exception.JDBCConnectionException: Could not open connection")){
+	        	so.setCodigo(0);
+	        	so.setDescripcion("Caso registrado con éxito");
+	        
+	    	}catch(Exception e){
+	    		
+	    		//System.out.println("ERRORRRRRRRRRRR    "+e.getMessage());
+	    		
+	    		if(e.getMessage() != null){
+		    		if (e.getMessage().equals("Could not open connection; nested exception is org.hibernate.exception.JDBCConnectionException: Could not open connection")){
+		    			so.setCodigo(2);
+		        		so.setDescripcion("No hay conexión con la base de datos.");
+		    		}else{
+		    			so.setCodigo(1);
+		        		so.setDescripcion("No se hizo registro del caso");
+		    		}
+	    		}
+	    		else{
 	    			so.setCodigo(2);
 	        		so.setDescripcion("No hay conexión con la base de datos.");
-	    		}else{
-	    			so.setCodigo(1);
-	        		so.setDescripcion("No se hizo registro del caso");
 	    		}
-    		}
-    		else{
-    			so.setCodigo(2);
-        		so.setDescripcion("No hay conexión con la base de datos.");
-    		}
-    	}
-        
-        
+	    	}
+	        
+	    }else{
+	    	so.setCodigo(3);
+    		so.setDescripcion("Ya existe el número de caso " + numeroDeCaso);
+	    }
+	    
         return so;
 
     }
