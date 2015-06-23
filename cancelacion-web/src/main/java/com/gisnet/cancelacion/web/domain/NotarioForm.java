@@ -24,6 +24,7 @@ public class NotarioForm {
     
     private long id;
     private String nombre;
+    private String codigoNotario;
     private String notariaNumero;
     private String convenioInfonavit;
     private String email;
@@ -142,6 +143,14 @@ public class NotarioForm {
     public void setEntidadId(long entidadId) {
         this.entidadId = entidadId;
     }
+
+	public String getCodigoNotario() {
+		return codigoNotario;
+	}
+
+	public void setCodigoNotario(String codigoNotario) {
+		this.codigoNotario = codigoNotario;
+	}
 
 }
 

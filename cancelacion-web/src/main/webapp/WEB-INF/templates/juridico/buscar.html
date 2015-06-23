@@ -91,23 +91,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
-                                                <th>numero de notaria</th>
-                                                <th>nombre notario</th>
-                                                <th>codigo notario</th>
-                                                <th>convenio infonavit</th>
-                                                <th>correo electronico</th>
-                                                <th>telefono</th>
-                                                <th>calle</th>
-                                                <th>numero</th>
-                                                <th>colonia</th>
-                                                <th>modificar</th>
+                                                <th>N&uacute;umero de notaria</th>
+                                                <th>Nombre notario</th>
+                                                <th>C&oacute;digo notario</th>
+                                                <th>Convenio INFONAVIT</th>
+                                                <th>Correo electr&oacute;nico</th>
+                                                <th>Tel&eacute;fono</th>
+                                                <th>Calle</th>
+                                                <th>N&uacute;mero calle</th>
+                                                <th>Colonia</th>
+                                                <th>Modificar</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr th:each="row : ${list}" th:object="${row}">
                                                 <td th:text="*{notariaNumero}"></td>
                                                 <td th:text="*{nombre}"></td>
-                                                <td th:text="*{codigo}"></td>
+                                                <td th:text="*{codigoNotario}"></td>
                                                 <td th:text="*{convenio}"></td>
                                                 <td th:text="*{email}"></td>
                                                 <td th:text="*{telefono}"></td>

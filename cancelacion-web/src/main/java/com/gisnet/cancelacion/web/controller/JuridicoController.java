@@ -139,7 +139,7 @@ public class JuridicoController {
         
         info.setMunicipioId(form.getMunicipioId());
         info.setEntidadId(form.getEntidadId());
-        //info.setCodigoNotario(form.getCodigoNotario);
+        info.setCodigoNotario(form.getCodigoNotario());
         FindResponse<EntidadInfo> find = entidadservice.find(new FindByRequest(form.getEntidadId()));
         if (find.getInfo() != null) {
             info.setEntidad2(find.getInfo().getClave());
@@ -181,6 +181,7 @@ public class JuridicoController {
         form.setNumeroCalle(info.getNumeroCalle());
         form.setConvenioInfonavit(info.getConvenio());
         form.setActivo(info.isHabilitado());
+        form.setCodigoNotario(info.getCodigoNotario());
         model.addAttribute("notarioForm", form);
         model.addAttribute("modificar", true);
         return "/juridico/registrar";
