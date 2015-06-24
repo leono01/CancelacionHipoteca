@@ -70,7 +70,7 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
                                         String 		descripcionCredito,
                                     	Double		saldoCredito,
                                     	String		fechaLiquidacionCredito,
-                                    	String		saldoCreditoVSM
+                                    	Double		saldoCreditoVSM
     ) {
 
         StatusOperacion so = new StatusOperacion();

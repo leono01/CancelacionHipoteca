@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://webservices.cancelacion.gisnet.com/" version="1.0" xmlns:tns="http://webservices.cancelacion.gisnet.com/">
+
+  <xs:element name="actualizaCaso" type="tns:actualizaCaso"/>
+
+  <xs:element name="actualizaCasoResponse" type="tns:actualizaCasoResponse"/>
+
+  <xs:element name="actualizarCarta" type="tns:actualizarCarta"/>
+
+  <xs:element name="actualizarCartaResponse" type="tns:actualizarCartaResponse"/>
+
+  <xs:element name="consultaCartaCancelacion" type="tns:consultaCartaCancelacion"/>
+
+  <xs:element name="consultaCartaCancelacionResponse" type="tns:consultaCartaCancelacionResponse"/>
+
+  <xs:element name="consultaCaso" type="tns:consultaCaso"/>
+
+  <xs:element name="consultaCasoResponse" type="tns:consultaCasoResponse"/>
+
+  <xs:element name="estadoDelCaso" type="tns:estadoDelCaso"/>
+
+  <xs:element name="estadoDelCasoResponse" type="tns:estadoDelCasoResponse"/>
+
+  <xs:element name="registraCaso" type="tns:registraCaso"/>
+
+  <xs:element name="registraCasoResponse" type="tns:registraCasoResponse"/>
+
+  <xs:element name="registrarCarta" type="tns:registrarCarta"/>
+
+  <xs:element name="registrarCartaResponse" type="tns:registrarCartaResponse"/>
+
+  <xs:complexType name="actualizarCarta">
+    <xs:sequence>
+      <xs:element name="numeroDeCaso" type="xs:int"/>
+      <xs:element minOccurs="0" name="codigoCarta" type="xs:string"/>
+      <xs:element minOccurs="0" name="base64" nillable="true" type="xs:base64Binary"/>
+      <xs:element minOccurs="0" name="md5" type="xs:string"/>
+      <xs:element minOccurs="0" name="folio" type="xs:string"/>
+      <xs:element minOccurs="0" name="entidad" type="xs:string"/>
+      <xs:element minOccurs="0" name="fechaEmision" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="nombreAcreditado" type="xs:string"/>
+      <xs:element minOccurs="0" name="nombreNotario" type="xs:string"/>
+      <xs:element minOccurs="0" name="notaria" type="xs:string"/>
+      <xs:element minOccurs="0" name="direccion" type="xs:string"/>
+      <xs:element minOccurs="0" name="folioEscritura" type="xs:string"/>
+      <xs:element minOccurs="0" name="fojaEscritura" type="xs:string"/>
+      <xs:element minOccurs="0" name="libroEscritura" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="actualizarCartaResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:statusCarta"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="statusCarta">
+    <xs:sequence>
+      <xs:element name="clave" type="xs:int"/>
+      <xs:element minOccurs="0" name="descripcion" type="xs:string"/>
+      <xs:element minOccurs="0" name="nombre" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="consultaCartaCancelacion">
+    <xs:sequence>
+      <xs:element name="numeroDeCaso" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="consultaCartaCancelacionResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:cartaCancelacionInfo"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="cartaCancelacionInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codigoCarta" type="xs:string"/>
+      <xs:element minOccurs="0" name="direccion" type="xs:string"/>
+      <xs:element minOccurs="0" name="entidad" type="xs:string"/>
+      <xs:element minOccurs="0" name="fechaEmisionCarta" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="fojaEscritura" type="xs:string"/>
+      <xs:element minOccurs="0" name="folio" type="xs:string"/>
+      <xs:element minOccurs="0" name="folioEscritura" type="xs:string"/>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element minOccurs="0" name="libroEscritura" type="xs:string"/>
+      <xs:element minOccurs="0" name="nombreAcreditado" type="xs:string"/>
+      <xs:element minOccurs="0" name="nombreNotario" type="xs:string"/>
+      <xs:element minOccurs="0" name="notaria" type="xs:string"/>
+      <xs:element minOccurs="0" name="pdf" type="xs:base64Binary"/>
+      <xs:element minOccurs="0" name="xml" type="xs:base64Binary"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="estadoDelCaso">
+    <xs:sequence>
+      <xs:element name="numeroDeCaso" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="estadoDelCasoResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:statusCaso"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="statusCaso">
+    <xs:sequence>
+      <xs:element name="clave" type="xs:int"/>
+      <xs:element minOccurs="0" name="descripcion" type="xs:string"/>
+      <xs:element minOccurs="0" name="fechaActualizacion" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="nombre" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="registraCaso">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="numeroDeCredito" type="xs:string"/>
+      <xs:element minOccurs="0" name="numeroDeCaso" type="xs:string"/>
+      <xs:element minOccurs="0" name="nombreAcreditado" type="xs:string"/>
+      <xs:element minOccurs="0" name="entidad" type="xs:string"/>
+      <xs:element minOccurs="0" name="procedeCredito" type="xs:string"/>
+      <xs:element minOccurs="0" name="descripcionCredito" type="xs:string"/>
+      <xs:element minOccurs="0" name="saldoCredito" type="xs:double"/>
+      <xs:element minOccurs="0" name="fechaLiquidacionCredito" type="xs:string"/>
+      <xs:element minOccurs="0" name="saldoCreditoVSM" type="xs:double"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="registraCasoResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:statusOperacion"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="statusOperacion">
+    <xs:sequence>
+      <xs:element name="codigo" type="xs:int"/>
+      <xs:element minOccurs="0" name="descripcion" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="registrarCarta">
+    <xs:sequence>
+      <xs:element name="numeroDeCaso" type="xs:int"/>
+      <xs:element minOccurs="0" name="codigoCarta" type="xs:string"/>
+      <xs:element minOccurs="0" name="base64" nillable="true" type="xs:base64Binary"/>
+      <xs:element minOccurs="0" name="md5" type="xs:string"/>
+      <xs:element minOccurs="0" name="folio" type="xs:string"/>
+      <xs:element minOccurs="0" name="entidad" type="xs:string"/>
+      <xs:element minOccurs="0" name="fechaEmision" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="nombreAcreditado" type="xs:string"/>
+      <xs:element minOccurs="0" name="nombreNotario" type="xs:string"/>
+      <xs:element minOccurs="0" name="notaria" type="xs:string"/>
+      <xs:element minOccurs="0" name="direccion" type="xs:string"/>
+      <xs:element minOccurs="0" name="folioEscritura" type="xs:string"/>
+      <xs:element minOccurs="0" name="fojaEscritura" type="xs:string"/>
+      <xs:element minOccurs="0" name="libroEscritura" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="registrarCartaResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:statusCarta"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="actualizaCaso">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="numeroDeCredito" type="xs:string"/>
+      <xs:element minOccurs="0" name="numeroDeCaso" type="xs:string"/>
+      <xs:element minOccurs="0" name="fecha" type="xs:dateTime"/>
+      <xs:element name="status" type="xs:int"/>
+      <xs:element minOccurs="0" name="cartaDeCancelacionPdf" nillable="true" type="xs:base64Binary"/>
+      <xs:element minOccurs="0" name="fechaEmisionCarta" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="numeroDeFolio" type="xs:string"/>
+      <xs:element minOccurs="0" name="md5" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="actualizaCasoResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:infoDeActualizacion"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="infoDeActualizacion">
+    <xs:sequence>
+      <xs:element name="codigo" type="xs:int"/>
+      <xs:element minOccurs="0" name="descripcion" type="xs:string"/>
+      <xs:element minOccurs="0" name="numeroDeCaso" type="xs:string"/>
+      <xs:element minOccurs="0" name="numeroDeCredito" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="consultaCaso">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="numeroDeCaso" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="consultaCasoResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:infoDeConsulta"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="infoDeConsulta">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="cartaDeCancelacion" type="xs:base64Binary"/>
+      <xs:element minOccurs="0" name="descripcionConsulta" type="xs:string"/>
+      <xs:element minOccurs="0" name="descripcionCredito" type="xs:string"/>
+      <xs:element minOccurs="0" name="entidad" type="xs:string"/>
+      <xs:element minOccurs="0" name="fecha" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="fechaDeActualizacion" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="fechaDeEmisionDeCarta" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="fechaEmisionCarta" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="fechaLiquidacionCredito" type="xs:string"/>
+      <xs:element name="infoConsulta" type="xs:int"/>
+      <xs:element minOccurs="0" name="nombreAcreditado" type="xs:string"/>
+      <xs:element minOccurs="0" name="numeroDeCaso" type="xs:string"/>
+      <xs:element minOccurs="0" name="numeroDeCredito" type="xs:string"/>
+      <xs:element minOccurs="0" name="numeroDeFolio" type="xs:string"/>
+      <xs:element minOccurs="0" name="procedeCredito" type="xs:string"/>
+      <xs:element minOccurs="0" name="saldoCredito" type="xs:double"/>
+      <xs:element name="status" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
