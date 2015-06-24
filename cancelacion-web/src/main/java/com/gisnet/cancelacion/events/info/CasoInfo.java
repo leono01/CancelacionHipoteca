@@ -47,7 +47,7 @@ public class CasoInfo implements Info {
 	private Double			saldoCredito;
 	private String			fechaLiquidacionCredito;
 	
-	private String			saldoCreditoVSM;
+	private Double			saldoCreditoVSM;
 
     public CasoInfo() {
     }
@@ -188,11 +188,11 @@ public class CasoInfo implements Info {
 		this.fechaLiquidacionCredito = fechaLiquidacionCredito;
 	}
 
-	public String getSaldoCreditoVSM() {
+	public Double getSaldoCreditoVSM() {
 		return saldoCreditoVSM;
 	}
 
-	public void setSaldoCreditoVSM(String saldoCreditoVSM) {
+	public void setSaldoCreditoVSM(Double saldoCreditoVSM) {
 		this.saldoCreditoVSM = saldoCreditoVSM;
 	}
     
