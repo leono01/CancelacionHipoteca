@@ -294,7 +294,7 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
 	        	cn.setTelefono("");
 	    		cn.setCodigo(1);
 	    		cn.setDescripcion("No se encontraron notarios en la entidad " + entidad + ".");
-	    		cn.setSinNotario("Sin Notario");
+	    		cn.setSinNotario("Sin Notarios");
 	    		notarios.add(cn);
 	    		System.out.println("Status 1");
 				System.out.println("No se encontraron notarios en la entidad " + entidad + ".");

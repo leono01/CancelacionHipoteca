@@ -14,22 +14,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.gisnet.cancelacion.persistance.repository;
 
-import com.gisnet.cancelacion.persistance.domain.Entidad;
-import com.gisnet.cancelacion.persistance.domain.Notario;
+package com.gisnet.cancelacion.webservices.dto;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
-
-/**
- *
- * @author marco-g8
- */
-public interface EntidadRepository extends CrudRepository<Entidad, Long> {
+public class InfoValidarConvenio {
 	
-	@Query("select n from Entidad n where n.clave = :clave")
-    Notario findByClaveEntidad(@Param("clave") String clave);
+    String     	conOSinConvenio;
+    int     	codigo;
+    String  	descripcion;
     
+	public String getConOSinConvenio() {
+		return conOSinConvenio;
+	}
+	public void setConOSinConvenio(String conOSinConvenio) {
+		this.conOSinConvenio = conOSinConvenio;
+	}
+	public int getCodigo() {
+		return codigo;
+	}
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
+	}
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	} 
+
 }

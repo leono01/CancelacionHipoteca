@@ -18,6 +18,7 @@ package com.gisnet.cancelacion.webservices;
 
 import com.gisnet.cancelacion.core.services.CasoService;
 import com.gisnet.cancelacion.core.services.CartaCancelacionService;
+import com.gisnet.cancelacion.core.services.NotarioService;
 import com.gisnet.cancelacion.core.services.StatusCasoService;
 import com.gisnet.cancelacion.events.FindByRequest;
 import com.gisnet.cancelacion.events.FindResponse;
@@ -26,12 +27,15 @@ import com.gisnet.cancelacion.events.SaveResponse;
 import com.gisnet.cancelacion.events.UpdateRequest;
 import com.gisnet.cancelacion.events.info.CasoInfo;
 import com.gisnet.cancelacion.events.info.CartaCancelacionInfo;
+import com.gisnet.cancelacion.events.info.NotarioInfo;
 import com.gisnet.cancelacion.events.info.StatusCasoInfo;
 import com.gisnet.cancelacion.webservices.dto.InfoDeActualizacion;
 import com.gisnet.cancelacion.webservices.dto.InfoDeConsulta;
 import com.gisnet.cancelacion.webservices.dto.StatusCarta;
 import com.gisnet.cancelacion.webservices.dto.StatusCaso;
 import com.gisnet.cancelacion.webservices.dto.StatusOperacion;
+
+
 
 
 
@@ -61,6 +65,9 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 	
 	@Autowired
 	private CartaCancelacionService ccService;
+	
+	@Autowired
+	private NotarioService notarioService;
 	
     public StatusOperacion registraCaso(String 		numeroDeCredito,
                                         String 		numeroDeCaso,
@@ -159,7 +166,8 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
                                             	byte[]  	cartaDeCancelacionPdf,
                                             	Date    	fechaEmisionCarta,
                                             	String  	numeroDeFolio,
-                                            	String		md5
+                                            	String		md5,
+                                            	String		codigoNotario
                                         ) {
 
         InfoDeActualizacion ida = new InfoDeActualizacion();
@@ -240,6 +248,22 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 	    		ida.setNumeroDeCaso(numeroDeCaso);
 	        	ida.setNumeroDeCredito(numeroDeCredito);**/        	
 	    	}
+	        
+	        
+	        FindByRequest notario = new FindByRequest("codigoNotario",codigoNotario);
+	        FindResponse<NotarioInfo> notarioResponse = notarioService.find(notario);
+	        
+	        if(notarioResponse.getInfo() != null){
+	        	//Actualiza el caso
+	        	System.out.println("Si encontró por código de notario");
+	        	casoresponse.getInfo().setNotarioId(notarioResponse.getInfo().getId());
+	        }
+	        else{
+	        	//manda error
+	        	System.out.println("No encontró por código de notario");
+	        }
+	        
+	        
 	        
 	        UpdateRequest<CasoInfo> update = new UpdateRequest();
 	        update.setInfo(casoresponse.getInfo());
