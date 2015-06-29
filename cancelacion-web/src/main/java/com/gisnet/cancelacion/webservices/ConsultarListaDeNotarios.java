@@ -146,6 +146,13 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
 	        }
 	        else{
 	        	CNotario cn = new CNotario();
+	        	cn.setEntidad("");
+	        	cn.setNombreNotario("");
+	        	cn.setCodigoNotario("");
+	        	cn.setNotariaNumero("");
+	        	cn.setConvenioInfonavit("");
+	        	cn.setEmail("");
+	        	cn.setTelefono("");
 	    		cn.setCodigo(1);
 	    		cn.setDescripcion("No se encontraron notarios.");
 	    		notarios.add(cn);
@@ -208,6 +215,7 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
 		        	cn.setTelefono(ni.getTelefono());
 		        	cn.setCodigo(0);
 		        	cn.setDescripcion("Se consulto satisfactoriamente el notario.");
+		        	cn.setSinNotario("Con Notarios");
 		        	/**System.out.println("("+cn.getConvenioInfonavit()+")");
 		        	System.out.println("(length:"+cn.getConvenioInfonavit().length()+")");**/
 		        	
@@ -277,8 +285,16 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
 	        else{
         	
 	        	CNotario cn = new CNotario();
+	        	cn.setEntidad("");
+	        	cn.setNombreNotario("");
+	        	cn.setCodigoNotario("");
+	        	cn.setNotariaNumero("");
+	        	cn.setConvenioInfonavit("");
+	        	cn.setEmail("");
+	        	cn.setTelefono("");
 	    		cn.setCodigo(1);
 	    		cn.setDescripcion("No se encontraron notarios en la entidad " + entidad + ".");
+	    		cn.setSinNotario("Sin Notario");
 	    		notarios.add(cn);
 	    		System.out.println("Status 1");
 				System.out.println("No se encontraron notarios en la entidad " + entidad + ".");

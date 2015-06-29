@@ -60,12 +60,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
-                                                <th>no caso</th>
-                                                <th>no ss (credito)</th>
-                                                <th>nombre acreditado</th>
-                                                <th>url (pdf)</th>
-                                                <th>fecha</th>
-                                                <th>estado</th>
+                                                <th>N&uacute;mero Caso</th>
+                                                <th>N&uacute;mero Cr&eacute;dito</th>
+                                                <th>Acreditado</th>
+                                                <th>Visualizar</th>
+                                                <th>Fecha</th>
+                                                <th>Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -73,7 +73,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                                 <td th:text="*{numeroCaso}">000000000</td>
                                                 <td th:text="*{numeroCredito}">00000000000</td>
                                                 <td th:text="*{nombreAcreditado}">nombre acreditado</td>
-                                                <td><a th:href="@{/notario/caso/{numeroCaso}(numeroCaso=*{numeroCaso})}">url</a></td>
+                                                <td><a th:href="@{/notario/caso/{numeroCaso}(numeroCaso=*{numeroCaso})}">Carta Cancelaci&oacute;n</a></td>
                                                 <td th:text="*{fechaCreacion}">01/04/2015</td>
                                                 <td th:text="*{statusCaso.nombre}"></td>
                                             </tr>

@@ -36,6 +36,7 @@ public class CNotario  implements java.io.Serializable {
      private String 	telefono;
      private int		codigo;
      private String		descripcion;
+     private String		sinNotario;
      
      
 
@@ -144,6 +145,16 @@ public class CNotario  implements java.io.Serializable {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+
+	public String getSinNotario() {
+		return sinNotario;
+	}
+
+
+	public void setSinNotario(String sinNotario) {
+		this.sinNotario = sinNotario;
 	}
 
 

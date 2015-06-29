@@ -104,12 +104,13 @@ public class CasoServiceHandler implements CasoService {
         Iterator<CasoInfo> iterator = list1.getList().iterator();
         while (iterator.hasNext()) {
             CasoInfo next = iterator.next();
+            
             int clave = next.getStatusCaso().getClave();
-            System.out.println("Clave1 CASO SERVICE: " + clave);
-            //if (clave != 8 || clave != 14) {
-            /**if (clave != 8) {	System.out.println("Clave2: CASO SERVICE: " + clave);
+            
+            if (clave != 8 || clave != 14) {
+            
                 iterator.remove();
-            }**/
+            }
         }
         
         return new ListResponse<>(list1.getList());
