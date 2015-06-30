@@ -32,7 +32,8 @@ public class CsrfUrlMatcher implements RequestMatcher {
     private final AntPathRequestMatcher[] requestMatchers = {
           new AntPathRequestMatcher("/ValidarCredito**"),
           new AntPathRequestMatcher("/ConsultarListaDeNotarios**"),
-          new AntPathRequestMatcher("/RegistraActualizaYConsultaCaso**")
+          new AntPathRequestMatcher("/RegistraActualizaYConsultaCaso**"),
+          new AntPathRequestMatcher("/VerificarConvenioDeEntidad**")
     };
 
     @Override

@@ -17,8 +17,6 @@
 package com.gisnet.cancelacion.persistance.repository;
 
 import com.gisnet.cancelacion.persistance.domain.Entidad;
-import com.gisnet.cancelacion.persistance.domain.Notario;
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -29,7 +27,7 @@ import org.springframework.data.repository.query.Param;
  */
 public interface EntidadRepository extends CrudRepository<Entidad, Long> {
 	
-	@Query("select n from Entidad n where n.clave = :clave")
-    Notario findByClaveEntidad(@Param("clave") String clave);
+	//@Query("select n from Entidad n where n.clave = :clave")
+    Entidad findByClave(String clave);
     
 }

@@ -317,7 +317,7 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
         
 	    }else{
 	    	ida.setCodigo(3);
-        	ida.setDescripcion("No se existe el caso");
+        	ida.setDescripcion("No existe el caso");
         	ida.setNumeroDeCaso(numeroDeCaso);
             ida.setNumeroDeCredito(numeroDeCredito);
 	    }

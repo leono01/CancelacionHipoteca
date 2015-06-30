@@ -23,6 +23,8 @@
         <csrf request-matcher-ref="csrfTokenMatcher" />
         
         <!-- webservices -->
+        <intercept-url pattern="/VerificarConvenioDeEntidadService**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/VerificarConvenioDeEntidadService**/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <intercept-url pattern="/ValidarCreditoService**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <intercept-url pattern="/ValidarCreditoService**/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <intercept-url pattern="/ConsultarListaDeNotarios**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>

@@ -75,7 +75,7 @@ public class NotarioController {
         ListResponse<CasoInfo> list2 = casoService.notarioInfonavitListaCasosPendientes(sesion.getNotarioInfo().getId());
         model.addAttribute("casos", list2.getList());
         for (CasoInfo caso : list2.getList()) {
-        	System.out.println("Controller Clave: " + caso.getStatusCaso().getClave());
+        	
             if (caso.getStatusCaso().getClave() == 14) {
                 FindResponse<ProyectoCancelacionInfo> find1 = proyectoCancelacionService.find(
                         new FindByRequest(caso.getProyectoCancelacionId()));

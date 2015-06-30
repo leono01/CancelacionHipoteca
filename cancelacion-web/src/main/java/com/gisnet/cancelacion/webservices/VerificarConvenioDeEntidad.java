@@ -37,7 +37,6 @@ public class VerificarConvenioDeEntidad  extends SpringBeanAutowiringSupport {
 	@Autowired
     private EntidadService entidadService;
 	
-	private static final int 	ZERO = 0;
 	private static final int 	DOS = 2;
 	
 	private static final int	EXITO_ZERO = 0;
@@ -61,7 +60,7 @@ public class VerificarConvenioDeEntidad  extends SpringBeanAutowiringSupport {
 		
 		try{
 		
-			if (entidad.length() <= ZERO && entidad.length() > DOS){
+			if (entidad.length() != DOS){
 				ivc.setConOSinConvenio("");
 				ivc.setCodigo(ERROR_TRES);
 				ivc.setDescripcion(DESCRIPCION_ERROR_TRES);
@@ -69,7 +68,9 @@ public class VerificarConvenioDeEntidad  extends SpringBeanAutowiringSupport {
 			else{
 				
 				FindByRequest laEntidad = new FindByRequest("clave",entidad);
+				System.out.println("sigye cv");
 		        FindResponse<EntidadInfo> entidadResponse = entidadService.find(laEntidad);
+		        System.out.println("sigye2");
 		        
 		        if(entidadResponse.getInfo() != null){
 		        	
