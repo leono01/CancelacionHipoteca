@@ -96,6 +96,7 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
 		        	cn.setConvenioInfonavit(ni.getConvenio());
 		        	cn.setEmail(ni.getEmail());
 		        	cn.setTelefono(ni.getTelefono());
+		        	cn.setIdentificadorUnicoNotario(ni.getId());
 		        	cn.setCodigo(0);
 		        	cn.setDescripcion("Se consulto satisfactoriamente el notario.");
 		        	
@@ -213,9 +214,10 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
 		        	cn.setConvenioInfonavit(ni.getConvenio());
 		        	cn.setEmail(ni.getEmail());
 		        	cn.setTelefono(ni.getTelefono());
+		        	cn.setIdentificadorUnicoNotario(ni.getId());
 		        	cn.setCodigo(0);
 		        	cn.setDescripcion("Se consulto satisfactoriamente el notario.");
-		        	cn.setSinNotario("Con Notarios");
+		        	cn.setSinNotario("Con Notario");
 		        	/**System.out.println("("+cn.getConvenioInfonavit()+")");
 		        	System.out.println("(length:"+cn.getConvenioInfonavit().length()+")");**/
 		        	
@@ -294,7 +296,7 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
 	        	cn.setTelefono("");
 	    		cn.setCodigo(1);
 	    		cn.setDescripcion("No se encontraron notarios en la entidad " + entidad + ".");
-	    		cn.setSinNotario("Sin Notarios");
+	    		cn.setSinNotario("Sin Notario");
 	    		notarios.add(cn);
 	    		System.out.println("Status 1");
 				System.out.println("No se encontraron notarios en la entidad " + entidad + ".");
