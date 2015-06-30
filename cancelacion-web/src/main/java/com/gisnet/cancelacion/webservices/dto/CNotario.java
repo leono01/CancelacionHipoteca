@@ -37,10 +37,21 @@ public class CNotario  implements java.io.Serializable {
      private int		codigo;
      private String		descripcion;
      private String		sinNotario;
+     private long		identificadorUnicoNotario;
      
      
 
-    public CNotario() {
+    public long getIdentificadorUnicoNotario() {
+		return identificadorUnicoNotario;
+	}
+
+
+	public void setIdentificadorUnicoNotario(long identificadorUnicoNotario) {
+		this.identificadorUnicoNotario = identificadorUnicoNotario;
+	}
+
+
+	public CNotario() {
     }
 
 	

@@ -175,7 +175,7 @@
       <xs:element minOccurs="0" name="fechaEmisionCarta" type="xs:dateTime"/>
       <xs:element minOccurs="0" name="numeroDeFolio" type="xs:string"/>
       <xs:element minOccurs="0" name="md5" type="xs:string"/>
-      <xs:element minOccurs="0" name="codigoNotario" type="xs:string"/>
+      <xs:element name="identificadorUnicoNotario" type="xs:long"/>
     </xs:sequence>
   </xs:complexType>
 

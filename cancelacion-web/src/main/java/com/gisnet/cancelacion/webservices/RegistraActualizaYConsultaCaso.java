@@ -167,7 +167,7 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
                                             	Date    	fechaEmisionCarta,
                                             	String  	numeroDeFolio,
                                             	String		md5,
-                                            	String		codigoNotario
+                                            	long		identificadorUnicoNotario
                                         ) {
 
         InfoDeActualizacion ida = new InfoDeActualizacion();
@@ -250,7 +250,7 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 	    	}
 	        
 	        
-	        FindByRequest notario = new FindByRequest("codigoNotario",codigoNotario);
+	        FindByRequest notario = new FindByRequest(identificadorUnicoNotario);
 	        FindResponse<NotarioInfo> notarioResponse = notarioService.find(notario);
 	        
 	        if(notarioResponse.getInfo() != null){

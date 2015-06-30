@@ -38,8 +38,8 @@ public class RegistraActualizaYConsultaCasoDelegate{
         return _registraActualizaYConsultaCaso.registraCaso(numeroDeCredito,numeroDeCaso,nombreAcreditado,entidad,procedeCredito,descripcionCredito,saldoCredito,fechaLiquidacionCredito,saldoCreditoVSM);
     }
 
-    public InfoDeActualizacion actualizaCaso (@WebParam(name="numeroDeCredito") String numeroDeCredito, @WebParam(name="numeroDeCaso") String numeroDeCaso, @WebParam(name="fecha") Date fecha, @WebParam(name="status") int status, @WebParam(name="cartaDeCancelacionPdf") byte[] cartaDeCancelacionPdf, @WebParam(name="fechaEmisionCarta") Date fechaEmisionCarta, @WebParam(name="numeroDeFolio") String numeroDeFolio, @WebParam(name="md5") String md5, @WebParam(name="codigoNotario") String codigoNotario) {
-        return _registraActualizaYConsultaCaso.actualizaCaso(numeroDeCredito,numeroDeCaso,fecha,status,cartaDeCancelacionPdf,fechaEmisionCarta,numeroDeFolio,md5,codigoNotario);
+    public InfoDeActualizacion actualizaCaso (@WebParam(name="numeroDeCredito") String numeroDeCredito, @WebParam(name="numeroDeCaso") String numeroDeCaso, @WebParam(name="fecha") Date fecha, @WebParam(name="status") int status, @WebParam(name="cartaDeCancelacionPdf") byte[] cartaDeCancelacionPdf, @WebParam(name="fechaEmisionCarta") Date fechaEmisionCarta, @WebParam(name="numeroDeFolio") String numeroDeFolio, @WebParam(name="md5") String md5, @WebParam(name="identificadorUnicoNotario") long identificadorUnicoNotario) {
+        return _registraActualizaYConsultaCaso.actualizaCaso(numeroDeCredito,numeroDeCaso,fecha,status,cartaDeCancelacionPdf,fechaEmisionCarta,numeroDeFolio,md5,identificadorUnicoNotario);
     }
 
     public InfoDeConsulta consultaCaso (@WebParam(name="numeroDeCaso") String numeroDeCaso) {
