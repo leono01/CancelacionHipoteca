@@ -78,7 +78,6 @@ public class VerificarConvenioDeEntidad  extends SpringBeanAutowiringSupport {
 			        	ivc.setConOSinConvenio("CON CONVENIO");
 			        	ivc.setCodigo(EXITO_ZERO);
 			        	ivc.setDescripcion(DESCRIPCION_EXITO_CERO);
-			        	System.out.println(ivc.getDescripcion());
 			        	
 		        	}
 		        	else{
@@ -86,7 +85,7 @@ public class VerificarConvenioDeEntidad  extends SpringBeanAutowiringSupport {
 		        		ivc.setConOSinConvenio("SIN CONVENIO");
 			        	ivc.setCodigo(EXITO_ZERO);
 			        	ivc.setDescripcion(DESCRIPCION_EXITO_CERO);
-			        	System.out.println(ivc.getDescripcion());
+			        	
 		        	}
 		        }
 		        else{

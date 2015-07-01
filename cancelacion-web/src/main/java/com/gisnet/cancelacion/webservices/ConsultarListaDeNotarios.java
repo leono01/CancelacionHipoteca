@@ -150,8 +150,8 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
 	        else{
 	        	CNotario cn = new CNotario();
 	        	cn.setEntidad("");
-	        	cn.setNombreNotario("");
-	        	cn.setCodigoNotario("");
+	        	cn.setNombreNotario("Liberación RPP");
+	        	cn.setCodigoNotario("XXXXXXXX");
 	        	cn.setNotariaNumero("");
 	        	cn.setConvenioInfonavit("");
 	        	cn.setEmail("");
@@ -301,8 +301,8 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
         	
 	        	CNotario cn = new CNotario();
 	        	cn.setEntidad("");
-	        	cn.setNombreNotario("");
-	        	cn.setCodigoNotario("");
+	        	cn.setNombreNotario("Liberación RPP");
+	        	cn.setCodigoNotario("XXXXXXXX");
 	        	cn.setNotariaNumero("");
 	        	cn.setConvenioInfonavit("");
 	        	cn.setEmail("");
