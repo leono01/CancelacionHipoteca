@@ -22,6 +22,7 @@ import com.gisnet.cancelacion.core.services.NotarioService;
 import com.gisnet.cancelacion.core.services.StatusCasoService;
 import com.gisnet.cancelacion.events.FindByRequest;
 import com.gisnet.cancelacion.events.FindResponse;
+import com.gisnet.cancelacion.events.MultipleParams;
 import com.gisnet.cancelacion.events.SaveRequest;
 import com.gisnet.cancelacion.events.SaveResponse;
 import com.gisnet.cancelacion.events.UpdateRequest;
@@ -34,6 +35,8 @@ import com.gisnet.cancelacion.webservices.dto.InfoDeConsulta;
 import com.gisnet.cancelacion.webservices.dto.StatusCarta;
 import com.gisnet.cancelacion.webservices.dto.StatusCaso;
 import com.gisnet.cancelacion.webservices.dto.StatusOperacion;
+
+
 
 
 
@@ -249,22 +252,40 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 	        	ida.setNumeroDeCredito(numeroDeCredito);**/        	
 	    	}
 	        
+	        String id = "YOLIZETH,303,EM";
+			String[] datos;			
+			datos = id.split(",");
+			
+			/**for(int i=0;i<5;i++){
+				System.out.println("dato " +i+ " " + datos[i]);
+			}**/
 	        
-	        FindByRequest notario = new FindByRequest(identificadorUnicoNotario);
-	        FindResponse<NotarioInfo> notarioResponse = notarioService.find(notario);
+			
+			System.out.println("notariaNumero :" + datos[0]);
+			System.out.println("nombreNotario :" + datos[1]);
+			System.out.println("entidad :" + datos[2]);
+			
+			MultipleParams params = new MultipleParams();
+			params.add("nombreNotario", datos[1]);
+			params.add("notariaNumero", datos[0]);	        
+	        params.add("entidadClave", datos[2]);
+	      //params.add("entidadId", new Long(datos[2]));
+	        
+	        FindResponse<NotarioInfo> notarioResponse = notarioService.find(new FindByRequest("nombreNotarioYentidadIdYnumeroNotariaTxt", params));
+	        
+	        //FindByRequest notario = new FindByRequest(identificadorUnicoNotario);
+	        //FindResponse<NotarioInfo> notarioResponse = notarioService.find(notario);
 	        
 	        if(notarioResponse.getInfo() != null){
-	        	//Actualiza el caso
-	        	System.out.println("Si encontró por código de notario");
+	        	//Actualiza el caso	        	
 	        	casoresponse.getInfo().setNotarioId(notarioResponse.getInfo().getId());
 	        }
 	        else{
 	        	//manda error
-	        	System.out.println("No encontró por código de notario");
+	        	System.out.println(new Date() + ":No encontró notario al momento de actualizar el caso con el notario");
 	        }
 	        
-	        
-	        
+	      
 	        UpdateRequest<CasoInfo> update = new UpdateRequest();
 	        update.setInfo(casoresponse.getInfo());
 	        service.update(update);
@@ -300,8 +321,8 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 		        	salidas = microService.getHTTPPort().siCANCELACIONOU(entradas);
 		        	//isc = pmsPort.statusCaso(numeroDeCredito, numeroDeCaso, null, status, null, null, null, null, 4);
 			        
-			        System.out.println("Salida del WS PMS PI -> status : " + salidas.getDatosCredito().getEstatus());
-			        System.out.println("Salida del WS PMS PI -> descripción : " + salidas.getDatosCredito().getDescripcion());
+			        System.out.println("Respuesta de WS PI -> Estatus : " + salidas.getDatosCredito().getEstatus());
+			        System.out.println("Respuesta de WS PI -> Descripción : " + salidas.getDatosCredito().getDescripcion());
 	        	}
 	        	
 	        	catch(Exception e){

@@ -67,10 +67,9 @@ public class VerificarConvenioDeEntidad  extends SpringBeanAutowiringSupport {
 			}
 			else{
 				
-				FindByRequest laEntidad = new FindByRequest("clave",entidad);
-				System.out.println("sigye cv");
+				FindByRequest laEntidad = new FindByRequest("porClave",entidad);
 		        FindResponse<EntidadInfo> entidadResponse = entidadService.find(laEntidad);
-		        System.out.println("sigye2");
+		        
 		        
 		        if(entidadResponse.getInfo() != null){
 		        	

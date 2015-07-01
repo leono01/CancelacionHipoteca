@@ -19,7 +19,9 @@ package com.gisnet.cancelacion.persistance.services;
 import com.gisnet.cancelacion.events.*;
 import com.gisnet.cancelacion.events.info.EntidadInfo;
 import com.gisnet.cancelacion.persistance.domain.Entidad;
+import com.gisnet.cancelacion.persistance.domain.Notario;
 import com.gisnet.cancelacion.persistance.repository.EntidadRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -43,6 +45,15 @@ public class EntidadPersistanceServiceHandler implements EntidadPersistanceServi
                 }
                 Entidad findOne = repository.findOne((long) event.getValue());
                 return new FindResponse<>(findOne != null ? findOne.asInfo() : null);
+                
+            case "porClave":
+            	if (!(event.getValue() instanceof String)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                Entidad clave = repository.findByClave((String) event.getValue());
+                return new FindResponse<>(clave != null ? clave.asInfo() : null);
+               
+                    
         }
         throw new IllegalArgumentException("Llave desconocida o no disponible para busqueda");
     }

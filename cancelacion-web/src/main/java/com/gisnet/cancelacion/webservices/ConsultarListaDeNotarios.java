@@ -63,6 +63,8 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
 
 	@Autowired
     private NotarioService service;
+	
+	
 
 	//NoHayConexionBD nobd = new NoHayConexionBD();
     
@@ -98,7 +100,7 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
 		        	cn.setTelefono(ni.getTelefono());
 		        	cn.setIdentificadorUnicoNotario(ni.getId());
 		        	cn.setCodigo(0);
-		        	cn.setDescripcion("Se consulto satisfactoriamente el notario.");
+		        	cn.setDescripcion("Se consultó satisfactoriamente el notario.");
 		        	
 		        	if(cn.getConvenioInfonavit().length() > 0){
 		        		//System.out.println("Se agrega notario CON convenio");
@@ -155,7 +157,7 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
 	        	cn.setEmail("");
 	        	cn.setTelefono("");
 	    		cn.setCodigo(1);
-	    		cn.setDescripcion("No se encontraron notarios.");
+	    		cn.setDescripcion("No se encontraron notarios.");	    		
 	    		notarios.add(cn);
 	    		System.out.println("Status 1");
 				System.out.println("No se encontraron notarios.");
@@ -198,7 +200,6 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
     	
     	try{
     		
-    		
 	        // Operación que regresa una lista de los notarios de la determinada entidad.
 	    	ListRequest lr = new ListRequest("entidad",entidad);
 	        ListResponse<NotarioInfo> list = service.list(lr);
@@ -217,7 +218,7 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
 		        	cn.setIdentificadorUnicoNotario(ni.getId());
 		        	cn.setCodigo(0);
 		        	cn.setDescripcion("Se consulto satisfactoriamente el notario.");
-		        	cn.setSinNotario("Con Notario");
+		        	
 		        	/**System.out.println("("+cn.getConvenioInfonavit()+")");
 		        	System.out.println("(length:"+cn.getConvenioInfonavit().length()+")");**/
 		        	
@@ -275,6 +276,18 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
 	    		}**/
 	        	
 	        	notarios.addAll(notariosSinConvenio);
+	        	CNotario cn2 = new CNotario();
+	        	cn2.setEntidad("");
+	        	cn2.setNombreNotario("Liberación RPP");
+	        	cn2.setCodigoNotario("XXXXXXXX");
+	        	cn2.setNotariaNumero("");
+	        	cn2.setConvenioInfonavit("");
+	        	cn2.setEmail("");
+	        	cn2.setTelefono("");
+	        	cn2.setIdentificadorUnicoNotario(0);
+	        	cn2.setCodigo(0);
+	        	cn2.setDescripcion("");
+	        	notarios.add(cn2);
 	        	//System.out.println(" posición (0):" + notarios.get(0).getNombreNotario());
 	        	/**System.out.println("-----Se muestran primero los notarios CON convenio y después los que no tienen convenio (EN TEORIA jajaja)-----");
 	        	for(CNotario notario : notarios){
@@ -295,8 +308,7 @@ public class ConsultarListaDeNotarios extends SpringBeanAutowiringSupport {
 	        	cn.setEmail("");
 	        	cn.setTelefono("");
 	    		cn.setCodigo(1);
-	    		cn.setDescripcion("No se encontraron notarios en la entidad " + entidad + ".");
-	    		cn.setSinNotario("Sin Notario");
+	    		cn.setDescripcion("No se encontraron notarios en la entidad " + entidad + ".");	    		
 	    		notarios.add(cn);
 	    		System.out.println("Status 1");
 				System.out.println("No se encontraron notarios en la entidad " + entidad + ".");

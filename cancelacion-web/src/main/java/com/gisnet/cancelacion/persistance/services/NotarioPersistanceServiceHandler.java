@@ -75,7 +75,81 @@ public class NotarioPersistanceServiceHandler implements NotarioPersistanceServi
                 }
                 Notario usuarioId = repository.findByUsuarioId((long) event.getValue());
                 return new FindResponse<>(usuarioId != null ? usuarioId.asInfo() : null);
+              
+            case "nombreNotarioYentidadIdYnumeroNotaria":
+            	
                 
+            	if (!(event.getValue() instanceof MultipleParams)) {
+            		System.out.println(" Validacion OK");
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+            	
+                
+                MultipleParams params2 = (MultipleParams) event.getValue();
+                
+                
+                if (params2.containsKey("nombreNotario")) {
+                    if (!(params2.get("nombreNotario") instanceof String)) {
+                        throw new IllegalArgumentException("Valor de llave incorrecto");
+                    }
+                
+                }else {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                if (params2.containsKey("entidadId")) {
+                    if (!(params2.get("entidadId") instanceof Long)) {
+                        throw new IllegalArgumentException("Valor de llave incorrecto");
+                    }
+                
+                }else {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                if (params2.containsKey("notariaNumero")) {
+                    if (!(params2.get("notariaNumero") instanceof String)) {
+                        throw new IllegalArgumentException("Valor de llave incorrecto");
+                    }
+                
+                }else {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+               
+                Notario notarioId = repository.findByNombreNotarioEntidadyNumeroNotaria((String) params2.get("notariaNumero"), (long) params2.get("entidadId"),(String) params2.get("nombreNotario"));
+                return new FindResponse<>(notarioId != null ? notarioId.asInfo() : null);
+                
+            case "nombreNotarioYentidadIdYnumeroNotariaTxt":
+                if (!(event.getValue() instanceof MultipleParams)) {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                MultipleParams params3 = (MultipleParams) event.getValue();
+                if (params3.containsKey("nombreNotario")) {
+                    if (!(params3.get("nombreNotario") instanceof String)) {
+                        throw new IllegalArgumentException("Valor de llave incorrecto");
+                    }
+                }
+                else {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                if (params3.containsKey("entidadClave")) {
+                    if (!(params3.get("entidadClave") instanceof String)) {
+                        throw new IllegalArgumentException("Valor de llave incorrecto");
+                    }
+                }
+                else {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+                if (params3.containsKey("notariaNumero")) {
+                    if (!(params3.get("notariaNumero") instanceof String)) {
+                        throw new IllegalArgumentException("Valor de llave incorrecto");
+                    }
+                }
+                else {
+                    throw new IllegalArgumentException("Valor de llave incorrecto");
+                }
+               
+                Notario notarioIdTxt = repository.findByNombreNotarioEntidadyNumeroNotariaTxt((String) params3.get("notariaNumero"), (String) params3.get("entidadClave"),(String) params3.get("nombreNotario"));
+                return new FindResponse<>(notarioIdTxt != null ? notarioIdTxt.asInfo() : null);
+            
+            
             case "notariaNumeroYentidadId":
                 if (!(event.getValue() instanceof MultipleParams)) {
                     throw new IllegalArgumentException("Valor de llave incorrecto");

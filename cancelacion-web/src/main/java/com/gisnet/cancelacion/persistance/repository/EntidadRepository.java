@@ -27,7 +27,7 @@ import org.springframework.data.repository.query.Param;
  */
 public interface EntidadRepository extends CrudRepository<Entidad, Long> {
 	
-	//@Query("select n from Entidad n where n.clave = :clave")
-    Entidad findByClave(String clave);
+    @Query("select n from Entidad n where n.clave = :clave")
+    Entidad findByClave(@Param("clave") String clave);
     
 }
