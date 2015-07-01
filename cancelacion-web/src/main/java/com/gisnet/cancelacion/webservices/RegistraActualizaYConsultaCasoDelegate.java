@@ -6,6 +6,7 @@ import com.gisnet.cancelacion.core.services.NotarioService;
 import com.gisnet.cancelacion.core.services.StatusCasoService;
 import com.gisnet.cancelacion.events.FindByRequest;
 import com.gisnet.cancelacion.events.FindResponse;
+import com.gisnet.cancelacion.events.MultipleParams;
 import com.gisnet.cancelacion.events.SaveRequest;
 import com.gisnet.cancelacion.events.SaveResponse;
 import com.gisnet.cancelacion.events.UpdateRequest;
@@ -38,7 +39,7 @@ public class RegistraActualizaYConsultaCasoDelegate{
         return _registraActualizaYConsultaCaso.registraCaso(numeroDeCredito,numeroDeCaso,nombreAcreditado,entidad,procedeCredito,descripcionCredito,saldoCredito,fechaLiquidacionCredito,saldoCreditoVSM);
     }
 
-    public InfoDeActualizacion actualizaCaso (@WebParam(name="numeroDeCredito") String numeroDeCredito, @WebParam(name="numeroDeCaso") String numeroDeCaso, @WebParam(name="fecha") Date fecha, @WebParam(name="status") int status, @WebParam(name="cartaDeCancelacionPdf") byte[] cartaDeCancelacionPdf, @WebParam(name="fechaEmisionCarta") Date fechaEmisionCarta, @WebParam(name="numeroDeFolio") String numeroDeFolio, @WebParam(name="md5") String md5, @WebParam(name="identificadorUnicoNotario") long identificadorUnicoNotario) {
+    public InfoDeActualizacion actualizaCaso (@WebParam(name="numeroDeCredito") String numeroDeCredito, @WebParam(name="numeroDeCaso") String numeroDeCaso, @WebParam(name="fecha") Date fecha, @WebParam(name="status") int status, @WebParam(name="cartaDeCancelacionPdf") byte[] cartaDeCancelacionPdf, @WebParam(name="fechaEmisionCarta") Date fechaEmisionCarta, @WebParam(name="numeroDeFolio") String numeroDeFolio, @WebParam(name="md5") String md5, @WebParam(name="identificadorUnicoNotario") String identificadorUnicoNotario) {
         return _registraActualizaYConsultaCaso.actualizaCaso(numeroDeCredito,numeroDeCaso,fecha,status,cartaDeCancelacionPdf,fechaEmisionCarta,numeroDeFolio,md5,identificadorUnicoNotario);
     }
 

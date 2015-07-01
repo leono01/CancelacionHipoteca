@@ -33,9 +33,9 @@
       <xs:element minOccurs="0" name="descripcion" type="xs:string"/>
       <xs:element minOccurs="0" name="email" type="xs:string"/>
       <xs:element minOccurs="0" name="entidad" type="xs:string"/>
+      <xs:element name="identificadorUnicoNotario" type="xs:long"/>
       <xs:element minOccurs="0" name="nombreNotario" type="xs:string"/>
       <xs:element minOccurs="0" name="notariaNumero" type="xs:string"/>
-      <xs:element minOccurs="0" name="sinNotario" type="xs:string"/>
       <xs:element minOccurs="0" name="telefono" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>

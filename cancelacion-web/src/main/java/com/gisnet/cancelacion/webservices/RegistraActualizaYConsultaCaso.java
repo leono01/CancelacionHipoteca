@@ -170,7 +170,7 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
                                             	Date    	fechaEmisionCarta,
                                             	String  	numeroDeFolio,
                                             	String		md5,
-                                            	long		identificadorUnicoNotario
+                                            	String		identificadorUnicoNotario
                                         ) {
 
         InfoDeActualizacion ida = new InfoDeActualizacion();
@@ -252,9 +252,10 @@ public class RegistraActualizaYConsultaCaso extends SpringBeanAutowiringSupport 
 	        	ida.setNumeroDeCredito(numeroDeCredito);**/        	
 	    	}
 	        
-	        String id = "YOLIZETH,303,EM";
-			String[] datos;			
-			datos = id.split(",");
+	        //String id = "YOLIZETH,303,EM";
+			
+	        String[] datos;			
+			datos = identificadorUnicoNotario.split(",");
 			
 			/**for(int i=0;i<5;i++){
 				System.out.println("dato " +i+ " " + datos[i]);
